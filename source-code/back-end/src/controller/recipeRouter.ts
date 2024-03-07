@@ -1,5 +1,3 @@
-// require('dotenv').config();
-// const express = require('express');
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,7 +7,6 @@ const recipeService = require('../service/recipeService.ts');
 
 router.get('/:query', async (req: any, res: any) => {
 	const recipes = await recipeService.searchRecipes(req.params.query);
-	// res.json(await recipeService.searchRecipes(req.params.query));
 	res.json(recipes);
 });
 

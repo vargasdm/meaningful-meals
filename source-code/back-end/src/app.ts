@@ -6,8 +6,6 @@ import and call config() on dotenv as early as possible*/
 import express, { Express, Request, Response } from 'express';
 import recipeRouter from './controller/recipeRouter';
 
-// const express = require('express');
-// const recipeRouter = require('./controller/recipeRouter.ts');
 const app: Express = express();
 const PORT = process.env.PORT;
 
