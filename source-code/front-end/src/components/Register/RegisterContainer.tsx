@@ -1,8 +1,8 @@
 import React from "react";
 import RegisterInput from "./RegisterInput";
 import axios from "axios";
-const PORT = process.env.REACT_APP_PORT; // The port of the backend server
-const URL = `http://localhost:${PORT}`;
+const PORT = process.env.REACT_APP_PORT;
+const URL = `http://localhost:${PORT}/user`;
 
 
 function RegisterContainer() {

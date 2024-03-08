@@ -8,7 +8,6 @@ import recipeService from '../service/recipeService';
 // This should return search results if there's a 'query' query parameter,
 // or a specific recipe if there's an 'id' query parameter
 router.get('/', async (req: any, res: any) => {
-	// console.log(req.query);
 	if (req.query.query) {
 		const recipes = await recipeService.searchRecipes(req.query.query);
 		res.status(200).json(recipes);

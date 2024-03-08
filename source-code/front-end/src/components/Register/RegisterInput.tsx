@@ -7,7 +7,7 @@ function RegisterInput(props: any) {
 
   function handleRegisterSubmit(event: any) {
     event.preventDefault();
-    props.updateUser({ username, password, email });
+    props.addUser({ username, password, email });
   }
 
   return (
