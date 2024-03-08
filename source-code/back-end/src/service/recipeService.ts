@@ -16,10 +16,16 @@ async function searchRecipes(query: string) {
 }
 
 async function getRecipe(id: string) {
+	// try {
 	const result = await axios.get(`https://api.spoonacular.com/recipes/`
 		+ `${id}/information?apiKey=${SPOONACULAR_API_KEY}`);
 	console.log(result);
-	return result;
+	return result.data;
+
+	// } catch (err) {
+	// 	console.error(err);
+	// 	return null;
+	// }
 }
 
 export default {
