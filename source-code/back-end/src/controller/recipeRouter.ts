@@ -4,20 +4,11 @@ dotenv.config();
 import express from 'express';
 const router = express.Router();
 import recipeService from '../service/recipeService';
-// const recipeService = require('../service/recipeService.ts');
 
-// router.get('/:query', async (req: any, res: any) => {
-// 	const recipes = await recipeService.searchRecipes(req.params.query);
-// 	res.json(recipes);
-// });
-
-// router.get('/:id/information', async (req: any, res: any) => {
-// 	const data = await recipeService.getRecipe(req.params.id);
-// 	res.json(data.data);
-// });
-
+// This should return search results if there's a 'query' query parameter,
+// or a specific recipe if there's an 'id' query parameter
 router.get('/', async (req: any, res: any) => {
-	console.log(req.query);
+	// console.log(req.query);
 	if (req.query.query) {
 		const recipes = await recipeService.searchRecipes(req.query.query);
 		res.status(200).json(recipes);

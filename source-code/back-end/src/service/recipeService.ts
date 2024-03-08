@@ -15,17 +15,13 @@ async function searchRecipes(query: string) {
 	return result.data;
 }
 
+// TODO: union Spoonacular and local search spaces
+// i.e., if we don't find the ID with Spoonacular, then search local
 async function getRecipe(id: string) {
-	// try {
 	const result = await axios.get(`https://api.spoonacular.com/recipes/`
 		+ `${id}/information?apiKey=${SPOONACULAR_API_KEY}`);
 	console.log(result);
 	return result.data;
-
-	// } catch (err) {
-	// 	console.error(err);
-	// 	return null;
-	// }
 }
 
 export default {
