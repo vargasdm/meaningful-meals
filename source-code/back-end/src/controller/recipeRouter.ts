@@ -3,11 +3,24 @@ dotenv.config();
 
 import express from 'express';
 const router = express.Router();
-const recipeService = require('../service/recipeService.ts');
+import recipeService from '../service/recipeService';
 
-router.get('/:query', async (req: any, res: any) => {
-	const recipes = await recipeService.searchRecipes(req.params.query);
-	res.json(recipes);
+// This should return search results if there's a 'query' query parameter,
+// or a specific recipe if there's an 'id' query parameter
+router.get('/', async (req: any, res: any) => {
+	if (req.query.query) {
+		const recipes = await recipeService.searchRecipes(req.query.query);
+		res.status(200).json(recipes);
+		return;
+	}
+
+	if (req.query.id) {
+		const recipe: any = await recipeService.getRecipe(req.query.id);
+		res.status(200).json(recipe);
+		return;
+	}
+
+	res.status(400).json({ error: 'QUERY PARAMS INVALID' })
 });
 
 export default router;
