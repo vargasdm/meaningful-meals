@@ -1,8 +1,10 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import "./App.css";
 import LoginContainer from "./components/Login/LoginContainer";
 import RegisterContainer from "./components/Register/RegisterContainer";
+import Recipe, { loader as recipeLoader } from './components/Recipe/Recipe';
+import Error from './components/Error';
+import "./App.css";
 
 const router = createBrowserRouter([
 	{
@@ -11,17 +13,18 @@ const router = createBrowserRouter([
 			<div className="App">
 				<LoginContainer />
 				<RegisterContainer />
-			</div>
+			</div>,
+		errorElement: <Error />
 	},
+	{
+		path: '/recipes/:id',
+		element: <Recipe />,
+		loader: recipeLoader
+	}
+	// errorElement: <Error />
 ]);
 
 function App() {
-	// return (
-	// <div className="App">
-	//   <LoginContainer />
-	//   <RegisterContainer />
-	// </div>
-	//   );
 	return <RouterProvider router={router} />
 }
 
