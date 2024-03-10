@@ -53,7 +53,7 @@ router.post(
       logger.info(`Created Employee: ${data.username}`);
       res.status(201).json({ message: `Created Employee ${data.username}` });
     } else {
-      res.status(400).json({
+      res.status(401).json({
         message: "Employee was not created. Invalid Credentials.",
       });
     }
