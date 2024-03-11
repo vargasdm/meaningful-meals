@@ -11,16 +11,21 @@ function Navbar() {
 
   console.log(userState); // Log the current user state
 
+  // creates global state variable for use as a path param 
+  let userPathParam = userState.username
+  console.log(userPathParam);
+  
+
   return (
     <nav>
       <Link to="/">MeaningFul Meals</Link>
       {userState?.username && userState?.password ? (
         <ul>
           <li>
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile/">Profile</Link>
           </li>
           <li>
-            <Link to="/recipes">Recipes</Link>
+            <Link to={`/recipes/${userPathParam}`}>Recipes</Link>
           </li>
           <li>
             <Link to="/plan">Meal Plans</Link>
