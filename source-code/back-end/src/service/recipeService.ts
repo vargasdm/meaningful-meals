@@ -19,7 +19,8 @@ async function searchRecipes(query: string) {
 // i.e., if we don't find the ID with Spoonacular, then search local
 async function getRecipe(id: string) {
 	const result = await axios.get(`https://api.spoonacular.com/recipes/`
-		+ `${id}/information?apiKey=${SPOONACULAR_API_KEY}`);
+		+ `${id}/information?apiKey=${SPOONACULAR_API_KEY}`
+		+ `&includeNutrition=true`);
 	console.log(result);
 	return result.data;
 }

@@ -21,7 +21,6 @@ const router = createBrowserRouter([
 		element: <Recipe />,
 		loader: recipeLoader
 	}
-	// errorElement: <Error />
 ]);
 
 function App() {
