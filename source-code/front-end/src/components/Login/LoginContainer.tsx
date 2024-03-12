@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../store/slices/userSlice";
 import LoginInput from "./LoginInput";
 import axios from "axios";
+import { render } from "@testing-library/react";
+import SearchContainer from "../Search/SearchContainer";
+import { redirect } from "react-router-dom";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/user`;
 
@@ -10,16 +13,24 @@ function LoginContainer() {
   const dispatch = useDispatch();
 
   async function updateUserState(user: any) {
-    // console.log(user);
-    console.log(dispatch(userActions.setUser(user)));
+    // console.log(dispatch(userActions.setUser(user)));
+    // try {
+    //   // sends post request to backend
+    //   if (await getUser(user)) {
+    //     console.log("success");
+    //     // should change the global user state variable using the properties of the user object
+    //     dispatch(userActions.setUser(user));
+    //     console.log(dispatch(userActions.setUser({ username: user.username, isLoggedIn: true })));
+    //     return redirect("/")
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
     try {
-      // sends post request to backend
-      if (await getUser(user)) {
-        console.log("success");
-        // should change the global user state variable using the properties of the user object
-        dispatch(userActions.setUser(user));
-        console.log(dispatch(userActions.setUser(user)));
-        
+      const response = await getUser(user);
+      if (response) {
+        dispatch(userActions.setUser({ username: user.username, isLoggedIn: true }));
+        return redirect("/");
       }
     } catch (error) {
       console.error(error);

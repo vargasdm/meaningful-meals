@@ -27,7 +27,7 @@ router.get("/", async (req: any, res: any) => {
 
 // this is endpoint for when user is looking at thier recipe tab
 // this is a protected endpoint, but I didnt want to make a token so I will need to add the authenticateNoToken later
-router.get("/:username", async (req: any, res: any) => {
+router.get("/user-recipes/:username", async (req: any, res: any) => {
   console.log(req.params);
   console.log(req.params.username);
 

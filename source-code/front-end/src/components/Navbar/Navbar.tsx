@@ -1,38 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
+import { userActions } from "../../store/slices/userSlice";
+export type CleanedRootState = Omit<RootState, "_persist">;
+
 
 // will change this when I use bootstrap
-import "./Navbar.css";
+// import "./Navbar.css";
 
 function Navbar() {
-  const userState = useSelector((state: RootState) => state.user); // Access the user state from the global state
-
+  const userState = useSelector((state: CleanedRootState) => state.user); // Access the user state from the global state
   console.log(userState); // Log the current user state
+  const dispatch = useDispatch(); // Get the dispatch function
 
-  // creates global state variable for use as a path param 
-  let userPathParam = userState.username
+  if (!userState) {
+    dispatch(userActions.setUser({ username: "defaultUsername", isLoggedIn: false }));
+  }
+
+  let userPathParam = userState.username;
   console.log(userPathParam);
+
+  const handleLogout = () => {
+    // Dispatch the action to update the user state when the "Logout" link is clicked
+    dispatch(userActions.logoutUser());
+  };
+
   
 
   return (
     <nav>
       <Link to="/">MeaningFul Meals</Link>
-      {userState?.username && userState?.password ? (
+      {userState.isLoggedIn === true ? (
         <ul>
           <li>
             <Link to="/profile/">Profile</Link>
           </li>
           <li>
-            <Link to={`/recipes/${userPathParam}`}>Recipes</Link>
+            <Link to={`/recipes/user-recipes/${userPathParam}`}>Recipes</Link>
           </li>
           <li>
             <Link to="/plan">Meal Plans</Link>
           </li>
-          
+
           <li>
-            <Link to="/logout">Logout</Link>
+          <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       ) : (
