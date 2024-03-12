@@ -3,39 +3,51 @@ const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 
 async function login(recievedData: any) {
-  const data : any = await userDao.getEmployeeByUsername(recievedData.username);
-  if (
-    data &&
-    recievedData.username === data[0].username &&
-    (await bcrypt.compare(recievedData.password, data[0].password))
-  ) {
-    return data ? data : null;
-  }
+	const data: any = await userDao.getUserByUsername(recievedData.username);
+	if (
+		data &&
+		recievedData.username === data[0].username &&
+		(await bcrypt.compare(recievedData.password, data[0].password))
+	) {
+		return data ? data : null;
+	}
 
-  return null;
+	return null;
 }
 
-async function postEmployee(receivedData: any) {
-  if (await validateUsername(receivedData.username)) {
-    let data = await userDao.postEmployee({
-      user_id: uuid.v4(),
-      username: receivedData.username,
-      password: await bcrypt.hash(receivedData.password, 10),
-      role: "user",
-    });
-    return data ? data : null;
-  }
+async function postUser(receivedData: any) {
+	console.log(`userService.postUser(${JSON.stringify(receivedData)})...`);
 
-  return null;
+	if (await validateUsername(receivedData.username)) {
+		console.log('username validated.');
+		let data = await userDao.postUser({
+			user_id: uuid.v4(),
+			username: receivedData.username,
+			password: await bcrypt.hash(receivedData.password, 10),
+			role: "user",
+		});
+		return data ? data : null;
+	}
+
+	return null;
 }
 
-async function validateUsername(data: any) {
-  const isTaken : any = await userDao.getEmployeeByUsername(data);
-  if (isTaken.length > 0) {
-    return false;
-  } else {
-    return true;
-  }
+async function validateUsername(username: string) {
+	console.log(`userService.validateUsername(${username})...`);
+
+	try {
+		const users: any = await userDao.getUserByUsername(username);
+		console.log(`userService.validateUsername users: ${JSON.stringify(users)}`);
+		if (users.length > 0) {
+			console.log('Username taken.');
+			return false;
+		} else {
+			console.log('Username not taken.');
+			return true;
+		}
+	} catch (err) {
+		console.error(err);
+	}
 }
 
-export { postEmployee, login };
+export { postUser as postEmployee, login };

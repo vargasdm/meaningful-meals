@@ -5,9 +5,6 @@ import and call config() on dotenv as early as possible*/
 
 import express from 'express';
 import cors from 'cors';
-// import recipeRouter from './controller/recipeRouter';
-// const cors = require("cors");
-// import express, { Express, Request, Response } from "express";
 import recipeRouter from "./controller/recipeRouter";
 import userRouter from "./controller/userRouter";
 import { logger } from "./util/logger";
@@ -20,9 +17,6 @@ app.use(express.json());
 
 app.use("/recipes", recipeRouter);
 app.use("/user", userRouter);
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("The dude abides");
-// });
 
 app.use((req, res, next) => {
   logger.info(`Incoming ${req.method} : ${req.url}`);

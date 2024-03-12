@@ -1,54 +1,60 @@
 require("dotenv").config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBDocumentClient,
-  PutCommand,
-  QueryCommand,
+	DynamoDBDocumentClient,
+	PutCommand,
+	QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 
-const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
 
 const documentClient = DynamoDBDocumentClient.from(client);
 
 import { logger } from "../util/logger";
 
-const TableName = process.env.USERS_TABLE;
+const TableName: string = process.env.USERS_TABLE as string;
 
 // READ
-async function getEmployeeByUsername(username: any) {
-  const command = new QueryCommand({
-    TableName,
-    IndexName: "username-index",
-    KeyConditionExpression: "#u = :u",
-    ExpressionAttributeNames: { "#u": "username" },
-    ExpressionAttributeValues: { ":u": username },
-  });
+async function getEmployeeByUsername(username: string) {
+	const command = new QueryCommand({
+		TableName,
+		IndexName: "username-index",
+		KeyConditionExpression: "#u = :u",
+		ExpressionAttributeNames: { "#u": "username" },
+		ExpressionAttributeValues: { ":u": username },
+	});
 
-  try {
-    const data = await documentClient.send(command);
-    return data.Items;
-  } catch (err) {
-    logger.error(err);
-  }
+	try {
+		const data = await documentClient.send(command);
+		// console.log(`userDAO.getEmployeeByUsername data: ${JSON.stringify(data)}`);
+		return data.Items;
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+	}
 
-  return null;
+	return null;
 }
 
 // CREATE
-async function postEmployee(Item: any) {
-  const command = new PutCommand({
-    TableName,
-    Item
-  });
+async function postUser(Item: any) {
+	console.log(`userDAO.postEmployee(${JSON.stringify(Item)})...`);
 
-  try {
-    const data = await documentClient.send(command);
-    return Item;
-  } catch (err) {
-    logger.error(`Unable to read item. Error: ${err}`);
-  }
+	const command = new PutCommand({
+		TableName,
+		Item
+	});
 
-  return null;
+	try {
+		const data = await documentClient.send(command);
+		console.log('User posted.');
+		return Item;
+	} catch (err) {
+		console.error(err);
+		logger.error(`Unable to read item. Error: ${err}`);
+	}
+
+	return null;
 }
 
-export default { postEmployee, getEmployeeByUsername };
+export default { postUser: postUser, getUserByUsername: getEmployeeByUsername };
