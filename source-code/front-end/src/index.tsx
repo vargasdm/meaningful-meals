@@ -11,6 +11,7 @@ import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
 import Error from "./components/Error"
 import SearchContainer from "./components/Search/SearchContainer";
 import RecipeContainer from "./components/Recipe/RecipeContainer";
+import RecipeSingle from "./components/Recipe/RecipeSingle";
 
 const router = createBrowserRouter([
 	{
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
 			}, {
 				path: '/recipes/user-recipes/:username',
 				element: <RecipeContainer />,
+			},  
+			{
+				path: '/recipes/user-recipes/:id',
+				element: <RecipeSingle />,
 			},  
 			{
 				path: '/recipes/:id',

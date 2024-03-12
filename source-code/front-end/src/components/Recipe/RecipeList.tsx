@@ -1,35 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-// import RecipeContainer from './RecipeContainer';
+import { Link } from 'react-router-dom';
 
-
-// function RecipeList(prop: any) {
-//     const userState = useSelector((state: RootState) => state.user); // Access the user state from the global state
-  
-//     // creates global state variable for use as a path param 
-//     let userPathParam = userState.username
-//     console.log(userPathParam);
-
-//     prop.getUserRecipes(userPathParam)
-//     console.log(prop.getUserRecipes(userPathParam));
-    
-//   return (
-//     // <>
-//     //   <div className="searchList">
-//     //     {recipeList && recipeList.length > 0 ? (
-//     //       recipeList.map((recipe: any) => (
-//     //         <div key={recipe.id}>
-//     //           <h3>{recipe.title}</h3>
-//     //         </div>
-//     //       ))
-//     //     ) : (
-//     //       <p>No results found</p> // Display different set of elements when results are empty
-//     //     )}
-//     //   </div>
-//     // </>
-//   )
-// }
 
 export default RecipeList
 
@@ -54,12 +27,12 @@ function RecipeList(prop: any) {
             {recipeList && recipeList.length > 0 ? (
                 recipeList.map((recipe: any) => (
                     <div key={recipe.id}>
-                        <h3>{recipe.title}</h3>
+                        <Link to={`/recipes/user-recipes/:${recipe.id}`}>{recipe.title}</Link>
                         <h4>{recipe.instructions}</h4>
                     </div>
                 ))
             ) : (
-                <p>No results found</p>
+                <p>No recipes have been saved for ${userPathParam}</p>
             )}
         </div>
     );
