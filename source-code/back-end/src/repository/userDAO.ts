@@ -15,7 +15,7 @@ import { logger } from "../util/logger";
 const TableName = process.env.USERS_TABLE;
 
 // READ
-async function getEmployeeByUsername(username: any) {
+async function getUserByUsername(username: any) {
   const command = new QueryCommand({
     TableName,
     IndexName: "username-index",
@@ -26,6 +26,7 @@ async function getEmployeeByUsername(username: any) {
 
   try {
     const data = await documentClient.send(command);
+    logger.info(`GetUserByUsername received data from the db`);
     return data.Items;
   } catch (err) {
     logger.error(err);
@@ -35,14 +36,15 @@ async function getEmployeeByUsername(username: any) {
 }
 
 // CREATE
-async function postEmployee(Item: any) {
+async function postUser(Item: any) {
   const command = new PutCommand({
     TableName,
-    Item
+    Item,
   });
 
   try {
     const data = await documentClient.send(command);
+    logger.info(`PostUser sent data to the db`);
     return Item;
   } catch (err) {
     logger.error(`Unable to read item. Error: ${err}`);
@@ -51,4 +53,4 @@ async function postEmployee(Item: any) {
   return null;
 }
 
-export default { postEmployee, getEmployeeByUsername };
+export { postUser, getUserByUsername };

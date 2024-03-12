@@ -10,7 +10,9 @@ import {
 } from "../util/authenticateBody";
 import { authenticateNoToken } from "../util/authenticateToken";
 
-import { postEmployee, login } from "../service/userService";
+import UserService from "../service/userService";
+import * as UserDAO from "../repository/userDAO";
+const userService = UserService(UserDAO);
 
 // Read
 router.post(
@@ -18,7 +20,7 @@ router.post(
   authenticateNoToken,
   validateLoginBody,
   async (req: any, res: any) => {
-    const data: any = await login(req.body);
+    const data: any = (await userService).login(req.body);
     if (data) {
       const token = jwt.sign(
         {
@@ -33,9 +35,7 @@ router.post(
       );
 
       logger.info(`Login: ${data.username} Token: ${token}`);
-      res
-        .status(201)
-        .json({ message: `Login: ${data.username}`, token });
+      res.status(201).json({ message: `Login: ${data.username}`, token });
     } else {
       res.status(400).json({ message: "Failed login" });
     }
@@ -48,13 +48,13 @@ router.post(
   authenticateNoToken,
   validateRegisterBody,
   async (req: any, res: any) => {
-    const data = await postEmployee(req.body);
+    const data = await userService.postUser(req.body);
     if (data) {
-      logger.info(`Created Employee: ${data.username}`);
-      res.status(201).json({ message: `Created Employee ${data.username}` });
+      logger.info(`Created User: `);//${data.username}`);
+      res.status(201).json({ message: `Created User `});//${data.username}` });
     } else {
       res.status(401).json({
-        message: "Employee was not created. Invalid Credentials.",
+        message: "User was not created. Invalid Credentials.",
       });
     }
   }
