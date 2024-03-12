@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-// const recipeDAO = require('../repository/recipeDAO.ts');
+const recipeDAO = require('../repository/recipeDAO.ts');
 
 import axios from 'axios';
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
@@ -25,7 +25,19 @@ async function getRecipe(id: string) {
 	return result.data;
 }
 
+async function getUserRecipes(username: string) {
+	console.log(username);
+	
+	
+	const data : any = await recipeDAO.getRecipesByUsername(username);
+
+	console.log(data);
+	
+	return data ? data : null;
+}
+
 export default {
 	searchRecipes,
-	getRecipe
+	getRecipe,
+	getUserRecipes
 }

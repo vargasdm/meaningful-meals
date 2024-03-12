@@ -4,7 +4,6 @@ import axios from "axios";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/user`;
 
-
 function RegisterContainer() {
   async function addUser(user: any) {
     console.log(user);
@@ -23,7 +22,6 @@ function RegisterContainer() {
       let response = await axios.post(`${URL}/register`, {
         username: user.username,
         password: user.password,
-        email: user.email
       });
 
       return response;

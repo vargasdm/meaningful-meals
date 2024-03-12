@@ -3,11 +3,11 @@ import React, { useState } from "react";
 function RegisterInput(props: any) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
   function handleRegisterSubmit(event: any) {
     event.preventDefault();
-    props.addUser({ username, password, email });
+    props.addUser({ username, password });
   }
 
   return (
@@ -31,15 +31,6 @@ function RegisterInput(props: any) {
           maxLength={30}
           required
           onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="email"
-          minLength={3}
-          maxLength={30}
-          required
-          onChange={(e) => setEmail(e.target.value)}
         />
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
