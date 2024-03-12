@@ -25,7 +25,7 @@ function Navbar() {
             <Link to="/profile/">Profile</Link>
           </li>
           <li>
-            <Link to={`/recipes/${userPathParam}`}>Recipes</Link>
+            <Link to={`/recipes/user-recipes/${userPathParam}`}>Recipes</Link>
           </li>
           <li>
             <Link to="/plan">Meal Plans</Link>

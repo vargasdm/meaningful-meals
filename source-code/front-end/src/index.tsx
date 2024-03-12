@@ -9,6 +9,8 @@ import LoginContainer from "./components/Login/LoginContainer";
 import RegisterContainer from "./components/Register/RegisterContainer";
 import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
 import Error from "./components/Error"
+import SearchContainer from "./components/Search/SearchContainer";
+import RecipeContainer from "./components/Recipe/RecipeContainer";
 
 const router = createBrowserRouter([
 	{
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: <LoginContainer />
+				element: <SearchContainer />
 			}, {
 				path: '/login',
 				element: <LoginContainer />
@@ -26,10 +28,14 @@ const router = createBrowserRouter([
 				path: '/register',
 				element: <RegisterContainer />
 			}, {
+				path: '/recipes/user-recipes/:username',
+				element: <RecipeContainer />,
+			},  
+			{
 				path: '/recipes/:id',
 				element: <Recipe />,
 				loader: recipeLoader
-			}
+			},
 		]
 	}
 ]);
