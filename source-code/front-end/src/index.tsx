@@ -2,25 +2,47 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { BrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginContainer from "./components/Login/LoginContainer";
+import RegisterContainer from "./components/Register/RegisterContainer";
+import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
+import Error from "./components/Error"
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <App />, // This should be the root route
+		errorElement: <Error />,
+		children: [
+			{
+				path: '/',
+				element: <LoginContainer />
+			}, {
+				path: '/login',
+				element: <LoginContainer />
+			}, {
+				path: '/register',
+				element: <RegisterContainer />
+			}, {
+				path: '/recipes/:id',
+				element: <Recipe />,
+				loader: recipeLoader
+			}
+		]
+	}
+]);
+
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>
+	document.getElementById("root") as HTMLElement
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+root.render(
+	<React.StrictMode>
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
+	</React.StrictMode>
+);
