@@ -9,7 +9,7 @@ const URL = `http://localhost:${PORT}/user`;
 function LoginContainer() {
   const dispatch = useDispatch();
 
-  async function updateUser(user: any) {
+  async function updateUserState(user: any) {
     // console.log(user);
     console.log(dispatch(userActions.setUser(user)));
     try {
@@ -41,7 +41,7 @@ function LoginContainer() {
 
   return (
     <>
-      <LoginInput updateUser={updateUser} />
+      <LoginInput updateUserState={updateUserState} />
     </>
   );
 }
