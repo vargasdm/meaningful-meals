@@ -1,11 +1,11 @@
-import React from "react";
-import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+// import React from "react";
+// import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
-import LoginContainer from "./components/Login/LoginContainer";
-import RegisterContainer from "./components/Register/RegisterContainer";
-import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
-import SearchContainer from "./components/Search/SearchContainer";
-import Error from "./components/Error";
+// import LoginContainer from "./components/Login/LoginContainer";
+// import RegisterContainer from "./components/Register/RegisterContainer";
+// import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
+// import SearchContainer from "./components/Search/SearchContainer";
+// import Error from "./components/Error";
 import "./App.css";
 import { Outlet } from 'react-router-dom';
 
@@ -15,16 +15,8 @@ function App() {
 		<>
 			<div className="App">
 				<Navbar />
-				{/* <Routes>
-          <Route path="/" element={<SearchContainer />} />
-          <Route path="/login" element={<LoginContainer />} />
-          <Route path="/register" element={<RegisterContainer />} />
-          <Route path="/recipes/:id" element={<Recipe />} loader={recipeLoader} />
-          <Route path="*" element={<Error />} />
-        </Routes> */}
 				<Outlet />
 			</div>
-			{/* <RouterProvider router={router} /> */}
 		</>
 	);
 }
