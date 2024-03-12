@@ -6,13 +6,13 @@ import {
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 
-const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
 
 const documentClient = DynamoDBDocumentClient.from(client);
 
 import { logger } from "../util/logger";
 
-const TableName = process.env.USERS_TABLE;
+const TableName: string = process.env.USERS_TABLE as string;
 
 // READ
 async function getEmployeeByUsername(username: any) {
