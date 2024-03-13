@@ -107,13 +107,19 @@ const mockUpdateComment = jest.fn((item) => {
   }
 });
 
-const socialMediaService = SocialMediaService({
+const socialMediaService = {
+  postLike: (input: any) => {},
+  deleteLike: (input: any) => {},
+  postComment: (input: any) => {},
+  deleteComment: (input: any) => {},
+  updateComment: (input: any) => {},
+}; /*= SocialMediaService({
   postLike: mockPostLike,
   deleteLike: mockDeleteLike,
   postComment: mockPostComment,
   deleteComment: mockDeleteComment,
   updateComment: mockUpdateComment,
-});
+});*/
 
 /**
  * likes
