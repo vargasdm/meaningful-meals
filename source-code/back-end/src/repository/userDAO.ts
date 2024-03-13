@@ -5,17 +5,16 @@ import {
 	PutCommand,
 	QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
-
-const documentClient = DynamoDBDocumentClient.from(client);
-
 import { logger } from "../util/logger";
 
+const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
+const documentClient = DynamoDBDocumentClient.from(client);
 const TableName: string = process.env.USERS_TABLE as string;
 
-// READ
-async function getEmployeeByUsername(username: string) {
+// This should return the array of all users who have the given username.
+// If such a user exists, the array should be of length one.
+// Otherwise, it should be of length zero.
+async function getUserByUsername(username: string) {
 	const command = new QueryCommand({
 		TableName,
 		IndexName: "username-index",
@@ -25,15 +24,15 @@ async function getEmployeeByUsername(username: string) {
 	});
 
 	try {
-		const data = await documentClient.send(command);
-		// console.log(`userDAO.getEmployeeByUsername data: ${JSON.stringify(data)}`);
+		const data: any = await documentClient.send(command);
 		return data.Items;
 	} catch (err) {
 		console.error(err);
 		logger.error(err);
+		throw err;
 	}
 
-	return null;
+	// return null;
 }
 
 // CREATE
@@ -57,4 +56,4 @@ async function postUser(Item: any) {
 	return null;
 }
 
-export default { postUser: postUser, getUserByUsername: getEmployeeByUsername };
+export default { postUser: postUser, getUserByUsername: getUserByUsername };

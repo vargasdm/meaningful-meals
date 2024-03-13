@@ -12,29 +12,17 @@ const URL = `http://localhost:${PORT}/user`;
 function LoginContainer() {
 	const dispatch = useDispatch();
 
-	async function loginUser(user: any) {
-		// console.log(dispatch(userActions.setUser(user)));
-		// try {
-		//   // sends post request to backend
-		//   if (await getUser(user)) {
-		//     console.log("success");
-		//     // should change the global user state variable using the properties of the user object
-		//     dispatch(userActions.setUser(user));
-		//     console.log(dispatch(userActions.setUser({ username: user.username, isLoggedIn: true })));
-		//     return redirect("/")
-		//   }
-		// } catch (error) {
-		//   console.error(error);
-		// }
+	async function handleLogin(user: any) {
 		try {
-			// const response = await login(user);
 			let response = await axios.post(`${URL}/login`, {
 				username: user.username,
 				password: user.password,
 			});
 
+			console.log(response.data);
+
 			if (response) {
-				dispatch(userActions.loginUser({ username: user.username, isLoggedIn: true }));
+				dispatch(userActions.loginUser({ username: user.username }));
 				return redirect("/");
 			}
 		} catch (error) {
@@ -42,22 +30,9 @@ function LoginContainer() {
 		}
 	}
 
-	// async function login(user: any) {
-	// 	try {
-	// 		// let response = await axios.post(`${URL}/login`, {
-	// 		// 	username: user.username,
-	// 		// 	password: user.password,
-	// 		// });
-
-	// 		return response;
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// }
-
 	return (
 		<>
-			<LoginInput updateUserState={loginUser} />
+			<LoginInput handleLogin={handleLogin} />
 		</>
 	);
 }

@@ -1,22 +1,31 @@
 import userDao from "../repository/userDAO";
+import { UserDoesntExistError } from '../util/errors';
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 
-async function login(receivedData: any) {
-	console.log(`userService.login(${JSON.stringify(receivedData)})...`); 
+// This should return whether the given credentials match those of the user
+// specified by the 'username' field of credentials.
+async function credentialsMatch(credentials: any, targetUser: any) {
+	try {
+		// const targetUser: any = await userDao.getUserByUsername(credentials.username);
+		// console.log(`targetUser: ${JSON.stringify(targetUser)}`);
 
-	const data: any = await userDao.getUserByUsername(receivedData.username);
-	console.log(`data: ${JSON.stringify(data)}`);
+		return credentials.username === targetUser.username
+			&& await bcrypt.compare(credentials.password, targetUser.password);
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+}
 
-	if (
-		data &&
-		receivedData.username === data[0].username &&
-		(await bcrypt.compare(receivedData.password, data[0].password))
-	) {
-		return data;
+async function getUserByUsername(username: string) {
+	const users = await userDao.getUserByUsername(username);
+
+	if (users.length === 0) {
+		throw new UserDoesntExistError();
 	}
 
-	return null;
+	return users[0];
 }
 
 async function postUser(receivedData: any) {
@@ -54,4 +63,4 @@ async function validateUsername(username: string) {
 	}
 }
 
-export { postUser as postEmployee, login };
+export default { postUser, credentialsMatch, getUserByUsername };

@@ -54,4 +54,4 @@ function validPassword(password: string): boolean {
 	return true;
 }
 
-export { validateLoginBody, validateRegisterBody };
+export default { validateLoginBody, validateRegisterBody };
