@@ -1,57 +1,58 @@
 require("dotenv").config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBDocumentClient,
-  PutCommand,
-  QueryCommand,
+	DynamoDBDocumentClient,
+	PutCommand,
+	QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({ region: process.env.AWS_REGION });
-
-const documentClient = DynamoDBDocumentClient.from(client);
-
 import { logger } from "../util/logger";
 
-const TableName = process.env.USERS_TABLE;
+const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
+const documentClient = DynamoDBDocumentClient.from(client);
+const TableName: string = process.env.USERS_TABLE as string;
 
-// READ
-async function getUserByUsername(username: any) {
-  const command = new QueryCommand({
-    TableName,
-    IndexName: "username-index",
-    KeyConditionExpression: "#u = :u",
-    ExpressionAttributeNames: { "#u": "username" },
-    ExpressionAttributeValues: { ":u": username },
-  });
+// This should return the array of all users who have the given username.
+// If such a user exists, the array should be of length one.
+// Otherwise, it should be of length zero.
+async function getUserByUsername(username: string) {
+	const command = new QueryCommand({
+		TableName,
+		IndexName: "username-index",
+		KeyConditionExpression: "#u = :u",
+		ExpressionAttributeNames: { "#u": "username" },
+		ExpressionAttributeValues: { ":u": username },
+	});
 
-  try {
-    const data = await documentClient.send(command);
-    logger.info(`GetUserByUsername received data from the db`);
-    console.log(data.Items?.[0])
-    return data.Items?.[0];
-  } catch (err) {
-    logger.error(err);
-  }
+	try {
+		const data: any = await documentClient.send(command);
+		return data.Items;
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+		throw err;
+	}
 
-  return null;
+	// return null;
 }
 
 // CREATE
-async function postUser(Item: any) {
-  const command = new PutCommand({
-    TableName,
-    Item,
-  });
+async function createUser(Item: any) {
+	const command = new PutCommand({
+		TableName,
+		Item
+	});
 
-  try {
-    const data = await documentClient.send(command);
-    logger.info(`PostUser sent data to the db`);
-    return Item;
-  } catch (err) {
-    logger.error(`Unable to read item. Error: ${err}`);
-  }
+	// try {
+	// 	const data = await documentClient.send(command);
+	// 	console.log('User posted.');
+	// 	return Item;
+	await documentClient.send(command);
+	// } catch (err) {
+	// 	console.error(err);
+	// 	logger.error(`Unable to read item. Error: ${err}`);
+	// }
 
-  return null;
+	// return null;
 }
 
-export { postUser, getUserByUsername };
+export default { createUser: createUser, getUserByUsername: getUserByUsername };

@@ -1,17 +1,14 @@
 import axios from 'axios';
 import { useLoaderData } from 'react-router-dom';
-
+const PORT = process.env.REACT_APP_PORT;
+const URL = `http://localhost:${PORT}/recipes`;
 export async function loader({ params }: any) {
-	// const data = {};
-
 	try {
-		// const res = await axios.get('https://api.spoonacular.com'
-		// + `/recipes/${params.id}/information`);
 		const res = await axios.get(
-			`http://localhost:5000/recipes?id=${params.id}`
+			`${URL}?id=${params.id}`
 		);
-		// console.log(res);
-		return res;
+
+		return res.data;
 	} catch (err) {
 		console.error(err);
 		return null;
@@ -19,11 +16,24 @@ export async function loader({ params }: any) {
 }
 
 export default function Recipe() {
-	const data = useLoaderData();
+	const data: any = useLoaderData();
+	console.log(data);
+	
+	const instructions: any = data.analyzedInstructions[0].steps.map(
+		(step: any) => <li key={step.number}>{step.step}</li>
+	)
+	const ingredients: any = data.nutrition.ingredients.map(
+		(ingridients: any) => <li key={ingridients.id}>{ingridients.name}</li>
+	)
 
 	return (
 		<>
-			{JSON.stringify(data)}
+			<h1>{data.title}</h1>
+			<img src={data.image} alt={data.title} />
+			<h2>Ingredients</h2>
+			<ul>{ingredients}</ul>
+			<h2>Instructions</h2>
+			<ol>{instructions}</ol>
 		</>
 	);
 }

@@ -2,62 +2,64 @@
 require("dotenv").config();
 import express from "express";
 import jwt from "jsonwebtoken";
-const router = express.Router();
 import { logger } from "../util/logger";
-import {
-  validateLoginBody,
-  validateRegisterBody,
-} from "../util/authenticateBody";
-import { authenticateNoToken } from "../util/authenticateToken";
 
-import UserService from "../service/userService";
-import * as UserDAO from "../repository/userDAO";
-const userService = UserService(UserDAO);
+import userService from '../service/userService';
+import type { Validation } from '../service/userService';
+const router = express.Router();
 
-// Read
-router.post(
-  "/login",
-  authenticateNoToken,
-  validateLoginBody,
-  async (req: any, res: any) => {
-    const data: any = (await userService).login(req.body);
-    if (data) {
-      const token = jwt.sign(
-        {
-          user_id: data.user_id,
-          username: data.username,
-          role: data.role,
-        },
-        process.env.JWT_KEY as string,
-        {
-          expiresIn: "15m",
-        }
-      );
+router.post("/login", async (req: any, res: any) => {
+	try {
+		const validation: Validation = await userService.validateLogin(req.body);
 
-      logger.info(`Login: ${data.username} Token: ${token}`);
-      res.status(201).json({ message: `Login: ${data.username}`, token });
-    } else {
-      res.status(400).json({ message: "Failed login" });
-    }
-  }
-);
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
+		const targetUser = await userService.getUserByUsername(req.body.username);
+
+		if (await userService.credentialsMatch(req.body, targetUser)) {
+			const token = jwt.sign(
+				{ user_id: targetUser.user_id },
+				process.env.JWT_KEY as string,
+				{ expiresIn: '15m' }
+			);
+
+			res.status(200).json({
+				token: token,
+				user_id: targetUser.user_id,
+				username: targetUser.username
+			});
+
+			return;
+		}
+
+		res.status(401).json({ error: 'CREDENTIALS DO NOT MATCH' });
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+		res.sendStatus(500);
+	}
+});
 
 // Create
-router.post(
-  "/register",
-  authenticateNoToken,
-  validateRegisterBody,
-  async (req: any, res: any) => {
-    const data = await userService.postUser(req.body);
-    if (data) {
-      logger.info(`Created User: `);//${data.username}`);
-      res.status(201).json({ message: `Created User `});//${data.username}` });
-    } else {
-      res.status(401).json({
-        message: "User was not created. Invalid Credentials.",
-      });
-    }
-  }
-);
+router.post("/register", async (req: any, res: any) => {
+	try {
+		const validation: Validation = await userService.validateRegistration(req.body);
+
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
+		await userService.createUser(req.body);
+		res.sendStatus(201);
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+		res.sendStatus(500);
+	}
+});
 
 export default router;
