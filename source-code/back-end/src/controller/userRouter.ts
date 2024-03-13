@@ -4,7 +4,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { UserDoesNotExistError } from "../util/errors";
 import { logger } from "../util/logger";
-import validators from '../util/validators';
+// import validators from '../util/validators';
 // import { authenticateNoToken } from "../util/authenticateToken";
 
 import userService from '../service/userService';
@@ -47,18 +47,26 @@ router.post("/login", async (req: any, res: any) => {
 });
 
 // Create
-router.post("/register", validators.validateRegisterBody, async (req: any, res: any) => {
-	const validation: any = validators.validateCredentialsExist(req.body);
+router.post("/register", async (req: any, res: any) => {
+	const validation: Validation = await userService.validateRegistration(req.body);
 
-	if (validation.error) {
-		res.status(400).json(validation.error);
+	if (!validation.isValid) {
+		res.status(400).json({ errors: validation.errors });
 		return;
 	}
+	// const validation: any = validators.validateCredentialsExist(req.body);
 
-	if (await userService.usernameExists(req.body.username)) {
-		res.status(400).json({ error: 'USERNAME EXISTS' });
-		return;
-	}
+	// if (validation.error) {
+	// 	res.status(400).json(validation.error);
+	// 	return;
+	// }
+
+	// if (await userService.usernameExists(req.body.username)) {
+	// 	res.status(400).json({ error: 'USERNAME EXISTS' });
+	// 	return;
+	// }
+
+
 
 	// const data = await userService.postUser(req.body);
 

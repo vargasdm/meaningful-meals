@@ -32,48 +32,82 @@ function validateCredentials(credentials: any): Validation {
 }
 
 async function validateLogin(credentials: any): Promise<Validation> {
-	// const errors: string[] = [];
-
-	// if (!credentials) {
-	// 	errors.push('CREDENTIALS ARE NULL');
-	// 	return { isValid: false, errors };
-	// }
-
-	// if (!credentials.username) {
-	// 	errors.push('USERNAME IS NULL');
-	// }
-
-	// if (!credentials.password) {
-	// 	errors.push('PASSWORD IS NULL');
-	// }
-
-	// if (errors.length > 0) {
-	// 	return { isValid: false, errors };
-	// }
 	const validation: Validation = validateCredentials(credentials);
 
-	if(!validation.isValid){
+	if (!validation.isValid) {
 		return validation;
 	}
 
 	try {
 		if (await userExists(credentials.username)) {
-			// return { isValid: true, errors };
 			return validation;
 		}
 
 		validation.isValid = false;
 		validation.errors.push('USER DOES NOT EXIST');
-		// return { isValid: false, errors };
 		return validation;
 	} catch (err) {
 		throw err;
 	}
 }
 
-// async function validateRegistration(credentials: any): Promise<Validation> {
+async function validateRegistration(credentials: any): Promise<Validation> {
+	const validation: Validation = validateCredentials(credentials);
 
-// }
+	if (!validation.isValid) {
+		return validation;
+	}
+
+	try {
+		if (await userExists(credentials.username)) {
+			validation.isValid = false;
+			validation.errors.push('USER EXISTS');
+			return validation;
+		}
+
+		if (!validateUsername(credentials.username)) {
+			// validation.isValid = false;
+			validation.errors.push('USERNAME INVALID');
+		}
+
+		if (!validatePassword(credentials.username)) {
+			// validation.isValid = false;
+			validation.errors.push('PASSWORD INVALID');
+		}
+
+		if (validation.errors.length > 0) {
+			validation.isValid = false;
+			return validation;
+		}
+
+		return validation;
+	} catch (err) {
+		throw err;
+	}
+}
+
+// Fails if contains:
+// empty spaces
+// less than 6 characters
+function validateUsername(username: string): boolean {
+	if (username.trim().length === 0 || username.length < 6) {
+		return false;
+	}
+
+	return true;
+}
+
+// Fails if contains:
+// empty spaces
+// less than 8 characters
+// missing atleast 1 uppercase, 1 lowercase, 1 number, and 1 special character
+function validatePassword(password: string): boolean {
+	if (password.trim().length === 0 || password.length < 8) {
+		return false;
+	}
+
+	return true;
+}
 
 // This should return whether the given credentials match those of the user
 // specified by the 'username' field of credentials.
@@ -114,23 +148,23 @@ async function createUser(user: any) {
 	return null;
 }
 
-async function validateUsername(username: string) {
-	// console.log(`userService.validateUsername(${username})...`);
+// async function validateUsername(username: string) {
+// 	// console.log(`userService.validateUsername(${username})...`);
 
-	// try {
-	// 	const users: any = await userDao.getUserByUsername(username);
-	// 	console.log(`userService.validateUsername users: ${JSON.stringify(users)}`);
-	// 	if (users.length > 0) {
-	// 		console.log('Username taken.');
-	// 		return false;
-	// 	} else {
-	// 		console.log('Username not taken.');
-	// 		return true;
-	// 	}
-	// } catch (err) {
-	// 	console.error(err);
-	// }
-}
+// 	// try {
+// 	// 	const users: any = await userDao.getUserByUsername(username);
+// 	// 	console.log(`userService.validateUsername users: ${JSON.stringify(users)}`);
+// 	// 	if (users.length > 0) {
+// 	// 		console.log('Username taken.');
+// 	// 		return false;
+// 	// 	} else {
+// 	// 		console.log('Username not taken.');
+// 	// 		return true;
+// 	// 	}
+// 	// } catch (err) {
+// 	// 	console.error(err);
+// 	// }
+// }
 
 export default {
 	postUser: createUser,
@@ -138,4 +172,5 @@ export default {
 	getUserByUsername,
 	usernameExists: userExists,
 	validateLogin,
+	validateRegistration
 };
