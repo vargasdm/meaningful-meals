@@ -15,10 +15,15 @@ import { postEmployee, login } from "../service/userService";
 // Read
 router.post(
 	"/login",
-	authenticateNoToken,
+	// authenticateNoToken,	// Should be able to login even if already has token;
+	// In that case, just send new token
 	validateLoginBody,
 	async (req: any, res: any) => {
+		console.log(`userRouter.post('/login')...`);
+
 		const data: any = await login(req.body);
+		console.log(`data: ${JSON.stringify(data)}`);
+
 		if (data) {
 			const token = jwt.sign(
 				{

@@ -2,14 +2,18 @@ import userDao from "../repository/userDAO";
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 
-async function login(recievedData: any) {
-	const data: any = await userDao.getUserByUsername(recievedData.username);
+async function login(receivedData: any) {
+	console.log(`userService.login(${JSON.stringify(receivedData)})...`); 
+
+	const data: any = await userDao.getUserByUsername(receivedData.username);
+	console.log(`data: ${JSON.stringify(data)}`);
+
 	if (
 		data &&
-		recievedData.username === data[0].username &&
-		(await bcrypt.compare(recievedData.password, data[0].password))
+		receivedData.username === data[0].username &&
+		(await bcrypt.compare(receivedData.password, data[0].password))
 	) {
-		return data ? data : null;
+		return data;
 	}
 
 	return null;
