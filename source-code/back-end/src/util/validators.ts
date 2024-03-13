@@ -1,18 +1,35 @@
 import { logger } from "./logger";
 
-const validateLoginBody = (req: any, res: any, next: any) => {
-	if (
-		!req.body ||
-		!req.body.username ||
-		!req.body.password ||
-		!validUsername(req.body.username) ||
-		!validPassword(req.body.password)
-	) {
-		logger.error(`Invalid request body. ${req.body}`);
-		return res.status(400).json({ message: `Invalid request body.` });
+// const validateLoginBody = (req: any, res: any, next: any) => {
+// 	if (
+// 		!req.body ||
+// 		!req.body.username ||
+// 		!req.body.password ||
+// 		!validUsername(req.body.username) ||
+// 		!validPassword(req.body.password)
+// 	) {
+// 		logger.error(`Invalid request body. ${req.body}`);
+// 		return res.status(400).json({ message: `Invalid request body.` });
+// 	}
+// 	next();
+// };
+
+function validateLoginBody(body: any){
+	if(!body){
+		return {error: 'BODY DOES NOT EXIST'};
 	}
-	next();
-};
+
+	if(!body.username){
+		return {error: 'USERNAME DOES NOT EXIST'};
+	}
+
+	if(!body.password){
+		return {error: 'PASSWORD DOES NOT EXIST'};
+	}
+
+	return true;
+}
+
 const validateRegisterBody = (req: any, res: any, next: any) => {
 	console.log('authenticateBody.validateRegisterBody');
 	if (!req.body || !req.body.username || !req.body.password) {

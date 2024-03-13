@@ -6,26 +6,23 @@ const bcrypt = require("bcrypt");
 // This should return whether the given credentials match those of the user
 // specified by the 'username' field of credentials.
 async function credentialsMatch(credentials: any, targetUser: any) {
-	try {
-		// const targetUser: any = await userDao.getUserByUsername(credentials.username);
-		// console.log(`targetUser: ${JSON.stringify(targetUser)}`);
-
-		return credentials.username === targetUser.username
-			&& await bcrypt.compare(credentials.password, targetUser.password);
-	} catch (err) {
-		console.error(err);
-		throw err;
-	}
+	return credentials.username === targetUser.username
+		&& await bcrypt.compare(credentials.password, targetUser.password);
 }
 
 async function getUserByUsername(username: string) {
 	const users = await userDao.getUserByUsername(username);
 
-	if (users.length === 0) {
+	if (users.length !== 1) {
 		throw new UserDoesntExistError();
 	}
 
 	return users[0];
+}
+
+async function usernameExists(username: string) {
+	const users = await userDao.getUserByUsername(username);
+	return users.length === 1;
 }
 
 async function postUser(receivedData: any) {
@@ -63,4 +60,9 @@ async function validateUsername(username: string) {
 	}
 }
 
-export default { postUser, credentialsMatch, getUserByUsername };
+export default {
+	postUser,
+	credentialsMatch,
+	getUserByUsername,
+	usernameExists
+};
