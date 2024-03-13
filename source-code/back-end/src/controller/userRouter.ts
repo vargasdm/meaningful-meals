@@ -5,16 +5,17 @@ import jwt from "jsonwebtoken";
 import { logger } from "../util/logger";
 import validators from '../util/validators';
 import { authenticateNoToken } from "../util/authenticateToken";
+
 import userService from '../service/userService';
+import type {Validation} from '../service/userService';
 const router = express.Router();
 
 router.post("/login", async (req: any, res: any) => {
-	console.log(`userRouter.post('/login')...`);
-	// const validation = v
-	const validation: any = validators.validateLoginBody(req.body);
+	// const validation: any = validators.validateCredentialsExist(req.body);
+	const validation: Validation = await userService.validateLogin(req.body);
 
-	if(validation.error){
-		res.status(400).json(validation.error);
+	if (!validation.isValid) {
+		res.status(400).json(validation);
 		return;
 	}
 
@@ -47,10 +48,15 @@ router.post("/login", async (req: any, res: any) => {
 
 // Create
 router.post("/register", validators.validateRegisterBody, async (req: any, res: any) => {
-	console.log('userRouter.post(/register)...');
+	const validation: any = validators.validateCredentialsExist(req.body);
 
-	if(await userService.usernameExists(req.body.username)){
-		res.status(400).json({error: 'USERNAME EXISTS'});
+	if (validation.error) {
+		res.status(400).json(validation.error);
+		return;
+	}
+
+	if (await userService.usernameExists(req.body.username)) {
+		res.status(400).json({ error: 'USERNAME EXISTS' });
 		return;
 	}
 
