@@ -15,7 +15,7 @@ function Navbar() {
   const dispatch = useDispatch(); // Get the dispatch function
 
   if (!userState) {
-    dispatch(userActions.setUser({ username: "defaultUsername", isLoggedIn: false }));
+    dispatch(userActions.loginUser({ username: "defaultUsername", isLoggedIn: false }));
   }
 
   let userPathParam = userState.username;

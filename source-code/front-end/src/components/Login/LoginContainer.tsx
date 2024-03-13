@@ -10,51 +10,31 @@ const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/user`;
 
 function LoginContainer() {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  async function updateUserState(user: any) {
-    // console.log(dispatch(userActions.setUser(user)));
-    // try {
-    //   // sends post request to backend
-    //   if (await getUser(user)) {
-    //     console.log("success");
-    //     // should change the global user state variable using the properties of the user object
-    //     dispatch(userActions.setUser(user));
-    //     console.log(dispatch(userActions.setUser({ username: user.username, isLoggedIn: true })));
-    //     return redirect("/")
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    try {
-      const response = await getUser(user);
-      if (response) {
-        dispatch(userActions.setUser({ username: user.username, isLoggedIn: true }));
-        return redirect("/");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	async function handleLogin(user: any) {
+		try {
+			let response = await axios.post(`${URL}/login`, {
+				username: user.username,
+				password: user.password,
+			});
 
-  async function getUser(user: any) {
-    try {
-      let response = await axios.post(`${URL}/login`, {
-        username: user.username,
-        password: user.password,
-      });
+			console.log(response.data);
 
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+			if (response) {
+				dispatch(userActions.loginUser({ username: user.username }));
+				return redirect("/");
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  return (
-    <>
-      <LoginInput updateUserState={updateUserState} />
-    </>
-  );
+	return (
+		<>
+			<LoginInput handleLogin={handleLogin} />
+		</>
+	);
 }
 
 export default LoginContainer;
