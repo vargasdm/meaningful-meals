@@ -6,8 +6,8 @@ export default function (database: any) {
     const data: any = await database.getUserByUsername(recievedData.username);
     if (
       data &&
-      recievedData.username === data[0].username &&
-      (await bcrypt.compare(recievedData.password, data[0].password))
+      recievedData.username === data.username &&
+      (await bcrypt.compare(recievedData.password, data.password))
     ) {
       return data ? data : null;
     }
@@ -32,9 +32,10 @@ export default function (database: any) {
   }
 
   async function validateUsername(data: any) {
+    console.log(data)
     const isTaken: any = await database.getUserByUsername(data);
     console.log(isTaken);
-    if (isTaken && isTaken.length > 0) {
+    if (isTaken) {
       return false;
     } else {
       return true;

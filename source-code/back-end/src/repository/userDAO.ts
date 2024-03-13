@@ -27,7 +27,8 @@ async function getUserByUsername(username: any) {
   try {
     const data = await documentClient.send(command);
     logger.info(`GetUserByUsername received data from the db`);
-    return data.Items;
+    console.log(data.Items?.[0])
+    return data.Items?.[0];
   } catch (err) {
     logger.error(err);
   }
