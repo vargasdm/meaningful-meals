@@ -2,20 +2,20 @@
 require("dotenv").config();
 import express from "express";
 import jwt from "jsonwebtoken";
+import { UserDoesNotExistError } from "../util/errors";
 import { logger } from "../util/logger";
 import validators from '../util/validators';
-import { authenticateNoToken } from "../util/authenticateToken";
+// import { authenticateNoToken } from "../util/authenticateToken";
 
 import userService from '../service/userService';
-import type {Validation} from '../service/userService';
+import type { Validation } from '../service/userService';
 const router = express.Router();
 
 router.post("/login", async (req: any, res: any) => {
-	// const validation: any = validators.validateCredentialsExist(req.body);
 	const validation: Validation = await userService.validateLogin(req.body);
 
 	if (!validation.isValid) {
-		res.status(400).json(validation);
+		res.status(400).json({ errors: validation.errors });
 		return;
 	}
 
@@ -38,7 +38,7 @@ router.post("/login", async (req: any, res: any) => {
 			return;
 		}
 
-		res.sendStatus(401);
+		res.status(401).json({ error: 'CREDENTIALS DO NOT MATCH' });
 	} catch (err) {
 		console.error(err);
 		logger.error(err);

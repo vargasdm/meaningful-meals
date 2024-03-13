@@ -1,47 +1,79 @@
 import userDao from "../repository/userDAO";
-import { UserDoesntExistError } from '../util/errors';
-const uuid = require("uuid");
+import { UserDoesNotExistError } from '../util/errors';
+// const uuid = require("uuid");
 const bcrypt = require("bcrypt");
-// import type {Validation} from '../util/validators.types';
+
 export type Validation = {
 	isValid: boolean,
 	errors: string[]
 }
 
-async function validateLogin(credentials: any): Promise<Validation> {
+function validateCredentials(credentials: any): Validation {
 	const errors: string[] = [];
 
 	if (!credentials) {
-		errors.push('CREDENTIALS DO NOT EXIST');
+		errors.push('CREDENTIALS ARE NULL');
 		return { isValid: false, errors };
 	}
 
 	if (!credentials.username) {
-		errors.push('USERNAME DOES NOT EXIST');
+		errors.push('USERNAME IS NULL');
 	}
 
 	if (!credentials.password) {
-		errors.push('PASSWORD DOES NOT EXIST');
+		errors.push('PASSWORD IS NULL');
 	}
 
 	if (errors.length > 0) {
 		return { isValid: false, errors };
 	}
 
-	try {
-		const targetUser = await getUserByUsername(credentials.username);
+	return { isValid: true, errors };
+}
 
-		if (await credentialsMatch(credentials, targetUser)) {
-			return { isValid: true, errors };
+async function validateLogin(credentials: any): Promise<Validation> {
+	// const errors: string[] = [];
+
+	// if (!credentials) {
+	// 	errors.push('CREDENTIALS ARE NULL');
+	// 	return { isValid: false, errors };
+	// }
+
+	// if (!credentials.username) {
+	// 	errors.push('USERNAME IS NULL');
+	// }
+
+	// if (!credentials.password) {
+	// 	errors.push('PASSWORD IS NULL');
+	// }
+
+	// if (errors.length > 0) {
+	// 	return { isValid: false, errors };
+	// }
+	const validation: Validation = validateCredentials(credentials);
+
+	if(!validation.isValid){
+		return validation;
+	}
+
+	try {
+		if (await userExists(credentials.username)) {
+			// return { isValid: true, errors };
+			return validation;
 		}
 
-		errors.push('CREDENTIALS NOT VALID');
-		return { isValid: false, errors };
+		validation.isValid = false;
+		validation.errors.push('USER DOES NOT EXIST');
+		// return { isValid: false, errors };
+		return validation;
 	} catch (err) {
-		console.error(err);
 		throw err;
 	}
 }
+
+// async function validateRegistration(credentials: any): Promise<Validation> {
+
+// }
 
 // This should return whether the given credentials match those of the user
 // specified by the 'username' field of credentials.
@@ -54,13 +86,13 @@ async function getUserByUsername(username: string) {
 	const users = await userDao.getUserByUsername(username);
 
 	if (users.length !== 1) {
-		throw new UserDoesntExistError();
+		throw new UserDoesNotExistError();
 	}
 
 	return users[0];
 }
 
-async function usernameExists(username: string) {
+async function userExists(username: string) {
 	const users = await userDao.getUserByUsername(username);
 	return users.length === 1;
 }
@@ -104,6 +136,6 @@ export default {
 	postUser: createUser,
 	credentialsMatch,
 	getUserByUsername,
-	usernameExists,
+	usernameExists: userExists,
 	validateLogin,
 };
