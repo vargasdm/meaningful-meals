@@ -1,6 +1,4 @@
 node_modules/*
 .env
-src/__test__/*
-coverage/*
 app.log
 error.log
