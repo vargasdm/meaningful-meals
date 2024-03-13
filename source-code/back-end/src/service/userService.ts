@@ -1,8 +1,6 @@
 import userDao from "../repository/userDAO";
 import { UserDoesNotExistError } from '../util/errors';
-// const uuid = require("uuid");
 import { v4 as uuid } from 'uuid';
-// const bcrypt = require("bcrypt");
 import bcrypt from 'bcrypt';
 
 export type Validation = {
@@ -127,8 +125,16 @@ async function getUserByUsername(username: string) {
 }
 
 async function userExists(username: string) {
-	const users = await userDao.getUserByUsername(username);
-	return users.length === 1;
+	try {
+		const users = await userDao.getUserByUsername(username);
+		return users.length === 1;
+	} catch (err) {
+		if (err instanceof UserDoesNotExistError) {
+			return false;
+		}
+
+		throw err;
+	}
 }
 
 async function createUser(user: any) {
@@ -142,7 +148,6 @@ async function createUser(user: any) {
 	} catch (err) {
 		throw err;
 	}
-	// return data ? data : null;
 }
 
 export default {

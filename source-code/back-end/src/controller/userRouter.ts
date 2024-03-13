@@ -2,10 +2,7 @@
 require("dotenv").config();
 import express from "express";
 import jwt from "jsonwebtoken";
-import { UserDoesNotExistError } from "../util/errors";
 import { logger } from "../util/logger";
-// import validators from '../util/validators';
-// import { authenticateNoToken } from "../util/authenticateToken";
 
 import userService from '../service/userService';
 import type { Validation } from '../service/userService';
@@ -63,30 +60,6 @@ router.post("/register", async (req: any, res: any) => {
 		logger.error(err);
 		res.sendStatus(500);
 	}
-	// const validation: any = validators.validateCredentialsExist(req.body);
-
-	// if (validation.error) {
-	// 	res.status(400).json(validation.error);
-	// 	return;
-	// }
-
-	// if (await userService.usernameExists(req.body.username)) {
-	// 	res.status(400).json({ error: 'USERNAME EXISTS' });
-	// 	return;
-	// }
-
-
-
-	// const data = await userService.postUser(req.body);
-
-	// if (data) {
-	// 	logger.info(`Created Employee: ${data.username}`);
-	// 	res.status(201).json({ message: `Created Employee ${data.username}` });
-	// } else {
-	// 	res.status(401).json({
-	// 		message: "Employee was not created. Invalid Credentials.",
-	// 	});
-	// }
 });
 
 export default router;
