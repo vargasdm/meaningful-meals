@@ -1,7 +1,9 @@
 import userDao from "../repository/userDAO";
 import { UserDoesNotExistError } from '../util/errors';
 // const uuid = require("uuid");
-const bcrypt = require("bcrypt");
+import { v4 as uuid } from 'uuid';
+// const bcrypt = require("bcrypt");
+import bcrypt from 'bcrypt';
 
 export type Validation = {
 	isValid: boolean,
@@ -66,12 +68,10 @@ async function validateRegistration(credentials: any): Promise<Validation> {
 		}
 
 		if (!validateUsername(credentials.username)) {
-			// validation.isValid = false;
 			validation.errors.push('USERNAME INVALID');
 		}
 
 		if (!validatePassword(credentials.username)) {
-			// validation.isValid = false;
 			validation.errors.push('PASSWORD INVALID');
 		}
 
@@ -132,45 +132,24 @@ async function userExists(username: string) {
 }
 
 async function createUser(user: any) {
-	// console.log(`userService.postUser(${JSON.stringify(receivedData)})...`);
-
-	// if (await validateUsername(receivedData.username)) {
-	// 	console.log('username validated.');
-	// 	let data = await userDao.postUser({
-	// 		user_id: uuid.v4(),
-	// 		username: receivedData.username,
-	// 		password: await bcrypt.hash(receivedData.password, 10),
-	// 		role: "user",
-	// 	});
-	// 	return data ? data : null;
-	// }
-
-	return null;
+	try {
+		await userDao.createUser({
+			user_id: uuid(),
+			username: user.username,
+			password: await bcrypt.hash(user.password, 10),
+			role: "user",
+		});
+	} catch (err) {
+		throw err;
+	}
+	// return data ? data : null;
 }
 
-// async function validateUsername(username: string) {
-// 	// console.log(`userService.validateUsername(${username})...`);
-
-// 	// try {
-// 	// 	const users: any = await userDao.getUserByUsername(username);
-// 	// 	console.log(`userService.validateUsername users: ${JSON.stringify(users)}`);
-// 	// 	if (users.length > 0) {
-// 	// 		console.log('Username taken.');
-// 	// 		return false;
-// 	// 	} else {
-// 	// 		console.log('Username not taken.');
-// 	// 		return true;
-// 	// 	}
-// 	// } catch (err) {
-// 	// 	console.error(err);
-// 	// }
-// }
-
 export default {
-	postUser: createUser,
+	createUser,
 	credentialsMatch,
 	getUserByUsername,
-	usernameExists: userExists,
+	userExists,
 	validateLogin,
 	validateRegistration
 };

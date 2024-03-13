@@ -36,24 +36,23 @@ async function getUserByUsername(username: string) {
 }
 
 // CREATE
-async function postUser(Item: any) {
-	console.log(`userDAO.postEmployee(${JSON.stringify(Item)})...`);
-
+async function createUser(Item: any) {
 	const command = new PutCommand({
 		TableName,
 		Item
 	});
 
-	try {
-		const data = await documentClient.send(command);
-		console.log('User posted.');
-		return Item;
-	} catch (err) {
-		console.error(err);
-		logger.error(`Unable to read item. Error: ${err}`);
-	}
+	// try {
+	// 	const data = await documentClient.send(command);
+	// 	console.log('User posted.');
+	// 	return Item;
+	await documentClient.send(command);
+	// } catch (err) {
+	// 	console.error(err);
+	// 	logger.error(`Unable to read item. Error: ${err}`);
+	// }
 
-	return null;
+	// return null;
 }
 
-export default { postUser: postUser, getUserByUsername: getUserByUsername };
+export default { createUser: createUser, getUserByUsername: getUserByUsername };

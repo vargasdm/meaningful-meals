@@ -12,14 +12,14 @@ import type { Validation } from '../service/userService';
 const router = express.Router();
 
 router.post("/login", async (req: any, res: any) => {
-	const validation: Validation = await userService.validateLogin(req.body);
-
-	if (!validation.isValid) {
-		res.status(400).json({ errors: validation.errors });
-		return;
-	}
-
 	try {
+		const validation: Validation = await userService.validateLogin(req.body);
+
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
 		const targetUser = await userService.getUserByUsername(req.body.username);
 
 		if (await userService.credentialsMatch(req.body, targetUser)) {
@@ -48,11 +48,20 @@ router.post("/login", async (req: any, res: any) => {
 
 // Create
 router.post("/register", async (req: any, res: any) => {
-	const validation: Validation = await userService.validateRegistration(req.body);
+	try {
+		const validation: Validation = await userService.validateRegistration(req.body);
 
-	if (!validation.isValid) {
-		res.status(400).json({ errors: validation.errors });
-		return;
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
+		await userService.createUser(req.body);
+		res.sendStatus(201);
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+		res.sendStatus(500);
 	}
 	// const validation: any = validators.validateCredentialsExist(req.body);
 
