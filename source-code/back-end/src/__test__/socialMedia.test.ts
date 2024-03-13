@@ -124,7 +124,6 @@ const socialMediaService = SocialMediaService({
  *      - User can delete their likes
  *      - User cannot delete other user's likes
  *
- *
  */
 
 describe("Likes Test", () => {
@@ -174,6 +173,7 @@ describe("Likes Test", () => {
  *      - User cannot update other user comments
  *      - User can delete their comments
  *      - User cannot delete other user comments
+ *
  */
 describe("Comments Test", () => {
   test("User can create a comment", async () => {
