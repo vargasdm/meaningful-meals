@@ -35,6 +35,26 @@ async function getUserByUsername(username: string) {
 	// return null;
 }
 
+async function getUserById(userId: string) {
+	const command = new QueryCommand({
+		TableName,
+		KeyConditionExpression: "#id = :id",
+		ExpressionAttributeNames: { "#id": "user_id" },
+		ExpressionAttributeValues: { ":id": userId },
+	});
+
+	try {
+		const data: any = await documentClient.send(command);
+		return data.Items[0];
+	} catch (err) {
+		console.error(err);
+		logger.error(err);
+		throw err;
+	}
+
+	// return null;
+}
+
 // CREATE
 async function createUser(Item: any) {
 	const command = new PutCommand({
@@ -55,4 +75,4 @@ async function createUser(Item: any) {
 	// return null;
 }
 
-export default { createUser: createUser, getUserByUsername: getUserByUsername };
+export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById };

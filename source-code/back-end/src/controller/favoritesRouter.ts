@@ -6,6 +6,12 @@ import { logger } from "../util/logger";
 import type { Validation } from "../util/response";
 const router = express.Router();
 
+import FavoriteService from "../service/favoriteService";
+import * as favoriteDAO from "../repository/favoriteDAO";
+import * as userDAO from "../repository/userDAO";
+import * as recipeDAO from "../repository/recipeDAO";
+const favoriteService = FavoriteService(favoriteDAO, recipeDAO, userDAO);
+
 /**
  * postlike
  * deletelike
@@ -19,9 +25,9 @@ const router = express.Router();
  * getall recipe comment
  */
 
-router.post("like", async (req: any, res: any) => {
+router.post("/", async (req: any, res: any) => {
   try {
-    const validation: Validation = await socialService.validateRegistration(
+    const validation: Validation = await favoriteService.validateAddFavorite(
       req.body
     );
 
@@ -30,7 +36,7 @@ router.post("like", async (req: any, res: any) => {
       return;
     }
 
-    await userService.createUser(req.body);
+    await favoriteService.createFavorite(req.body);
     res.sendStatus(201);
   } catch (err) {
     console.error(err);
@@ -39,9 +45,9 @@ router.post("like", async (req: any, res: any) => {
   }
 });
 
-router.delete("like", async (req: any, res: any) => {
+router.delete("/", async (req: any, res: any) => {
   try {
-    const validation: Validation = await socialService.validateRegistration(
+    const validation: Validation = await favoriteService.validateDeleteFavorite(
       req.body
     );
 
@@ -50,7 +56,7 @@ router.delete("like", async (req: any, res: any) => {
       return;
     }
 
-    await userService.createUser(req.body);
+    await favoriteService.deleteFavorite(req.body);
     res.sendStatus(201);
   } catch (err) {
     console.error(err);
@@ -62,23 +68,28 @@ router.delete("like", async (req: any, res: any) => {
 router.get("/", async (req: any, res: any) => {
   try {
     const user: string = req.query.user;
-    const item: string = req.query.item;
-    let validation: Validation;
+    const content: string = req.query.content;
+    let validation: Validation = { isValid: false, errors: []};
 
     if (user) {
-    } else if (item) {
-    } else {
-    }
-
-    validation = await socialService.getAllUserLikes(req.body);
+      validation = await favoriteService.validateUserId(user);
+    } else if (content) {
+      validation = await favoriteService.validateContentId(content);
+    } 
 
     if (!validation.isValid) {
       res.status(400).json({ errors: validation.errors });
       return;
     }
 
-    await userService.createUser(req.body);
-    res.sendStatus(201);
+    let data;
+    if (user) {
+      data = await favoriteService.getUserFavorites(user);
+    } else if (content) {
+      data = await favoriteService.getContentFavorites(content);
+    } 
+
+    res.sendStatus(201).json(data);
   } catch (err) {
     console.error(err);
     logger.error(err);

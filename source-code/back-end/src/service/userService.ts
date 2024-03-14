@@ -1,4 +1,3 @@
-//import userDao from "../repository/userDAO";
 import { UserDoesNotExistError } from '../util/errors';
 import type { Validation } from '../util/response';
 import { v4 as uuid } from 'uuid';
