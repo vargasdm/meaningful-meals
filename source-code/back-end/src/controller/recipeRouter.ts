@@ -60,4 +60,24 @@ router.put(
 	}
 );
 
+router.post(
+	"/create",
+  validateRecipeBody,
+	async (req: any, res: any) => {
+		console.log('recipeRouter.post(/create)...');
+    console.log(req.body);
+    
+		const data = await recipeService.createRecipe(req.body);
+
+		if (data) {
+			logger.info(`New Recipe: ${data.title}`);
+			res.status(201).json({ message: `New Recipe Created Successfully` });
+		} else {
+			res.status(401).json({
+				message: "Recipe was not created. Invalid Inputs.",
+			});
+		}
+	}
+);
+
 export default router;

@@ -42,7 +42,8 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       const response = await updateRecipe(editedRecipe);
       console.log(response);

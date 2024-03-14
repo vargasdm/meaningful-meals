@@ -27,9 +27,9 @@ const navigate = useNavigate();
         instructions: newRecipe.instructions,
         user: globalUser,
       });
-      console.log(response);
-      if (response.status === 200) {
-        navigate(`${URL}/user-recipes/${globalUser}`); // Navigate to the RecipeList component
+      console.log(response.request.status);
+      if (response.request.status === 201) {
+        navigate(`/recipes/user-recipes/${globalUser}`); // Navigate to the RecipeList component
       }
       return response;
     } catch (error) {

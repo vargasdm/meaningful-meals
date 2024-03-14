@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 interface NewRecipeProps {
-    handleCreateRecipe: (newRecipe: any) => Promise<any>;
-  }
+  handleCreateRecipe: (newRecipe: any) => Promise<any>;
+}
 
 const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
   const [newRecipe, setNewRecipe] = useState({
@@ -25,7 +25,8 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       const response = await handleCreateRecipe(newRecipe);
       console.log(response);
@@ -57,10 +58,10 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
         />
         <textarea
           name="instructions"
-          placeholder="add ingredients. Put each instruction on a new line."
+          placeholder="add instructions. Put each instruction on a new line."
           onChange={handleInputChange}
         />
-        <button onClick={handleSubmit}>Save Changes</button>
+        <button onClick={handleSubmit}>Create Recipe</button>
       </form>
     </div>
   );
