@@ -3,33 +3,90 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
+import axios from "axios";
+const PORT = process.env.REACT_APP_PORT;
+const URL = `http://localhost:${PORT}/recipes`;
 
 type CleanedRootState = Omit<RootState, "_persist">;
+
+// interface RecipeListProps {
+//   getUserRecipes: (user: string) => Promise<any>;
+// }
 
 function RecipeList(prop: any) {
   const [recipeList, setRecipeList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
+// console.log(selectedRecipe);
 
   const userState = useSelector((state: CleanedRootState) => state.user);
 
-  let userPathParam = userState.username;
+  let globalUser = userState.username;
 
   useEffect(() => {
-    async function fetchRecipes() {
-      const response = await prop.getUserRecipes(userPathParam);
-      setRecipeList(response.data);
-    }
     fetchRecipes();
-  }, [prop.getUserRecipes, userPathParam]);
+  }, []);
+
+  useEffect(() => {
+    console.log('Selected Recipe Updated:', selectedRecipe);
+  }, [selectedRecipe]);
+
+
+  async function fetchRecipes() {
+    const response = await prop.getUserRecipes(globalUser);
+    setRecipeList(response.data);
+  }
 
   const handleRecipeClick = (recipe: any) => {
     setSelectedRecipe(recipe);
+    // console.log(selectedRecipe);
   };
 
+  const handleEditClick = () => {
+    if (isEditing === true) {
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+
+  };
+
+  async function handleUpdateRecipe(editedRecipe: any) {
+    try {
+      // Make the update request and handle the response
+      const response = await axios.put(`${URL}/update`, {
+        id: editedRecipe.id,
+        title: editedRecipe.title,
+        ingredients: editedRecipe.ingredients,
+        instructions: editedRecipe.instructions,
+        user: globalUser,
+      });
+  
+      setSelectedRecipe(null);
+
+      // if (response.status === 200) {
+      //   console.log("Recipe updated successfully");
+      //   setSelectedRecipe(null);
+      //   // console.log(selectedRecipe);
+      //   // fetchRecipes(); // Fetch the updated list of recipes
+      // }
+  
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div className="userRecipeList">
+    <div className="userRecipeList">      
       {selectedRecipe ? (
-        <RecipeSingle recipe={selectedRecipe} />
+        <RecipeSingle
+          selectedRecipe={selectedRecipe}
+          updateRecipe={handleUpdateRecipe}
+          isEditing={isEditing}
+          handleEditClick={handleEditClick}
+          fetchRecipes={fetchRecipes}
+        />
       ) : (
         <div>
           {recipeList && recipeList.length > 0 ? (
@@ -43,7 +100,7 @@ function RecipeList(prop: any) {
                     {recipe.title}
                   </Link>
                 </h1>
-                <h3>Ingredients</h3>
+                {/* <h3>Ingredients</h3>
                 <ul>
                   {recipe.ingredients.map((ingredient: any) => (
                     <li key={ingredient}>{ingredient}</li>
@@ -54,11 +111,11 @@ function RecipeList(prop: any) {
                   {recipe.instructions.map((instruction: any) => (
                     <li key={instruction}>{instruction}</li>
                   ))}
-                </ol>
+                </ol> */}
               </div>
             ))
           ) : (
-            <p>No recipes have been saved for {userPathParam}</p>
+            <p>No recipes have been saved for {globalUser}</p>
           )}
         </div>
       )}
