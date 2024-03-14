@@ -8,9 +8,21 @@ let userTable = [
   { user_id: "3", username: "TestUser3", password: "TestPass1" },
 ];
 
+/*
+
+export default {
+	createUser,
+	credentialsMatch,
+	getUserByUsername,
+	userExists,
+	validateLogin,
+	validateRegistration
+};
+*/
+
 const mockGetUserByUsername = jest.fn((username) => {
   try {
-    userTable.forEach(user => {
+    userTable.forEach((user) => {
       if (user.username == username) {
         console.log(user);
         return user;
@@ -25,16 +37,8 @@ const mockGetUserByUsername = jest.fn((username) => {
 
 const mockPostUser = jest.fn((item) => {
   try {
-    /*let isValid = true;
-    userTable.forEach((user) => {
-      if (user.username === item.username) {
-        isValid = false;
-      }
-    });
-    if (isValid) {*/
     userTable.push(item);
     return item;
-    //}
   } catch (err) {
     throw new Error(`Unable to post item. Error: ${err}`);
   }
@@ -56,7 +60,7 @@ describe("Login Tests", () => {
     const expected = username;
 
     // ACT
-    const result = await userService.login({
+    const result = await userService.validateLogin({
       username,
       password,
     });
@@ -73,7 +77,7 @@ describe("Login Tests", () => {
     const expected = null;
 
     // ACT
-    const result = await userService.login({
+    const result = await userService.validateLogin({
       username,
       password,
     });
@@ -88,7 +92,7 @@ describe("Login Tests", () => {
     const expected = null;
 
     // ACT
-    const result = await userService.login({});
+    const result = await userService.validateLogin({});
 
     // Assert
     expect(result).toBe(expected);
@@ -105,16 +109,15 @@ describe("Register Tests", () => {
     // Arrange
     const username = "NewUser25";
     const password = "TestPass1";
-    const expected = username;
 
     // ACT
-    const result = await userService.postUser({
+    const result = await userService.validateRegistration({
       username,
       password,
     });
 
     // Assert
-    expect(result.username).toBe(expected);
+    expect(result.isValid).toBe(true);
   });
 
   // register fails for invalid username
@@ -125,12 +128,12 @@ describe("Register Tests", () => {
     const expected = null;
 
     // ACT
-    const result = await userService.postUser({
+    const result = await userService.validateRegistration({
       username,
       password,
     });
 
     // Assert
-    expect(result).toBeNull();
+    expect(result.isValid).toBe(false);
   });
 });

@@ -4,9 +4,12 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { logger } from "../util/logger";
 
-import userService from '../service/userService';
-import type { Validation } from '../service/userService';
+import type { Validation } from '../util/response';
 const router = express.Router();
+
+import UserService from "../service/userService";
+import userDAO from "../repository/userDAO";
+const userService = UserService(userDAO);
 
 router.post("/login", async (req: any, res: any) => {
 	try {
