@@ -66,28 +66,5 @@ function validPassword(password: string): boolean {
 	return true;
 }
 
-// function validRecipeTitle(title: string): boolean {
-// 	if (title.trim().length === 0) {
-// 		return false;
-// 	}
-
-// 	return true;
-// }
-
-// function validRecipeIngredients(ingredient: string): boolean {
-// 	if (ingredient.length === 0) {
-// 		return false;
-// 	}
-
-// 	return true;
-// }
-
-// function validRecipeInstructions(instructions: string): boolean {
-// 	if (instructions.length === 0) {
-// 		return false;
-// 	}
-
-// 	return true;
-// }
 
 export { validateLoginBody, validateRegisterBody, validateRecipeBody};

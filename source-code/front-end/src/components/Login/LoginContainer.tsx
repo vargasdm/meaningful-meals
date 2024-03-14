@@ -10,8 +10,9 @@ const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/user`;
 
 function LoginContainer() {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
+<<<<<<< HEAD
   async function updateUserState(user: any) {
     try {
       const response = await getUser(user);
@@ -23,25 +24,31 @@ function LoginContainer() {
       console.error(error);
     }
   }
+=======
+	async function handleLogin(user: any) {
+		try {
+			let response = await axios.post(`${URL}/login`, {
+				username: user.username,
+				password: user.password,
+			});
+>>>>>>> 8fa0d52fa47e82447c50328aed96b857ac36c79c
 
-  async function getUser(user: any) {
-    try {
-      let response = await axios.post(`${URL}/login`, {
-        username: user.username,
-        password: user.password,
-      });
+			console.log(response.data);
 
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+			if (response) {
+				dispatch(userActions.loginUser({ username: user.username }));
+				return redirect("/");
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  return (
-    <>
-      <LoginInput updateUserState={updateUserState} />
-    </>
-  );
+	return (
+		<>
+			<LoginInput handleLogin={handleLogin} />
+		</>
+	);
 }
 
 export default LoginContainer;
