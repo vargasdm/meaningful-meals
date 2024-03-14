@@ -36,7 +36,8 @@ export default function (database: any) {
 		}
 	
 		try {
-			if (await userExists(credentials.username)) {
+			const result = await userExists(credentials.username)
+			if (result) {
 				return validation;
 			}
 	
@@ -122,8 +123,8 @@ export default function (database: any) {
 	
 	async function userExists(username: string) {
 		try {
-			const users = await database.getUserByUsername(username);
-			return users && users.length === 1;
+			const user = await database.getUserByUsername(username);
+			return user && user.user_id && user.username && user.password;
 		} catch (err) {
 			if (err instanceof UserDoesNotExistError) {
 				return false;

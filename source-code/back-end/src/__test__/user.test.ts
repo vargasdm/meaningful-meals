@@ -20,13 +20,16 @@ export default {
 };
 */
 
-const mockGetUserByUsername = jest.fn((username) => {
+const mockGetUserByUsername = jest.fn(async (username) => {
   try {
+    let data;
     userTable.forEach((user) => {
-      if (user.username == username) {
-        return user;
+      if (user.username === username) {
+        data = user;
       }
     });
+
+    return data;
   } catch (err) {
     throw new Error(`Unable to get item. Error: ${err}`);
   }
@@ -34,7 +37,7 @@ const mockGetUserByUsername = jest.fn((username) => {
   return null;
 });
 
-const mockCreateUser = jest.fn((item) => {
+const mockCreateUser = jest.fn(async (item) => {
   try {
     userTable.push(item);
     return item;
@@ -56,7 +59,6 @@ describe("Login Tests", () => {
     // Arrange
     const username = "testregistration";
     const password = "TestPass1";
-    const expected = username;
 
     // ACT
     const result = await userService.validateLogin({
@@ -65,7 +67,8 @@ describe("Login Tests", () => {
     });
 
     // Assert
-    expect(result).toBe(expected);
+    expect(result.isValid).toBe(true);
+    expect(result.errors.length).toBe(0);
   });
 
   // login fails for invalid credentials
@@ -83,7 +86,7 @@ describe("Login Tests", () => {
 
     // Assert
     expect(result.isValid).toBe(false);
-    expect(result.errors.find(error => error===expected)).toBeTruthy();
+    expect(result.errors.find((error) => error === expected)).toBeTruthy();
   });
 
   // login fails for empty data
@@ -97,8 +100,8 @@ describe("Login Tests", () => {
 
     // Assert
     expect(result.isValid).toBe(false);
-    expect(result.errors.find(error => error===expected1)).toBeTruthy();
-    expect(result.errors.find(error => error===expected2)).toBeTruthy();
+    expect(result.errors.find((error) => error === expected1)).toBeTruthy();
+    expect(result.errors.find((error) => error === expected2)).toBeTruthy();
   });
 
   // check for data type
