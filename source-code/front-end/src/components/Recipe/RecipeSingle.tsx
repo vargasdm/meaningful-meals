@@ -1,12 +1,12 @@
 import React, { useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
-type CleanedRootState = Omit<RootState, "_persist">;
+// type CleanedRootState = Omit<RootState, "_persist">;
 
 interface RecipeSingleProps {
   recipe: any;
@@ -19,7 +19,7 @@ interface Recipe {
 }
 
 const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
-  const userState = useSelector((state: CleanedRootState) => state.user);
+  const userState = useSelector((state: any) => state.user);
 
   let globalUser = userState.username;
 

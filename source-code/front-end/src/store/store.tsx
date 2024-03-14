@@ -5,24 +5,24 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
 const persistConfig = {
-  key: 'user',
-  storage,
+	key: 'root',
+	storage,
+	// whitelist: ['user']
+	debug: true
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  // other reducers here
+	user: userReducer,
+	// other reducers here
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-
 const store = configureStore({
-  reducer: persistedReducer,
+	reducer: persistedReducer,
 });
 
-
-
-export type RootState = ReturnType<typeof store.getState>;
+export const persistor = persistStore(store);
+// export type RootState = ReturnType<typeof store.getState>;
 
 export default store;

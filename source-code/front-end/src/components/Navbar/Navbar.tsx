@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import { userActions } from "../../store/slices/userSlice";
 import "./Navbar.css";
-export type CleanedRootState = Omit<RootState, "_persist">;
+// export type CleanedRootState = Omit<RootState, "_persist">;
 
 // will change this when I use bootstrap
 
 function Navbar() {
-	const userState = useSelector((state: CleanedRootState) => state.user); // Access the user state from the global state
+	const userState = useSelector((state: any) => state.user); // Access the user state from the global state
 	//   console.log(userState); // Log the current user state
 	const dispatch = useDispatch(); // Get the dispatch function
 

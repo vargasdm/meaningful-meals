@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
 
-type CleanedRootState = Omit<RootState, "_persist">;
+// type CleanedRootState = Omit<RootState, "_persist">;
 
 function RecipeList(prop: any) {
   const [recipeList, setRecipeList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
 
-  const userState = useSelector((state: CleanedRootState) => state.user);
+  const userState = useSelector((state: any) => state.user);
 
   let userPathParam = userState.username;
 

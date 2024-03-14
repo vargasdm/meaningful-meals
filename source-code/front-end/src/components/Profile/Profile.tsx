@@ -8,12 +8,18 @@ export async function loader() {
 	// console.log(`Profile.tsx user: ${JSON.stringify(user)}`);
 	// return null;
 	return store.getState().user;
+	// GLOBAL STATE DOESN'T REHYDRATE TIL AFTER LOADERS RUN
+	// DON'T ACCESS GLOBAL STATE IN THE LOADER
 }
 
 export default function Profile() {
-	const data: any = useLoaderData();
+	// const data: any = useLoaderData();
+	// console.log(store.getState());
+	const globalState = store.getState();
+	// INSTEAD, ACCESS GLOBAL STATE IN THE COMPONENT ITSELF
+	console.log(globalState);
 
 	return (
-		<h1>{data.username}</h1>
+		<h1>{globalState.user.username}</h1>
 	);
 }
