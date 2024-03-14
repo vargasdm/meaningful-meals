@@ -1,42 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { Link } from 'react-router-dom';
-export type CleanedRootState = Omit<RootState, "_persist">;
+import { Link } from "react-router-dom";
+import RecipeSingle from "./RecipeSingle";
 
-
-export default RecipeList
-
+type CleanedRootState = Omit<RootState, "_persist">;
 
 function RecipeList(prop: any) {
-    const [recipeList, setRecipeList] = useState([]);
-    
-    // const userState = useSelector((state: RootState) => state.user); // Access the user state from the global state
-    const userState = useSelector((state: CleanedRootState) => state.user); // Access the user state from the global state
-  
-    // creates global state variable for use as a path param 
-    let userPathParam = userState.username
+  const [recipeList, setRecipeList] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
 
-    useEffect(() => {
-        async function fetchRecipes() {
-            const response = await prop.getUserRecipes(userPathParam);
-            setRecipeList(response.data); // Assuming the response is an array of recipes
-        }
-        fetchRecipes();
-    }, [prop.getUserRecipes, userPathParam]);
+  const userState = useSelector((state: CleanedRootState) => state.user);
 
-    return (
-        <div className="userRecipeList">
-            {recipeList && recipeList.length > 0 ? (
-                recipeList.map((recipe: any) => (
-                    <div key={recipe.id}>
-                        <Link to={`/recipes/user-recipes/:${recipe.id}`}>{recipe.title}</Link>
-                        <h4>{recipe.instructions}</h4>
-                    </div>
-                ))
-            ) : (
-                <p>No recipes have been saved for ${userPathParam}</p>
-            )}
+  let userPathParam = userState.username;
+
+  useEffect(() => {
+    async function fetchRecipes() {
+      const response = await prop.getUserRecipes(userPathParam);
+      setRecipeList(response.data);
+    }
+    fetchRecipes();
+  }, [prop.getUserRecipes, userPathParam]);
+
+  const handleRecipeClick = (recipe: any) => {
+    setSelectedRecipe(recipe);
+  };
+
+  return (
+    <div className="userRecipeList">
+      {selectedRecipe ? (
+        <RecipeSingle recipe={selectedRecipe} />
+      ) : (
+        <div>
+          {recipeList && recipeList.length > 0 ? (
+            recipeList.map((recipe: any) => (
+              <div key={recipe.id}>
+                <h1>
+                  <Link
+                    to={`/recipes/user-recipes/${recipe.id}`}
+                    onClick={() => handleRecipeClick(recipe)}
+                  >
+                    {recipe.title}
+                  </Link>
+                </h1>
+                <h3>Ingredients</h3>
+                <ul>
+                  {recipe.ingredients.map((ingredient: any) => (
+                    <li key={ingredient}>{ingredient}</li>
+                  ))}
+                </ul>
+                <h3>Instructions</h3>
+                <ol>
+                  {recipe.instructions.map((instruction: any) => (
+                    <li key={instruction}>{instruction}</li>
+                  ))}
+                </ol>
+              </div>
+            ))
+          ) : (
+            <p>No recipes have been saved for {userPathParam}</p>
+          )}
         </div>
-    );
+      )}
+    </div>
+  );
 }
+
+export default RecipeList;

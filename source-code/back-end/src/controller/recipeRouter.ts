@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { authenticateNoToken } from "../util/authenticateToken";
+import { validateRecipeBody } from "../util/authenticateBody";
 
 import express from "express";
 const router = express.Router();
 import recipeService from "../service/recipeService";
 import { log } from "console";
+import { logger } from "../util/logger";
 
 // This should return search results if there's a 'query' query parameter,
 // or a specific recipe if there's an 'id' query parameter
@@ -37,5 +39,25 @@ router.get("/user-recipes/:username", async (req: any, res: any) => {
     return;
   }
 });
+
+router.put(
+	"/update",
+  validateRecipeBody,
+	async (req: any, res: any) => {
+		console.log('recipeRouter.post(/update)...');
+    console.log(req.body);
+    
+		const data = await recipeService.putRecipe(req.body);
+
+		if (data) {
+			logger.info(`Updated Recipe: ${data.title}`);
+			res.status(201).json({ message: `Recipe Updated Successfully` });
+		} else {
+			res.status(401).json({
+				message: "Recipe was not updated. Invalid Inputs.",
+			});
+		}
+	}
+);
 
 export default router;

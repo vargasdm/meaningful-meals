@@ -12,12 +12,26 @@ const URL = `http://localhost:${PORT}/user`;
 function LoginContainer() {
 	const dispatch = useDispatch();
 
+<<<<<<< HEAD
+  async function updateUserState(user: any) {
+    try {
+      const response = await getUser(user);
+      if (response) {
+        dispatch(userActions.setUser({ username: user.username, isLoggedIn: true }));
+        return redirect("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+=======
 	async function handleLogin(user: any) {
 		try {
 			let response = await axios.post(`${URL}/login`, {
 				username: user.username,
 				password: user.password,
 			});
+>>>>>>> 8fa0d52fa47e82447c50328aed96b857ac36c79c
 
 			console.log(response.data);
 
