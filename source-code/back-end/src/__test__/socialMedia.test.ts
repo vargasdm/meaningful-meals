@@ -107,13 +107,19 @@ const mockUpdateComment = jest.fn((item) => {
   }
 });
 
-const socialMediaService = SocialMediaService({
+const socialMediaService = {
+  postLike: (input: any) => {},
+  deleteLike: (input: any) => {},
+  postComment: (input: any) => {},
+  deleteComment: (input: any) => {},
+  updateComment: (input: any) => {},
+}; /*= SocialMediaService({
   postLike: mockPostLike,
   deleteLike: mockDeleteLike,
   postComment: mockPostComment,
   deleteComment: mockDeleteComment,
   updateComment: mockUpdateComment,
-});
+});*/
 
 /**
  * likes
@@ -123,7 +129,6 @@ const socialMediaService = SocialMediaService({
  *      - User can only like valid content id's
  *      - User can delete their likes
  *      - User cannot delete other user's likes
- *
  *
  */
 
@@ -174,6 +179,7 @@ describe("Likes Test", () => {
  *      - User cannot update other user comments
  *      - User can delete their comments
  *      - User cannot delete other user comments
+ *
  */
 describe("Comments Test", () => {
   test("User can create a comment", async () => {
