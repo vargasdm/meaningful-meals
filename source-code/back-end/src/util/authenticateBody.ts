@@ -31,6 +31,18 @@ const validateRegisterBody = (req: any, res: any, next: any) => {
 	next();
 };
 
+const validateRecipeBody = (req: any, res: any, next: any) => {
+	console.log('authenticateBody.validateRegisterBody');
+	if (!req.body || !req.body.id ||!req.body.title || !req.body.ingredients || !req.body.instructions || !req.body.user) {
+		console.log('Recipe request body/body field missing.');
+		logger.error(`Recipe request body/body field missing. ${req.body}`);
+		return res.status(400).json({ message: `Recipe request body/body field missing.` });
+	}
+
+	console.log('Registration body valid.');
+	next();
+};
+
 // Fails if contains:
 // empty spaces
 // less than 6 characters
@@ -54,4 +66,28 @@ function validPassword(password: string): boolean {
 	return true;
 }
 
-export { validateLoginBody, validateRegisterBody };
+// function validRecipeTitle(title: string): boolean {
+// 	if (title.trim().length === 0) {
+// 		return false;
+// 	}
+
+// 	return true;
+// }
+
+// function validRecipeIngredients(ingredient: string): boolean {
+// 	if (ingredient.length === 0) {
+// 		return false;
+// 	}
+
+// 	return true;
+// }
+
+// function validRecipeInstructions(instructions: string): boolean {
+// 	if (instructions.length === 0) {
+// 		return false;
+// 	}
+
+// 	return true;
+// }
+
+export { validateLoginBody, validateRegisterBody, validateRecipeBody};

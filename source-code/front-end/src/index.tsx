@@ -41,10 +41,10 @@ const router = createBrowserRouter([
         path: "/recipes/user-recipes/:username",
         element: <RecipeContainer />,
       },
-      {
-        path: "/recipes/user-recipes/:id",
-        element: <RecipeSingle />,
-      },
+      // {
+      //   path: "/recipes/user-recipes/:id",
+      //   element: <RecipeSingle />,
+      // },
       {
         path: "/recipes/:id",
         element: <Recipe />,

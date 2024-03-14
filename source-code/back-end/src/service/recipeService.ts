@@ -28,7 +28,6 @@ async function getRecipe(id: string) {
 async function getUserRecipes(username: string) {
 	console.log(username);
 	
-	
 	const data : any = await recipeDAO.getRecipesByUsername(username);
 
 	console.log(data);
@@ -36,8 +35,25 @@ async function getUserRecipes(username: string) {
 	return data ? data : null;
 }
 
+async function putRecipe(receivedData: any) {
+	console.log(`recipeService.postRecipe(${JSON.stringify(receivedData)})...`);
+
+		let data = await recipeDAO.updateRecipe({
+			id: receivedData.id,
+			title: receivedData.title,
+			ingredients: receivedData.ingredients,
+			instructions: receivedData.instructions,
+			user: receivedData.user
+		});
+		console.log(data);
+		return data ? data : null;
+	}
+
+
+
 export default {
 	searchRecipes,
 	getRecipe,
-	getUserRecipes
+	getUserRecipes,
+	putRecipe
 }

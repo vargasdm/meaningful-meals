@@ -13,19 +13,6 @@ function LoginContainer() {
   const dispatch = useDispatch();
 
   async function updateUserState(user: any) {
-    // console.log(dispatch(userActions.setUser(user)));
-    // try {
-    //   // sends post request to backend
-    //   if (await getUser(user)) {
-    //     console.log("success");
-    //     // should change the global user state variable using the properties of the user object
-    //     dispatch(userActions.setUser(user));
-    //     console.log(dispatch(userActions.setUser({ username: user.username, isLoggedIn: true })));
-    //     return redirect("/")
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
     try {
       const response = await getUser(user);
       if (response) {
