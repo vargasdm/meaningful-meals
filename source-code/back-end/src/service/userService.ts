@@ -36,7 +36,8 @@ export default function (database: any) {
 		}
 	
 		try {
-			if (await userExists(credentials.username)) {
+			const result = await userExists(credentials.username)
+			if (result) {
 				return validation;
 			}
 	
@@ -95,7 +96,6 @@ export default function (database: any) {
 	// Fails if contains:
 	// empty spaces
 	// less than 8 characters
-	// missing atleast 1 uppercase, 1 lowercase, 1 number, and 1 special character
 	function validatePassword(password: string): boolean {
 		if (password.trim().length === 0 || password.length < 8) {
 			return false;
@@ -123,8 +123,8 @@ export default function (database: any) {
 	
 	async function userExists(username: string) {
 		try {
-			const users = await database.getUserByUsername(username);
-			return users.length === 1;
+			const user = await database.getUserByUsername(username);
+			return user && user.user_id && user.username && user.password;
 		} catch (err) {
 			if (err instanceof UserDoesNotExistError) {
 				return false;
