@@ -23,7 +23,9 @@ function LoginContainer() {
 
 			if (res) {
 				dispatch(userActions.loginUser({
-					// username: user.username }));
+					// This should set the user slice state in the Redux store
+					// to those received in the res. The JWT is essential for
+					// making authorized requests!
 					userID: res.data.user_id,
 					username: res.data.username,
 					jwt: res.data.token

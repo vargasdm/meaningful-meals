@@ -11,6 +11,7 @@ import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
 import Error from "./components/Error";
 import SearchContainer from "./components/Search/SearchContainer";
 import RecipeContainer from "./components/Recipe/RecipeContainer";
+import Profile, { loader as profileLoader } from './components/Profile/Profile';
 import RecipeSingle from "./components/Recipe/RecipeSingle";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -20,50 +21,55 @@ const persistor = persistStore(store);
 export { store, persistor };
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />, // This should be the root route
-    errorElement: <Error />,
-    children: [
-      {
-        path: "/",
-        element: <SearchContainer />,
-      },
-      {
-        path: "/login",
-        element: <LoginContainer />,
-      },
-      {
-        path: "/register",
-        element: <RegisterContainer />,
-      },
-      {
-        path: "/recipes/user-recipes/:username",
-        element: <RecipeContainer />,
-      },
-      // {
-      //   path: "/recipes/user-recipes/:id",
-      //   element: <RecipeSingle />,
-      // },
-      {
-        path: "/recipes/:id",
-        element: <Recipe />,
-        loader: recipeLoader,
-      },
-    ],
-  },
+	{
+		path: "/",
+		element: <App />, // This should be the root route
+		errorElement: <Error />,
+		children: [
+			{
+				path: "/",
+				element: <SearchContainer />,
+			},
+			{
+				path: "/login",
+				element: <LoginContainer />,
+			},
+			{
+				path: "/register",
+				element: <RegisterContainer />,
+			},
+			{
+				path: "/recipes/user-recipes/:username",
+				element: <RecipeContainer />,
+			},
+			// {
+			//   path: "/recipes/user-recipes/:id",
+			//   element: <RecipeSingle />,
+			// },
+			{
+				path: "/recipes/:id",
+				element: <Recipe />,
+				loader: recipeLoader
+			},
+			{
+				path: '/profile',
+				element: <Profile />,
+				loader: profileLoader
+			}
+		],
+	},
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+	document.getElementById("root") as HTMLElement
 );
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<RouterProvider router={router} />
+			</PersistGate>
+		</Provider>
+	</React.StrictMode>
 );

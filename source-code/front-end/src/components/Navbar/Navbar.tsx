@@ -6,7 +6,6 @@ import { userActions } from "../../store/slices/userSlice";
 import "./Navbar.css";
 export type CleanedRootState = Omit<RootState, "_persist">;
 
-
 // will change this when I use bootstrap
 
 function Navbar() {
@@ -34,7 +33,7 @@ function Navbar() {
 			{userState.isLoggedIn === true ? (
 				<ul>
 					<li>
-						<Link to="/profile/">Profile</Link>
+						<Link to="/profile">Profile</Link>
 					</li>
 					<li>
 						<Link to={`/recipes/user-recipes/${userPathParam}`}>Recipes</Link>
