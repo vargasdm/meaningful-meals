@@ -14,15 +14,21 @@ function LoginContainer() {
 
 	async function handleLogin(user: any) {
 		try {
-			let response = await axios.post(`${URL}/login`, {
+			let res = await axios.post(`${URL}/login`, {
 				username: user.username,
 				password: user.password,
 			});
 
-			console.log(response.data);
+			console.log(res.data);
 
-			if (response) {
-				dispatch(userActions.loginUser({ username: user.username }));
+			if (res) {
+				dispatch(userActions.loginUser({
+					// username: user.username }));
+					userID: res.data.user_id,
+					username: res.data.username,
+					jwt: res.data.token
+				}));
+
 				return redirect("/");
 			}
 		} catch (error) {
