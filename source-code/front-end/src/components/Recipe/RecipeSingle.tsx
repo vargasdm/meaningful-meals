@@ -9,7 +9,6 @@ interface RecipeSingleProps {
   updateRecipe: (editedRecipe: any) => Promise<any>;
   isEditing: boolean;
   handleEditClick: () => void; // Add handleEditClick to the interface
-  fetchRecipes: () => void;
   handleBackClick: () => void;
 }
 
@@ -19,11 +18,16 @@ interface Recipe {
   instructions: string[];
 }
 
-const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe, isEditing, handleEditClick, fetchRecipes, handleBackClick}) => {
-
+const RecipeSingle: React.FC<RecipeSingleProps> = ({
+  selectedRecipe,
+  updateRecipe,
+  isEditing,
+  handleEditClick,
+  handleBackClick,
+}) => {
   const recipe = selectedRecipe;
   console.log(selectedRecipe);
-  
+
   const [editedRecipe, setEditedRecipe] = useState(recipe);
 
   function handleInputChange(
@@ -48,11 +52,10 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe
     try {
       const response = await updateRecipe(editedRecipe);
       console.log(response);
-      
+
       if (response) {
         console.log("Updated Recipe:", editedRecipe);
         handleEditClick();
-        fetchRecipes();
       }
     } catch (error) {
       console.error(error);

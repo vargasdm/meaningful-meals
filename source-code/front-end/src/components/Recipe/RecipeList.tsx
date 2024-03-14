@@ -27,11 +27,6 @@ function RecipeList(prop: any) {
     fetchRecipes();
   }, []);
 
-  useEffect(() => {
-    console.log('isEditing state changed:', isEditing);
-  }, [isEditing]);
-
-
   async function fetchRecipes() {
     const response = await prop.getUserRecipes(globalUser);
     setRecipeList(response.data);
@@ -82,11 +77,13 @@ function RecipeList(prop: any) {
             updateRecipe={handleUpdateRecipe}
             isEditing={isEditing}
             handleEditClick={handleEditClick}
-            fetchRecipes={fetchRecipes}
             handleBackClick={handleBackClick}
           />
         ) : (
           <div>
+            <Link to="/recipes/new-recipe">
+              <button>Create a New Recipe</button>
+            </Link>
             {recipeList && recipeList.length > 0 ? (
               recipeList.map((recipe: any) => (
                 <div key={recipe.id}>
@@ -101,14 +98,16 @@ function RecipeList(prop: any) {
                 </div>
               ))
             ) : (
-              <p>No recipes have been saved for {globalUser}</p>
+              <>
+                <p>No recipes have been saved for {globalUser}</p>
+                <Link to="/recipes/new-recipe">
+                  <button>Create a New Recipe</button>
+                </Link>
+              </>
             )}
           </div>
         )}
       </div>
-      <Link to="/recipes/new-recipe">
-        <button>Create a New Recipe</button>
-      </Link>
     </>
   );
 }

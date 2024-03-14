@@ -1,12 +1,10 @@
 import React from "react";
 import RecipeContainer from "./RecipeContainer";
 import { RootState } from "../../store/store";
-
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
-import { useNavigate  } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
@@ -17,7 +15,7 @@ function NewRecipeContainer() {
 
   let globalUser = userState.username;
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
   async function handleCreateRecipe(newRecipe: any) {
     try {
       // Make the update request and handle the response
@@ -27,7 +25,6 @@ const navigate = useNavigate();
         instructions: newRecipe.instructions,
         user: globalUser,
       });
-      console.log(response.request.status);
       if (response.request.status === 201) {
         navigate(`/recipes/user-recipes/${globalUser}`); // Navigate to the RecipeList component
       }
