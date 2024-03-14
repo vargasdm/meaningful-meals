@@ -17,7 +17,7 @@ function RecipeList(prop: any) {
   const [recipeList, setRecipeList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
-// console.log(selectedRecipe);
+  // console.log(selectedRecipe);
 
   const userState = useSelector((state: CleanedRootState) => state.user);
 
@@ -26,10 +26,6 @@ function RecipeList(prop: any) {
   useEffect(() => {
     fetchRecipes();
   }, []);
-
-  useEffect(() => {
-    console.log('Selected Recipe Updated:', selectedRecipe);
-  }, [selectedRecipe]);
 
 
   async function fetchRecipes() {
@@ -48,7 +44,6 @@ function RecipeList(prop: any) {
     } else {
       setIsEditing(true);
     }
-
   };
 
   async function handleUpdateRecipe(editedRecipe: any) {
@@ -61,16 +56,9 @@ function RecipeList(prop: any) {
         instructions: editedRecipe.instructions,
         user: globalUser,
       });
-  
+
       setSelectedRecipe(null);
 
-      // if (response.status === 200) {
-      //   console.log("Recipe updated successfully");
-      //   setSelectedRecipe(null);
-      //   // console.log(selectedRecipe);
-      //   // fetchRecipes(); // Fetch the updated list of recipes
-      // }
-  
       return response;
     } catch (error) {
       console.error(error);
@@ -78,48 +66,41 @@ function RecipeList(prop: any) {
   }
 
   return (
-    <div className="userRecipeList">      
-      {selectedRecipe ? (
-        <RecipeSingle
-          selectedRecipe={selectedRecipe}
-          updateRecipe={handleUpdateRecipe}
-          isEditing={isEditing}
-          handleEditClick={handleEditClick}
-          fetchRecipes={fetchRecipes}
-        />
-      ) : (
-        <div>
-          {recipeList && recipeList.length > 0 ? (
-            recipeList.map((recipe: any) => (
-              <div key={recipe.id}>
-                <h1>
-                  <Link
-                    to={`/recipes/user-recipes/${recipe.id}`}
-                    onClick={() => handleRecipeClick(recipe)}
-                  >
-                    {recipe.title}
-                  </Link>
-                </h1>
-                {/* <h3>Ingredients</h3>
-                <ul>
-                  {recipe.ingredients.map((ingredient: any) => (
-                    <li key={ingredient}>{ingredient}</li>
-                  ))}
-                </ul>
-                <h3>Instructions</h3>
-                <ol>
-                  {recipe.instructions.map((instruction: any) => (
-                    <li key={instruction}>{instruction}</li>
-                  ))}
-                </ol> */}
-              </div>
-            ))
-          ) : (
-            <p>No recipes have been saved for {globalUser}</p>
-          )}
-        </div>
-      )}
-    </div>
+    <>
+      <div className="userRecipeList">
+        {selectedRecipe ? (
+          <RecipeSingle
+            selectedRecipe={selectedRecipe}
+            updateRecipe={handleUpdateRecipe}
+            isEditing={isEditing}
+            handleEditClick={handleEditClick}
+            fetchRecipes={fetchRecipes}
+          />
+        ) : (
+          <div>
+            {recipeList && recipeList.length > 0 ? (
+              recipeList.map((recipe: any) => (
+                <div key={recipe.id}>
+                  <h1>
+                    <Link
+                      to={`/recipes/user-recipes/${recipe.id}`}
+                      onClick={() => handleRecipeClick(recipe)}
+                    >
+                      {recipe.title}
+                    </Link>
+                  </h1>
+                </div>
+              ))
+            ) : (
+              <p>No recipes have been saved for {globalUser}</p>
+            )}
+          </div>
+        )}
+      </div>
+      <Link to="/recipes/new-recipe">
+        <button>Create a New Recipe</button>
+      </Link>
+    </>
   );
 }
 

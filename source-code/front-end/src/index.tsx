@@ -11,7 +11,7 @@ import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
 import Error from "./components/Error";
 import SearchContainer from "./components/Search/SearchContainer";
 import RecipeContainer from "./components/Recipe/RecipeContainer";
-import RecipeSingle from "./components/Recipe/RecipeSingle";
+import NewRecipeContainer from "./components/Recipe/NewRecipeContainer";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -41,10 +41,10 @@ const router = createBrowserRouter([
         path: "/recipes/user-recipes/:username",
         element: <RecipeContainer />,
       },
-      // {
-      //   path: "/recipes/user-recipes/:id",
-      //   element: <RecipeSingle />,
-      // },
+      {
+        path: "/recipes/new-recipe",
+        element: <NewRecipeContainer />,
+      },
       {
         path: "/recipes/:id",
         element: <Recipe />,
