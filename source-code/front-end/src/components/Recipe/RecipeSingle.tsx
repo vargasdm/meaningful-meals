@@ -10,6 +10,7 @@ interface RecipeSingleProps {
   isEditing: boolean;
   handleEditClick: () => void; // Add handleEditClick to the interface
   fetchRecipes: () => void;
+  handleBackClick: () => void;
 }
 
 interface Recipe {
@@ -18,7 +19,7 @@ interface Recipe {
   instructions: string[];
 }
 
-const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe, isEditing, handleEditClick, fetchRecipes}) => {
+const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe, isEditing, handleEditClick, fetchRecipes, handleBackClick}) => {
 
   const recipe = selectedRecipe;
   console.log(selectedRecipe);
@@ -102,6 +103,7 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({selectedRecipe, updateRecipe
             ))}
           </ol>
           <button onClick={handleEditClick}>Edit Recipe</button>
+          <button onClick={handleBackClick}>Back to My Recipes</button>
         </div>
       )}
     </div>

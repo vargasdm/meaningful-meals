@@ -14,6 +14,7 @@ import RecipeContainer from "./components/Recipe/RecipeContainer";
 import NewRecipeContainer from "./components/Recipe/NewRecipeContainer";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import ProfileContainer from "./components/Profile/ProfileContainer";
 
 const persistor = persistStore(store);
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/recipes/new-recipe",
         element: <NewRecipeContainer />,
+      },
+      {
+        path: "/profile",
+        element: <ProfileContainer />,
       },
       {
         path: "/recipes/:id",

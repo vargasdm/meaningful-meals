@@ -27,6 +27,10 @@ function RecipeList(prop: any) {
     fetchRecipes();
   }, []);
 
+  useEffect(() => {
+    console.log('isEditing state changed:', isEditing);
+  }, [isEditing]);
+
 
   async function fetchRecipes() {
     const response = await prop.getUserRecipes(globalUser);
@@ -46,6 +50,10 @@ function RecipeList(prop: any) {
     }
   };
 
+  const handleBackClick = () => {
+    setSelectedRecipe(null);
+  };
+
   async function handleUpdateRecipe(editedRecipe: any) {
     try {
       // Make the update request and handle the response
@@ -58,7 +66,7 @@ function RecipeList(prop: any) {
       });
 
       setSelectedRecipe(null);
-
+      setIsEditing(false);
       return response;
     } catch (error) {
       console.error(error);
@@ -75,6 +83,7 @@ function RecipeList(prop: any) {
             isEditing={isEditing}
             handleEditClick={handleEditClick}
             fetchRecipes={fetchRecipes}
+            handleBackClick={handleBackClick}
           />
         ) : (
           <div>
