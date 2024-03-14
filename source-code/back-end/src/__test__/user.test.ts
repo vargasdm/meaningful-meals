@@ -24,7 +24,6 @@ const mockGetUserByUsername = jest.fn((username) => {
   try {
     userTable.forEach((user) => {
       if (user.username == username) {
-        console.log(user);
         return user;
       }
     });
@@ -35,7 +34,7 @@ const mockGetUserByUsername = jest.fn((username) => {
   return null;
 });
 
-const mockPostUser = jest.fn((item) => {
+const mockCreateUser = jest.fn((item) => {
   try {
     userTable.push(item);
     return item;
@@ -48,7 +47,7 @@ const mockPostUser = jest.fn((item) => {
 
 const userService = UserService({
   getUserByUsername: mockGetUserByUsername,
-  postUser: mockPostUser,
+  createUser: mockCreateUser,
 });
 
 describe("Login Tests", () => {
@@ -74,7 +73,7 @@ describe("Login Tests", () => {
     // Arrange
     const username = "unknownUser";
     const password = "TestPass1";
-    const expected = null;
+    const expected = "USER DOES NOT EXIST";
 
     // ACT
     const result = await userService.validateLogin({
@@ -83,19 +82,23 @@ describe("Login Tests", () => {
     });
 
     // Assert
-    expect(result).toBe(expected);
+    expect(result.isValid).toBe(false);
+    expect(result.errors.find(error => error===expected)).toBeTruthy();
   });
 
   // login fails for empty data
   test("Fail with empty data.", async () => {
     // Arrange
-    const expected = null;
+    const expected1 = "USERNAME IS NULL";
+    const expected2 = "PASSWORD IS NULL";
 
     // ACT
     const result = await userService.validateLogin({});
 
     // Assert
-    expect(result).toBe(expected);
+    expect(result.isValid).toBe(false);
+    expect(result.errors.find(error => error===expected1)).toBeTruthy();
+    expect(result.errors.find(error => error===expected2)).toBeTruthy();
   });
 
   // check for data type
@@ -125,7 +128,6 @@ describe("Register Tests", () => {
     // Arrange
     const username = "testregistration";
     const password = "TestPass1";
-    const expected = null;
 
     // ACT
     const result = await userService.validateRegistration({
@@ -134,6 +136,6 @@ describe("Register Tests", () => {
     });
 
     // Assert
-    expect(result.isValid).toBe(false);
+    expect(result.errors.find((error) => error === "USER EXISTS")).toBeTruthy();
   });
 });

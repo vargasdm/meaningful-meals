@@ -95,7 +95,6 @@ export default function (database: any) {
 	// Fails if contains:
 	// empty spaces
 	// less than 8 characters
-	// missing atleast 1 uppercase, 1 lowercase, 1 number, and 1 special character
 	function validatePassword(password: string): boolean {
 		if (password.trim().length === 0 || password.length < 8) {
 			return false;
@@ -124,7 +123,7 @@ export default function (database: any) {
 	async function userExists(username: string) {
 		try {
 			const users = await database.getUserByUsername(username);
-			return users.length === 1;
+			return users && users.length === 1;
 		} catch (err) {
 			if (err instanceof UserDoesNotExistError) {
 				return false;
