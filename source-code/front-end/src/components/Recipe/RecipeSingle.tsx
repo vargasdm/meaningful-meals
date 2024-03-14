@@ -15,7 +15,7 @@ interface Recipe {
   title: string;
   ingredients: string[];
   instructions: string[];
-  // Add other properties as needed
+
 }
 
 const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
@@ -57,7 +57,7 @@ const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
         instructions: editedRecipe.instructions,
         user: globalUser,
       });
-  
+
       let response = await axios.put(`${URL}/update`, {
         id: editedRecipe.id,
         title: editedRecipe.title,
@@ -65,7 +65,7 @@ const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
         instructions: editedRecipe.instructions,
         user: globalUser,
       });
-  
+
       console.log(response);
       return response;
     } catch (error) {
