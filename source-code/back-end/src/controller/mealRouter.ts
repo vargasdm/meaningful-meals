@@ -13,10 +13,6 @@ router.post('/', async (req: any, res: any) => {
 		req.body.recipeID,
 		req.body.date
 	);
-	// if (!(await mealService.validateMeal(req.body.userID, req.body.recipeID))) {
-	// 	res.sendStatus(500);
-	// 	return;
-	// }
 
 	if (!validation.isValid) {
 		res.status(400).json({ errors: validation.errors });
@@ -25,7 +21,6 @@ router.post('/', async (req: any, res: any) => {
 
 	try {
 		await mealService.createMeal(
-			// req.body.mealID,
 			req.body.userID,
 			req.body.recipeID,
 			req.body.date

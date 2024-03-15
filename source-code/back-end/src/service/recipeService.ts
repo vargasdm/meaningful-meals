@@ -26,7 +26,7 @@ async function getRecipe(id: string) {
 		`${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
 		`&includeNutrition=true`
 	);
-	// console.log(JSON.stringify(result.data));
+
 	return result.data;
 }
 
@@ -37,7 +37,6 @@ async function recipeExists(id: string): Promise<boolean> {
 	}
 
 	const recipe = await getRecipe(id);
-	// console.log(`data: ${JSON.stringify(data)}`);
 	return recipe;
 }
 

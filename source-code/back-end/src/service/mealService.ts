@@ -31,31 +31,21 @@ async function validateMeal(
 		return validation;
 	}
 
-	// return await userService.userExistsByID(userID)
-	// 	&& await recipeService.recipeExists(recipeID);
 	validation.isValid = true;
 	return validation;
 }
 
 async function createMeal(
-	// mealID: string,
 	userID: string,
 	recipeID: string,
 	date: string
 ) {
-	// if (await validateMeal(userID, recipeID)) {
-	// 	return true;
-	// }
-
 	await mealDAO.createMeal(
-		// mealID,
 		uuid(),
 		userID,
 		recipeID,
 		date
 	);
-
-	// return false;
 }
 
 export default {
