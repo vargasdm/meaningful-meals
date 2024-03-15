@@ -5,15 +5,18 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store, { persistor } from "./store/store";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import LoginContainer from "./components/Login/LoginContainer";
 import RegisterContainer from "./components/Register/RegisterContainer";
 import Recipe, { loader as recipeLoader } from "./components/Recipe/Recipe";
-import Error from "./components/Error";
 import SearchContainer from "./components/Search/SearchContainer";
 import RecipeContainer from "./components/Recipe/RecipeContainer";
-import Profile, { loader as profileLoader } from './components/Profile/Profile';
+import Error from "./components/Error";
 import RecipeSingle from "./components/Recipe/RecipeSingle";
+import Profile, { loader as profileLoader } from './components/Profile/Profile';
 import NewRecipeContainer from "./components/Recipe/NewRecipeContainer";
+import MealPlan from './components/MealPlan/MealPlan';
+
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -69,6 +72,10 @@ const router = createBrowserRouter([
 				element: <LoginContainer />,
 			},
 			{
+				path: '/plan',
+				element: <MealPlan />
+			},
+			{
 				path: "/register",
 				element: <RegisterContainer />,
 			},
@@ -90,6 +97,10 @@ const router = createBrowserRouter([
 				path: '/profile',
 				element: <Profile />,
 				loader: profileLoader
+			},
+			{
+				path: '/search',
+				element: <SearchContainer />
 			}
 		],
 	},
