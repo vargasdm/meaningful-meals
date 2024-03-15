@@ -5,7 +5,7 @@
 	align-items: stretch;
 }
 
-.calendar-day {
+.meal-plan-day {
 	flex-grow: 1;
 	flex-shrink: 1;
 }

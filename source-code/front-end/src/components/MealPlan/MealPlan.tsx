@@ -1,4 +1,4 @@
-import WeeklyCalendar from "./WeeklyCalendar";
+import MealPlanWeek from "./MealPlanWeek";
 import './MealPlan.css';
 
 export default function MealPlan() {
@@ -6,7 +6,7 @@ export default function MealPlan() {
 	return (
 		<>
 			{/* Meal Plan */}
-			<WeeklyCalendar />
+			<MealPlanWeek />
 		</>
 	);
 }
