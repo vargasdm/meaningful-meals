@@ -16,9 +16,26 @@ function RecipeContainer() {
     }
   }
 
+  async function handleRemoveRecipe(recipeId: string) {
+    console.log(recipeId);
+
+    try {
+      // Make the delete request with the correct URL format
+      const response = await axios.delete(`${URL}/delete/${recipeId}`);
+
+      // Handle the response as needed
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
-      <RecipeList getUserRecipes={getUserRecipes} />
+      <RecipeList
+        getUserRecipes={getUserRecipes}
+        handleRemoveRecipe={handleRemoveRecipe}
+      />
     </div>
   );
 }

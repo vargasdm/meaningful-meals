@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { authenticateNoToken } from "../util/authenticateToken";
-import { validateRecipeBody } from "../util/authenticateBody";
+import { validateRecipeBody, validateRecipeID } from "../util/authenticateBody";
 
 import express from "express";
 const router = express.Router();
@@ -40,44 +40,54 @@ router.get("/user-recipes/:username", async (req: any, res: any) => {
   }
 });
 
-router.put(
-	"/update",
-  validateRecipeBody,
-	async (req: any, res: any) => {
-		console.log('recipeRouter.post(/update)...');
-    console.log(req.body);
-    
-		const data = await recipeService.putRecipe(req.body);
+router.put("/update", validateRecipeBody, async (req: any, res: any) => {
+  console.log("recipeRouter.post(/update)...");
+  console.log(req.body);
 
-		if (data) {
-			logger.info(`Updated Recipe: ${data.title}`);
-			res.status(201).json({ message: `Recipe Updated Successfully` });
-		} else {
-			res.status(401).json({
-				message: "Recipe was not updated. Invalid Inputs.",
-			});
-		}
-	}
-);
+  const data = await recipeService.putRecipe(req.body);
 
-router.post(
-	"/create",
-  validateRecipeBody,
-	async (req: any, res: any) => {
-		console.log('recipeRouter.post(/create)...');
-    console.log(req.body);
-    
-		const data = await recipeService.createRecipe(req.body);
+  if (data) {
+    logger.info(`Updated Recipe: ${data.title}`);
+    res.status(201).json({ message: `Recipe Updated Successfully` });
+  } else {
+    res.status(401).json({
+      message: "Recipe was not updated. Invalid Inputs.",
+    });
+  }
+});
 
-		if (data) {
-			logger.info(`New Recipe: ${data.title}`);
-			res.status(201).json({ message: `New Recipe Created Successfully` });
-		} else {
-			res.status(401).json({
-				message: "Recipe was not created. Invalid Inputs.",
-			});
-		}
-	}
-);
+router.post("/create", validateRecipeBody, async (req: any, res: any) => {
+  console.log("recipeRouter.post(/create)...");
+  console.log(req.body);
+
+  const data = await recipeService.createRecipe(req.body);
+
+  if (data) {
+    logger.info(`New Recipe: ${data.title}`);
+    res.status(201).json({ message: `New Recipe Created Successfully` });
+  } else {
+    res.status(401).json({
+      message: "Recipe was not created. Invalid Inputs.",
+    });
+  }
+});
+
+router.delete("/user-recipes/delete/:id", validateRecipeID, async (req: any, res: any) => {
+  console.log(req.params);
+
+  const idParam = req.params;
+
+  const data = await recipeService.deleteRecipe(idParam);
+
+  if (data) {
+    logger.info(`Deleted Recipe: ${data.title}`);
+    res.status(201).json({ message: `Recipe Deleted Successfully` });
+  } else {
+    res.status(401).json({
+      message: "Recipe was not deleted. Invalid Inputs.",
+    });
+  }
+
+});
 
 export default router;

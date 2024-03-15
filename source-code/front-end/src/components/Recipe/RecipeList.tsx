@@ -49,6 +49,22 @@ function RecipeList(prop: any) {
     setSelectedRecipe(null);
   };
 
+  const handleDeleteClick = async (recipeId: any) => {
+console.log(recipeId);
+
+    try {
+      const response = await prop.handleRemoveRecipe(recipeId);
+      console.log(response);
+
+      if (response) {
+        console.log("Deleted Recipe:", recipeId);
+        fetchRecipes();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   async function handleUpdateRecipe(editedRecipe: any) {
     try {
       // Make the update request and handle the response
@@ -67,6 +83,10 @@ function RecipeList(prop: any) {
       console.error(error);
     }
   }
+
+
+
+
 
   return (
     <>
@@ -94,6 +114,7 @@ function RecipeList(prop: any) {
                     >
                       {recipe.title}
                     </Link>
+                    <button onClick={() => handleDeleteClick(recipe.id)}>Remove Recipe</button>
                   </h1>
                 </div>
               ))
