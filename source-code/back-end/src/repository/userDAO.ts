@@ -75,4 +75,4 @@ async function createUser(Item: any) {
 	// return null;
 }
 
-export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById };
+export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById:getUserById };
