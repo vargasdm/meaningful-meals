@@ -1,0 +1,11 @@
+.weekly-calendar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+}
+
+.calendar-day {
+	flex-grow: 1;
+	flex-shrink: 1;
+}

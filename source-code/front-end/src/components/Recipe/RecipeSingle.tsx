@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 
-type CleanedRootState = Omit<RootState, "_persist">;
+// type CleanedRootState = Omit<RootState, "_persist">;
 
 interface RecipeSingleProps {
   selectedRecipe: any;

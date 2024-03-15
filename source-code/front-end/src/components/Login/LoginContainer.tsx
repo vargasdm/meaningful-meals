@@ -14,15 +14,23 @@ function LoginContainer() {
 
 	async function handleLogin(user: any) {
 		try {
-			let response = await axios.post(`${URL}/login`, {
+			let res = await axios.post(`${URL}/login`, {
 				username: user.username,
 				password: user.password,
 			});
 
-			console.log(response.data);
+			console.log(res.data);
 
-			if (response) {
-				dispatch(userActions.loginUser({ username: user.username }));
+			if (res) {
+				dispatch(userActions.loginUser({
+					// This should set the user slice state in the Redux store
+					// to those received in the res. The JWT is essential for
+					// making authorized requests!
+					userID: res.data.user_id,
+					username: res.data.username,
+					jwt: res.data.token
+				}));
+
 				return redirect("/");
 			}
 		} catch (error) {

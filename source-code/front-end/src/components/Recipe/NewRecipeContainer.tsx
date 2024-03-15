@@ -1,6 +1,6 @@
 import React from "react";
 import RecipeContainer from "./RecipeContainer";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
-type CleanedRootState = Omit<RootState, "_persist">;
+// type CleanedRootState = Omit<RootState, "_persist">;
 
 function NewRecipeContainer() {
-  const userState = useSelector((state: CleanedRootState) => state.user);
+  const userState = useSelector((state: any) => state.user);
 
   let globalUser = userState.username;
 

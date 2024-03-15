@@ -7,9 +7,9 @@ import { logger } from "../util/logger";
 import type { Validation } from '../util/response';
 const router = express.Router();
 
-import UserService from "../service/userService";
+import createUserService from "../service/userService";
 import userDAO from "../repository/userDAO";
-const userService = UserService(userDAO);
+const userService = createUserService(userDAO);
 
 router.post("/login", async (req: any, res: any) => {
 	try {

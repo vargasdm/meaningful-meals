@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
 import axios from "axios";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
-type CleanedRootState = Omit<RootState, "_persist">;
+// type CleanedRootState = Omit<RootState, "_persist">;
 
 // interface RecipeListProps {
 //   getUserRecipes: (user: string) => Promise<any>;
@@ -19,7 +19,7 @@ function RecipeList(prop: any) {
   const [isEditing, setIsEditing] = useState(false);
   // console.log(selectedRecipe);
 
-  const userState = useSelector((state: CleanedRootState) => state.user);
+  const userState = useSelector((state: any) => state.user);
 
   let globalUser = userState.username;
 
