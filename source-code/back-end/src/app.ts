@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import recipeRouter from "./controller/recipeRouter";
 import userRouter from "./controller/userRouter";
+import favoritesRouter from "./controller/favoritesRouter";
 import { logger } from "./util/logger";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/recipes", recipeRouter);
 app.use("/user", userRouter);
+app.use("/favorite", favoritesRouter);
 
 app.use((req, res, next) => {
   logger.info(`Incoming ${req.method} : ${req.url}`);

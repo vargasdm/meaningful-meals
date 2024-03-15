@@ -2,28 +2,27 @@ import FavoriteService from "../service/favoriteService";
 
 let favoritesContentTable = [
   {
-    content_id: "content_id_1",
+    content_id: "1",
     content: "Random Content 1",
   },
   {
-    content_id: "content_id_2",
+    content_id: "2",
     content: "Random Content 2",
   },
   {
-    content_id: "content_id_3",
+    content_id: "3",
     content: "Random Content 3",
   },
 ];
 
 let favoriteTable = [
-  { favorite_id: "1", content_id: "content_id_1", user_id: "test_user_id_1" },
-  { favorite_id: "2", content_id: "content_id_2", user_id: "test_user_id_2" },
-  { favorite_id: "3", content_id: "content_id_3", user_id: "test_user_id_3" },
+  { favorite_id: "1", content_id: "1", user_id: "1" },
+  { favorite_id: "2", content_id: "2", user_id: "2" },
+  { favorite_id: "3", content_id: "3", user_id: "3" },
 ];
 
 const mockCreateFavorite = jest.fn(async (input) => {
   try {
-    console.log(input);
     favoriteTable.push(input);
     return input;
   } catch (err) {
@@ -69,14 +68,13 @@ const mockGetFavoriteByUserAndContent = jest.fn(async (input) => {
 
 const mockGetFavoritesByUserId = jest.fn(async (input) => {
   try {
-    let data: any;
-    console.log(favoriteTable);
+    let data: any[] = [];
     favoriteTable.forEach((item) => {
-      if (item.user_id === input.user_id) {
-        console.log(item);
-        data = item;
+      if (item.user_id === input) {
+        data.push(item);
       }
     });
+
     return data;
   } catch (err) {
     throw new Error(`Unable to post item. Error: ${err}`);
@@ -87,13 +85,13 @@ const mockGetFavoritesByUserId = jest.fn(async (input) => {
 
 const mockGetFavoritesByContentId = jest.fn(async (input) => {
   try {
-    let data: any;
-    console.log(favoriteTable);
+    let data: any[] = [];
     favoriteTable.forEach((item) => {
-      if (item.content_id === input.content_id) {
-        data = item;
+      if (item.content_id === input) {
+        data.push(item);
       }
     });
+
     return data;
   } catch (err) {
     throw new Error(`Unable to post item. Error: ${err}`);
@@ -172,62 +170,89 @@ const favoriteService = FavoriteService(favoriteDAO, userDao);
 describe("Favorite Test", () => {
   test("User can favorite content", async () => {
     // Arrange
-    const input = { user_id: "test_user_id_4", content_id: "content_id_1" };
-    const expected = "User liked content";
+    const input = { user_id: "3", content_id: "1" };
     // Act
     const valid = await favoriteService.validateInputFavorite(input);
-    console.log(favoriteTable);
-    if(!valid.isValid) {
-      return
+    if (!valid.isValid) {
+      expect(true).toBe(false);
+      return;
     }
+
+    const process = await favoriteService.createFavorite(input);
+
     const result = await favoriteService.getUserFavorites(input.user_id);
 
     let userId: string = "";
     let contentId: string = "";
 
-    console.log(favoriteTable)
-    console.log(result);
-
-    result.forEach((favorite) => {
-      if (!favorite) {
-        return;
-      }
-      if (
-        favorite.user_id === input.user_id &&
-        favorite.content_id === input.content_id
-      ) {
-        userId = favorite.user_id;
-        contentId = favorite.content_id;
-      }
-    });
+    if (result) {
+      result.forEach((favorite) => {
+        if (
+          favorite.user_id === input.user_id &&
+          favorite.content_id === input.content_id
+        ) {
+          userId = favorite.user_id;
+          contentId = favorite.content_id;
+        }
+      });
+    }
 
     // Assert
     expect(userId).toBe(input.user_id);
     expect(contentId).toBe(input.content_id);
   });
-  test("User can only favorite valid content id's", async () => {
+  test("User can only favorite content once", async () => {
     // Arrange
-    const input = { user_id: "test_user_id_1", content_id: "Not Valid" };
+    const input = { user_id: "3", content_id: "3" };
+    const expected = "FAVORITE ALREADY EXISTS";
     // Act
-    //const result = socialMediaService.postLike(input);
-    // Assert
-    //expect(result).toBeNull();
+    const result = await favoriteService.validateInputFavorite(input);
+
+    expect(result.isValid).toBe(false);
+    expect(result.errors.find((error) => error === expected)).toBe(expected);
   });
   test("User can delete their favorite", async () => {
     // Arrange
-    const input = { user_id: "test_user_id_3", like_id: 3 };
-    const expected = "User liked content";
+    const input = { user_id: "3", content_id: "3" };
     // Act
-    ///const result = socialMediaService.deleteLike(input);
+    const valid = await favoriteService.validateUpdateFavorite(input);
+    if (!valid.isValid) {
+      expect(true).toBe(false);
+      return;
+    }
+    const process = await favoriteService.deleteFavorite(input);
+
+    const result = await favoriteService.getUserFavorites(input.user_id);
+
+    let userId: any = undefined;
+    let contentId: any = undefined;
+
+    if (result) {
+      result.forEach((favorite) => {
+        if (
+          favorite.user_id === input.user_id &&
+          favorite.content_id === input.content_id
+        ) {
+          userId = favorite.user_id;
+          contentId = favorite.content_id;
+        }
+      });
+    }
+
     // Assert
-    //expect(result).toBe(expected);
+    expect(userId).toBe(undefined);
+    expect(contentId).toBe(undefined);
   });
   test("User cannot delete other user's likes", async () => {
     // Arrange
-    const input = { user_id: "test_user_id_1", like_id: 2 };
+    const input = { user_id: "3", content_id: "2" };
+    const expected = "FAVORITE DOES NOT EXISTS";
+
     // Act
-    //const result = socialMediaService.deleteLike(input);
+    const result = await favoriteService.validateUpdateFavorite(input);
+
     // Assert
-    //expect(result).toBeNull();
+    expect(result.isValid).toBe(false);
+    expect(result.errors.find((error) => error === expected)).toBe(expected);
   });
 });

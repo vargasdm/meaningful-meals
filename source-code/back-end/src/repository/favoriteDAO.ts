@@ -30,7 +30,9 @@ async function createFavorite(Item: favorite) {
   await documentClient.send(command);
 }
 
-async function getFavoriteByUserAndContent(input: favoriteNoId): Promise<favorite> {
+async function getFavoriteByUserAndContent(
+  input: favoriteNoId
+): Promise<favorite> {
   const command = new QueryCommand({
     TableName,
     IndexName: "user_id-content_id-index",
@@ -68,8 +70,28 @@ async function getFavoritesByUserId(input: string): Promise<favorite[]> {
   }
 }
 
+async function getFavoritesByContentId(input: string): Promise<favorite[]> {
+  const command = new QueryCommand({
+    TableName,
+    IndexName: "user_id-content_id-index",
+    KeyConditionExpression: "#c = :c",
+    ExpressionAttributeNames: { "#c": "content_id" },
+    ExpressionAttributeValues: { ":c": input },
+  });
+
+  try {
+    const data: any = await documentClient.send(command);
+    return data.Items;
+  } catch (err) {
+    console.error(err);
+    logger.error(err);
+    throw err;
+  }
+}
+
 export default {
   createFavorite: createFavorite,
   getFavoriteByUserAndContent: getFavoriteByUserAndContent,
   getFavoritesByUserId: getFavoritesByUserId,
+  getFavoritesByContentId: getFavoritesByContentId,
 };
