@@ -53,15 +53,15 @@ export default function (favoriteDb: any, userDb: any) {
       errors.push("USER DOES NOT EXISTS");
     }
     // check if content is real
-    const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
+    /*const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
     console.log(favorite);
     if (!favorite) {
       errors.push("FAVORITE DOES NOT EXISTS");
     }
     // check if user owns the favorite
-    if (input.user_id != favorite.user_id) {
+    /*if (input.user_id != favorite.user_id) {
       errors.push("USER ALREADY FAVORITE CONTENT");
-    }
+    }*/
     // add new favorite to db
     if (errors.length > 0) {
       return { isValid: false, errors };

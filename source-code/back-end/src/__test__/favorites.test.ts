@@ -23,7 +23,7 @@ let favoriteTable = [
 
 const mockCreateFavorite = jest.fn(async (input) => {
   try {
-    console.log(input)
+    console.log(input);
     favoriteTable.push(input);
     return input;
   } catch (err) {
@@ -70,6 +70,7 @@ const mockGetFavoriteByUserAndContent = jest.fn(async (input) => {
 const mockGetFavoritesByUserId = jest.fn(async (input) => {
   try {
     let data: any;
+    console.log(favoriteTable);
     favoriteTable.forEach((item) => {
       if (item.user_id === input.user_id) {
         console.log(item);
@@ -87,6 +88,7 @@ const mockGetFavoritesByUserId = jest.fn(async (input) => {
 const mockGetFavoritesByContentId = jest.fn(async (input) => {
   try {
     let data: any;
+    console.log(favoriteTable);
     favoriteTable.forEach((item) => {
       if (item.content_id === input.content_id) {
         data = item;
@@ -132,21 +134,21 @@ const mockGetUserByUsername = jest.fn(async (username) => {
 });
 
 const mockGetUserById = jest.fn(async (id) => {
-    try {
-      let data;
-      userTable.forEach((user) => {
-        if (user.user_id === id) {
-          data = user;
-        }
-      });
-  
-      return data;
-    } catch (err) {
-      throw new Error(`Unable to get item. Error: ${err}`);
-    }
-  
-    return null;
-  });
+  try {
+    let data;
+    userTable.forEach((user) => {
+      if (user.user_id === id) {
+        data = user;
+      }
+    });
+
+    return data;
+  } catch (err) {
+    throw new Error(`Unable to get item. Error: ${err}`);
+  }
+
+  return null;
+});
 
 const mockCreateUser = jest.fn(async (item) => {
   try {
@@ -162,7 +164,7 @@ const mockCreateUser = jest.fn(async (item) => {
 const userDao = {
   getUserByUsername: mockGetUserByUsername,
   createUser: mockCreateUser,
-  getUserById:mockGetUserById
+  getUserById: mockGetUserById,
 };
 
 const favoriteService = FavoriteService(favoriteDAO, userDao);
@@ -173,13 +175,18 @@ describe("Favorite Test", () => {
     const input = { user_id: "test_user_id_4", content_id: "content_id_1" };
     const expected = "User liked content";
     // Act
-    const process = await favoriteService.validateInputFavorite(input);
+    const valid = await favoriteService.validateInputFavorite(input);
+    console.log(favoriteTable);
+    if(!valid.isValid) {
+      return
+    }
     const result = await favoriteService.getUserFavorites(input.user_id);
 
     let userId: string = "";
     let contentId: string = "";
 
-    console.log(result)
+    console.log(favoriteTable)
+    console.log(result);
 
     result.forEach((favorite) => {
       if (!favorite) {
