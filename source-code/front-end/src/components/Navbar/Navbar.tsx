@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import { RootState } from "../../store/store";
 import { userActions } from "../../store/slices/userSlice";
 // export type CleanedRootState = Omit<RootState, "_persist">;
+import './Navbar.css';
 
 function Navbar() {
 	const userState = useSelector((state: any) => state.user); // Access the user state from the global state

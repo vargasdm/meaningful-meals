@@ -6,14 +6,14 @@ import {
 	QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { logger } from "../util/logger";
+import { UserDoesNotExistError } from "../util/errors";
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
 const documentClient = DynamoDBDocumentClient.from(client);
 const TableName: string = process.env.USERS_TABLE as string;
 
-// This should return the array of all users who have the given username.
-// If such a user exists, the array should be of length one.
-// Otherwise, it should be of length zero.
+// This should return the user who has the given username.
+// Otherwise, it should throw a UserDoesNotExistError
 async function getUserByUsername(username: string) {
 	const command = new QueryCommand({
 		TableName,
@@ -24,8 +24,14 @@ async function getUserByUsername(username: string) {
 	});
 
 	try {
-		const data: any = await documentClient.send(command);
-		return data.Items[0];
+		const users: any = (await documentClient.send(command)).Items;
+		// console.log(users);
+
+		if(users.length !== 1){
+			throw new UserDoesNotExistError();
+		}
+
+		return users[0];
 	} catch (err) {
 		console.error(err);
 		logger.error(err);

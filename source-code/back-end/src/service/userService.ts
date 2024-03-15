@@ -4,7 +4,7 @@ import type { Validation } from '../util/response';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
 
-export default function (database: any) {
+export default function createUserService(dao: any) {
 	function validateCredentials(credentials: any): Validation {
 		const errors: string[] = [];
 	
@@ -112,18 +112,19 @@ export default function (database: any) {
 	}
 	
 	async function getUserByUsername(username: string) {
-		const users = await database.getUserByUsername(username);
+		const user = await dao.getUserByUsername(username);
+		// console.log(user);
 	
-		if (users.length !== 1) {
-			throw new UserDoesNotExistError();
-		}
+		// if (user.length !== 1) {
+		// 	throw new UserDoesNotExistError();
+		// }
 	
-		return users[0];
+		return user;
 	}
 	
 	async function userExists(username: string) {
 		try {
-			const user = await database.getUserByUsername(username);
+			const user = await dao.getUserByUsername(username);
 			return user && user.user_id && user.username && user.password;
 		} catch (err) {
 			if (err instanceof UserDoesNotExistError) {
@@ -136,7 +137,7 @@ export default function (database: any) {
 	
 	async function createUser(user: any) {
 		try {
-			await database.createUser({
+			await dao.createUser({
 				user_id: uuid(),
 				username: user.username,
 				password: await bcrypt.hash(user.password, 10),
