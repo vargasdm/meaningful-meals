@@ -1,5 +1,7 @@
 // endpoint: /user
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
 import jwt from "jsonwebtoken";
 import { logger } from "../util/logger";

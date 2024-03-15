@@ -1,4 +1,6 @@
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
 	DynamoDBDocumentClient,
@@ -47,8 +49,15 @@ async function getUserById(userId: string) {
 	});
 
 	try {
-		const data: any = await documentClient.send(command);
-		return data.Items[0];
+		// const data: any = await documentClient.send(command);
+		// return data.Items[0];
+		const users: any = (await documentClient.send(command)).Items;
+
+		if(users.length !== 1){
+			throw new UserDoesNotExistError();
+		}
+
+		return users[0];
 	} catch (err) {
 		console.error(err);
 		logger.error(err);

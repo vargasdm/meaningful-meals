@@ -33,7 +33,7 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 
 		calendarDays.push(
 			<MealPlanDay
-				key={DAY_NAMES[i]}
+				key={date.toString()}
 				dayName={DAY_NAMES[i]}
 				dateOfTheMonth={date.getDate()}
 				month={date.getMonth()}

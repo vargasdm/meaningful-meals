@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import recipeRouter from "./controller/recipeRouter";
 import userRouter from "./controller/userRouter";
+import mealRouter from './controller/mealRouter';
 import { logger } from "./util/logger";
 
 const app = express();
@@ -17,12 +18,13 @@ app.use(express.json());
 
 app.use("/recipes", recipeRouter);
 app.use("/user", userRouter);
+app.use('/meals', mealRouter);
 
 app.use((req, res, next) => {
-  logger.info(`Incoming ${req.method} : ${req.url}`);
-  next();
+	logger.info(`Incoming ${req.method} : ${req.url}`);
+	next();
 });
 
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}.`);
+	console.log(`Server listening on port ${PORT}.`);
 });
