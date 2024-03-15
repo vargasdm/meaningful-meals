@@ -66,10 +66,19 @@ async function createRecipe(receivedData: any) {
   return data ? data : null;
 }
 
+async function deleteRecipe(receivedData: any) {
+  console.log(receivedData);
+  
+  let data = await recipeDAO.deleteRecipe(receivedData);
+  console.log(data);
+  return data ? data : null;
+}
+
 export default {
   searchRecipes,
   getRecipe,
   getUserRecipes,
   putRecipe,
-  createRecipe
+  createRecipe,
+  deleteRecipe
 };

@@ -113,7 +113,7 @@ function RecipeList(prop: any) {
                     >
                       {recipe.title}
                     </Link>
-                    <button onClick={() => handleSubmit(recipe.id)}>Remove</button>
+                    <button onClick={() => handleSubmit(recipe.id)}>Remove Recipe</button>
                   </h1>
                 </div>
               ))
