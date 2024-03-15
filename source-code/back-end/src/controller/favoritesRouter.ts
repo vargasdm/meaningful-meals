@@ -9,8 +9,7 @@ const router = express.Router();
 import FavoriteService from "../service/favoriteService";
 import * as favoriteDAO from "../repository/favoriteDAO";
 import * as userDAO from "../repository/userDAO";
-import * as recipeDAO from "../repository/recipeDAO";
-const favoriteService = FavoriteService(favoriteDAO, recipeDAO, userDAO);
+const favoriteService = FavoriteService(favoriteDAO, userDAO);
 
 /**
  * postlike
@@ -27,7 +26,7 @@ const favoriteService = FavoriteService(favoriteDAO, recipeDAO, userDAO);
 
 router.post("/", async (req: any, res: any) => {
   try {
-    const validation: Validation = await favoriteService.validateAddFavorite(
+    const validation: Validation = await favoriteService.validateInputFavorite(
       req.body
     );
 
@@ -47,7 +46,7 @@ router.post("/", async (req: any, res: any) => {
 
 router.delete("/", async (req: any, res: any) => {
   try {
-    const validation: Validation = await favoriteService.validateDeleteFavorite(
+    const validation: Validation = await favoriteService.validateUpdateFavorite(
       req.body
     );
 
@@ -72,9 +71,9 @@ router.get("/", async (req: any, res: any) => {
     let validation: Validation = { isValid: false, errors: []};
 
     if (user) {
-      validation = await favoriteService.validateUserId(user);
+      validation = await favoriteService.validateId(user);
     } else if (content) {
-      validation = await favoriteService.validateContentId(content);
+      validation = await favoriteService.validateId(content);
     } 
 
     if (!validation.isValid) {

@@ -1,5 +1,3 @@
-import { v4 as uuid } from "uuid";
-
 let contentTable = [
   {
     content_id: "content_id_1",
@@ -15,11 +13,7 @@ let contentTable = [
   },
 ];
 
-let likesTable = [
-  { like_id: "1", content_id: "content_id_1", user_id: "test_user_id_1" },
-  { like_id: "2", content_id: "content_id_2", user_id: "test_user_id_2" },
-  { like_id: "3", content_id: "content_id_3", user_id: "test_user_id_3" },
-];
+let likesTable: any[] = [];
 
 let commentsTable = [
   {

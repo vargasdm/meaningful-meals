@@ -2,18 +2,20 @@ import { UserDoesNotExistError } from "../util/errors";
 import type { Validation } from "../util/response";
 import { v4 as uuid } from "uuid";
 
-type addFavoriteInput = {
+type favoriteInput = {
   user_id: string;
   content_id: string;
 };
-type deleteFavoriteInput = {
+
+type favorite = {
   favorite_id: string;
   user_id: string;
+  content_id: string;
 };
 
-export default function (favoriteDb: any, recipeDb: any, userDb: any) {
-  async function validateAddFavorite(
-    input: addFavoriteInput
+export default function (favoriteDb: any, userDb: any) {
+  /*async function validateAddFavorite(
+    input: favoriteInput
   ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
@@ -35,14 +37,12 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     }
 
     return { isValid: true, errors: [] };
-  }
+  }*/
 
-  async function validateDeleteFavorite(
-    input: deleteFavoriteInput
-  ): Promise<Validation> {
+  async function validateInputFavorite(input: favoriteInput): Promise<Validation> {
     const errors: string[] = [];
     // validate input
-    if (!input || !input.favorite_id || !input.user_id) {
+    if (!input || !input.content_id || !input.user_id) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
@@ -50,8 +50,36 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     if (!(await userDb.getUserById(input.user_id))) {
       errors.push("USER DOES NOT EXISTS");
     }
-    // check if favorite is real
-    const favorite = await recipeDb.getFavoriteById(input.favorite_id);
+    // check if content is real
+    const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
+    if (!favorite) {
+      errors.push("FAVORITE DOES NOT EXISTS");
+    }
+    // check if user owns the favorite
+    if (input.user_id != favorite.user_id) {
+      errors.push("USER ALREADY FAVORITE CONTENT");
+    }
+    // add new favorite to db
+    if (errors.length > 0) {
+      return { isValid: false, errors };
+    }
+
+    return { isValid: true, errors };
+  }
+
+  async function validateUpdateFavorite(input: favoriteInput): Promise<Validation> {
+    const errors: string[] = [];
+    // validate input
+    if (!input || !input.content_id || !input.user_id) {
+      errors.push("INPUTS ARE NULL");
+      return { isValid: false, errors };
+    }
+    // check if user is real
+    if (!(await userDb.getUserById(input.user_id))) {
+      errors.push("USER DOES NOT EXISTS");
+    }
+    // check if content is real
+    const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
     if (!favorite) {
       errors.push("FAVORITE DOES NOT EXISTS");
     }
@@ -67,7 +95,7 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     return { isValid: true, errors };
   }
 
-  async function validateContentId(input: string): Promise<Validation> {
+  async function validateId(input: string): Promise<Validation> {
     const errors: string[] = [];
     // validate input
     if (!input) {
@@ -76,28 +104,13 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     }
 
     if (errors.length > 0) {
-        return { isValid: false, errors };
-    }
-
-    return { isValid: true, errors };
-  }
-
-  async function validateUserId(input: string): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input) {
-      errors.push("INPUT IS NULL");
       return { isValid: false, errors };
     }
 
-    if (errors.length > 0) {
-        return { isValid: false, errors };
-    }
-
     return { isValid: true, errors };
   }
 
-  async function createFavorite(input: addFavoriteInput) {
+  async function createFavorite(input: favoriteInput) {
     try {
       await favoriteDb.createFavorite({
         favorite_id: uuid(),
@@ -109,15 +122,17 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     }
   }
 
-  async function deleteFavorite(input: deleteFavoriteInput) {
+  async function deleteFavorite(input: favoriteInput) {
     try {
+      const favoriteId = await favoriteDb.getFavoriteByUserAndContent(input);
+
       await favoriteDb.deleteFavorite(input);
     } catch (err) {
       throw err;
     }
   }
 
-  async function getUserFavorites(input: string): Promise<any> {
+  async function getUserFavorites(input: string): Promise<favorite[]> {
     try {
       return await favoriteDb.getFavoritesByUserId(input);
     } catch (err) {
@@ -125,7 +140,7 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
     }
   }
 
-  async function getContentFavorites(input: string): Promise<any> {
+  async function getContentFavorites(input: string): Promise<favorite[]> {
     try {
       return await favoriteDb.getFavoritesByContentId(input);
     } catch (err) {
@@ -134,13 +149,12 @@ export default function (favoriteDb: any, recipeDb: any, userDb: any) {
   }
 
   return {
-    validateAddFavorite,
-    validateDeleteFavorite,
-    validateContentId,
-    validateUserId,
+    validateInputFavorite,
+    validateUpdateFavorite,
+    validateId,
     createFavorite,
     deleteFavorite,
     getUserFavorites,
-    getContentFavorites
+    getContentFavorites,
   };
 }
