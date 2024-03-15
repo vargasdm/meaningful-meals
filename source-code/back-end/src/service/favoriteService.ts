@@ -39,7 +39,9 @@ export default function (favoriteDb: any, userDb: any) {
     return { isValid: true, errors: [] };
   }*/
 
-  async function validateInputFavorite(input: favoriteInput): Promise<Validation> {
+  async function validateInputFavorite(
+    input: favoriteInput
+  ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
     if (!input || !input.content_id || !input.user_id) {
@@ -52,6 +54,7 @@ export default function (favoriteDb: any, userDb: any) {
     }
     // check if content is real
     const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
+    console.log(favorite);
     if (!favorite) {
       errors.push("FAVORITE DOES NOT EXISTS");
     }
@@ -67,7 +70,9 @@ export default function (favoriteDb: any, userDb: any) {
     return { isValid: true, errors };
   }
 
-  async function validateUpdateFavorite(input: favoriteInput): Promise<Validation> {
+  async function validateUpdateFavorite(
+    input: favoriteInput
+  ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
     if (!input || !input.content_id || !input.user_id) {
@@ -126,15 +131,17 @@ export default function (favoriteDb: any, userDb: any) {
     try {
       const favoriteId = await favoriteDb.getFavoriteByUserAndContent(input);
 
-      await favoriteDb.deleteFavorite(input);
+      await favoriteDb.deleteFavorite(favoriteId);
     } catch (err) {
       throw err;
     }
   }
 
   async function getUserFavorites(input: string): Promise<favorite[]> {
+    console.log(input);
     try {
-      return await favoriteDb.getFavoritesByUserId(input);
+      const result = await favoriteDb.getFavoritesByUserId(input);
+      return result;
     } catch (err) {
       throw err;
     }
@@ -142,7 +149,8 @@ export default function (favoriteDb: any, userDb: any) {
 
   async function getContentFavorites(input: string): Promise<favorite[]> {
     try {
-      return await favoriteDb.getFavoritesByContentId(input);
+      const result = await favoriteDb.getFavoritesByContentId(input);
+      return result;
     } catch (err) {
       throw err;
     }
