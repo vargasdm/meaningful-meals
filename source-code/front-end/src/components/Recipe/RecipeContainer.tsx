@@ -5,13 +5,11 @@ const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes/user-recipes`;
 
 function RecipeContainer() {
-
-  
   async function getUserRecipes(user: string) {
     try {
       let response = await axios.get(`${URL}/${user}`);
-        console.log(response);
-        
+      console.log(response);
+
       return response;
     } catch (error) {
       console.error(error);
@@ -20,7 +18,7 @@ function RecipeContainer() {
 
   return (
     <div>
-      <RecipeList getUserRecipes={getUserRecipes}  />
+      <RecipeList getUserRecipes={getUserRecipes} />
     </div>
   );
 }

@@ -1,59 +1,75 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-const recipeDAO = require('../repository/recipeDAO.ts');
+import { v4 as uuid } from 'uuid';
+const recipeDAO = require("../repository/recipeDAO.ts");
 
-import axios from 'axios';
+import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 
 // TODO: collate API search results with those from our own database
 // TODO: use Levenshtein distance for a simple search?
 async function searchRecipes(query: string) {
-	const result = await axios.get(`https://api.spoonacular.com/recipes/`
-		+ `complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}`
-		+ `&instructionsRequired=true`);
-	// console.log(result);
-	return result.data;
+  const result = await axios.get(
+    `https://api.spoonacular.com/recipes/` +
+      `complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
+      `&instructionsRequired=true`
+  );
+  // console.log(result);
+  return result.data;
 }
 
 // TODO: union Spoonacular and local search spaces
 // i.e., if we don't find the ID with Spoonacular, then search local
 async function getRecipe(id: string) {
-	const result = await axios.get(`https://api.spoonacular.com/recipes/`
-		+ `${id}/information?apiKey=${SPOONACULAR_API_KEY}`
-		+ `&includeNutrition=true`);
-	// console.log(result);
-	return result.data;
+  const result = await axios.get(
+    `https://api.spoonacular.com/recipes/` +
+      `${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
+      `&includeNutrition=true`
+  );
+  // console.log(result);
+  return result.data;
 }
 
 async function getUserRecipes(username: string) {
-	console.log(username);
-	
-	const data : any = await recipeDAO.getRecipesByUsername(username);
+  console.log(username);
 
-	console.log(data);
-	
-	return data ? data : null;
+  const data: any = await recipeDAO.getRecipesByUsername(username);
+
+  console.log(data);
+
+  return data ? data : null;
 }
 
 async function putRecipe(receivedData: any) {
-	console.log(`recipeService.postRecipe(${JSON.stringify(receivedData)})...`);
+  console.log(`recipeService.postRecipe(${JSON.stringify(receivedData)})...`);
 
-		let data = await recipeDAO.updateRecipe({
-			id: receivedData.id,
-			title: receivedData.title,
-			ingredients: receivedData.ingredients,
-			instructions: receivedData.instructions,
-			user: receivedData.user
-		});
-		console.log(data);
-		return data ? data : null;
-	}
+  let data = await recipeDAO.updateRecipe({
+    id: receivedData.id,
+    title: receivedData.title,
+    ingredients: receivedData.ingredients,
+    instructions: receivedData.instructions,
+    user: receivedData.user,
+  });
+  console.log(data);
+  return data ? data : null;
+}
 
-
+async function createRecipe(receivedData: any) {
+  let data = await recipeDAO.postRecipe({
+    id: uuid(),
+    title: receivedData.title,
+    ingredients: receivedData.ingredients,
+    instructions: receivedData.instructions,
+    user: receivedData.user,
+  });
+  console.log(data);
+  return data ? data : null;
+}
 
 export default {
-	searchRecipes,
-	getRecipe,
-	getUserRecipes,
-	putRecipe
-}
+  searchRecipes,
+  getRecipe,
+  getUserRecipes,
+  putRecipe,
+  createRecipe
+};
