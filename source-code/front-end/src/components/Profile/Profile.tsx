@@ -1,4 +1,3 @@
-// import {useSelector} from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
 import store from '../../store/store';
 
@@ -10,9 +9,9 @@ export async function loader() {
 }
 
 export default function Profile() {
-	const globalState = store.getState();
+	const globalState = store.getState().user;
 
 	return (
-		<h1>{globalState.user.username}</h1>
+		<h1>{globalState.username}</h1>
 	);
 }
