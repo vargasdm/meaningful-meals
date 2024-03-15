@@ -8,18 +8,6 @@ let userTable = [
   { user_id: "3", username: "TestUser3", password: "TestPass1" },
 ];
 
-/*
-
-export default {
-	createUser,
-	credentialsMatch,
-	getUserByUsername,
-	userExists,
-	validateLogin,
-	validateRegistration
-};
-*/
-
 const mockGetUserByUsername = jest.fn(async (username) => {
   try {
     let data;
