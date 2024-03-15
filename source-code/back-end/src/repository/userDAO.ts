@@ -25,7 +25,6 @@ async function getUserByUsername(username: string) {
 
 	try {
 		const users: any = (await documentClient.send(command)).Items;
-		// console.log(users);
 
 		if(users.length !== 1){
 			throw new UserDoesNotExistError();
@@ -37,8 +36,6 @@ async function getUserByUsername(username: string) {
 		logger.error(err);
 		throw err;
 	}
-
-	// return null;
 }
 
 // CREATE
@@ -48,17 +45,7 @@ async function createUser(Item: any) {
 		Item
 	});
 
-	// try {
-	// 	const data = await documentClient.send(command);
-	// 	console.log('User posted.');
-	// 	return Item;
 	await documentClient.send(command);
-	// } catch (err) {
-	// 	console.error(err);
-	// 	logger.error(`Unable to read item. Error: ${err}`);
-	// }
-
-	// return null;
 }
 
 export default { createUser: createUser, getUserByUsername: getUserByUsername };

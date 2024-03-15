@@ -113,12 +113,6 @@ export default function createUserService(dao: any) {
 	
 	async function getUserByUsername(username: string) {
 		const user = await dao.getUserByUsername(username);
-		// console.log(user);
-	
-		// if (user.length !== 1) {
-		// 	throw new UserDoesNotExistError();
-		// }
-	
 		return user;
 	}
 	
