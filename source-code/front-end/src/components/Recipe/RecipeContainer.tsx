@@ -16,9 +16,24 @@ function RecipeContainer() {
     }
   }
 
+  async function handleRemoveRecipe(recipeId: any) {
+    try {
+      // Make the update request and handle the response
+      const response = await axios.put(`${URL}/delete/:${recipeId}`, {
+        id: recipeId,
+      });
+
+      // setSelectedRecipe(null);
+      // setIsEditing(false);
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
-      <RecipeList getUserRecipes={getUserRecipes} />
+      <RecipeList getUserRecipes={getUserRecipes} handleRemoveRecipe={handleRemoveRecipe} />
     </div>
   );
 }
