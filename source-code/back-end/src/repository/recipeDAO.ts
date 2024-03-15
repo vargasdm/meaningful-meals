@@ -4,7 +4,6 @@ const {
   DynamoDBDocumentClient,
   QueryCommand,
   PutCommand,
-  UpdateCommand,
   DeleteCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const client = new DynamoDBClient({ region: process.env.AWS_REGION });
@@ -78,4 +77,22 @@ async function postRecipe(recipe: any) {
   }
 }
 
-module.exports = { getRecipesByUsername, updateRecipe, postRecipe };
+async function deleteRecipe(recipe: any) {
+  console.log(recipe);
+  
+  const command = new DeleteCommand({
+    TableName: RECIPES_TABLE,
+    Key: {
+      id: recipe.id
+    },
+  });
+  try {
+    const response = await documentClient.send(command);
+    console.log("DeleteCommand executed successfully", response);
+    return response;
+  } catch (err) {
+    console.error("Error executing DeleteCommand", err);
+  }
+}
+
+module.exports = { getRecipesByUsername, updateRecipe, postRecipe, deleteRecipe };
