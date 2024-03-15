@@ -15,50 +15,14 @@ import Error from "./components/Error";
 import RecipeSingle from "./components/Recipe/RecipeSingle";
 import Profile, { loader as profileLoader } from './components/Profile/Profile';
 import NewRecipeContainer from "./components/Recipe/NewRecipeContainer";
-import MealPlan from './components/MealPlan/MealPlan';
 
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import MealPlanContainer from "./components/MealPlan/MealPlanContainer";
 
-// const persistor = persistStore(store);
-
-// export { store, persistor };
 
 const router = createBrowserRouter([
 	{
-		// 	path: "/",
-		// 	element: <App />, // This should be the root route
-		// 	errorElement: <Error />,
-		// 	children: [
-		// 		{
-		// 			path: "/",
-		// 			element: <SearchContainer />,
-		// 		},
-		// 		{
-		// 			path: "/login",
-		// 			element: <LoginContainer />,
-		// 		},
-		// 		{
-		// 			path: "/register",
-		// 			element: <RegisterContainer />,
-		// 		},
-		// 		{
-		// 			path: "/recipes/user-recipes/:username",
-		// 			element: <RecipeContainer />,
-		// 		},
-		// 		// {
-		// 		//   path: "/recipes/user-recipes/:id",
-		// 		//   element: <RecipeSingle />,
-		// 		// },
-		// 		{
-		// 			path: "/recipes/:id",
-		// 			element: <Recipe />,
-		// 			loader: recipeLoader
-		// 		},
-
-		// 	],
-		// },
-		// {
 		path: "/",
 		element: <App />, // This should be the root route
 		errorElement: <Error />,
@@ -73,7 +37,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/plan',
-				element: <MealPlan />
+				element: <MealPlanContainer />
 			},
 			{
 				path: "/register",
