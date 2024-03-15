@@ -68,4 +68,4 @@ async function createUser(Item: any) {
 	await documentClient.send(command);
 }
 
-export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById };
+export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById:getUserById };
