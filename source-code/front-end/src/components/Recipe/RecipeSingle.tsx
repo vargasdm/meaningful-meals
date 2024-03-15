@@ -1,35 +1,34 @@
 import React, { useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { RootState } from "../../store/store";
-
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/recipes`;
 
 type CleanedRootState = Omit<RootState, "_persist">;
 
 interface RecipeSingleProps {
-  recipe: any;
+  selectedRecipe: any;
+  updateRecipe: (editedRecipe: any) => Promise<any>;
+  isEditing: boolean;
+  handleEditClick: () => void; // Add handleEditClick to the interface
+  handleBackClick: () => void;
 }
+
 interface Recipe {
   title: string;
   ingredients: string[];
   instructions: string[];
-
 }
 
-const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
-  const userState = useSelector((state: CleanedRootState) => state.user);
+const RecipeSingle: React.FC<RecipeSingleProps> = ({
+  selectedRecipe,
+  updateRecipe,
+  isEditing,
+  handleEditClick,
+  handleBackClick,
+}) => {
+  const recipe = selectedRecipe;
+  console.log(selectedRecipe);
 
-  let globalUser = userState.username;
-
-  const { recipe } = props;
-  const [isEditing, setIsEditing] = useState(false);
   const [editedRecipe, setEditedRecipe] = useState(recipe);
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
   function handleInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,37 +47,15 @@ const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
     }
   }
 
-  async function updateRecipe(editedRecipe: any) {
-    try {
-      console.log({
-        id: editedRecipe.id,
-        title: editedRecipe.title,
-        ingredients: editedRecipe.ingredients,
-        instructions: editedRecipe.instructions,
-        user: globalUser,
-      });
-
-      let response = await axios.put(`${URL}/update`, {
-        id: editedRecipe.id,
-        title: editedRecipe.title,
-        ingredients: editedRecipe.ingredients,
-        instructions: editedRecipe.instructions,
-        user: globalUser,
-      });
-
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       const response = await updateRecipe(editedRecipe);
+      console.log(response);
+
       if (response) {
         console.log("Updated Recipe:", editedRecipe);
-        setIsEditing(false);
+        handleEditClick();
       }
     } catch (error) {
       console.error(error);
@@ -118,9 +95,18 @@ const RecipeSingle: React.FC<RecipeSingleProps> = (props) => {
       ) : (
         <div>
           <h2>{recipe.title}</h2>
-          <p>{recipe.ingredients}</p>
-          <p>{recipe.instructions}</p>
+          <ul>
+            {recipe.ingredients.map((ingredient: string, index: number) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+          </ul>
+          <ol>
+            {recipe.instructions.map((instruction: string, index: number) => (
+              <li key={index}>{instruction}</li>
+            ))}
+          </ol>
           <button onClick={handleEditClick}>Edit Recipe</button>
+          <button onClick={handleBackClick}>Back to My Recipes</button>
         </div>
       )}
     </div>

@@ -5,17 +5,15 @@ import { RootState } from "../../store/store";
 import { userActions } from "../../store/slices/userSlice";
 export type CleanedRootState = Omit<RootState, "_persist">;
 
-
-// will change this when I use bootstrap
-// import "./Navbar.css";
-
 function Navbar() {
   const userState = useSelector((state: CleanedRootState) => state.user); // Access the user state from the global state
   console.log(userState); // Log the current user state
   const dispatch = useDispatch(); // Get the dispatch function
 
   if (!userState) {
-    dispatch(userActions.loginUser({ username: "defaultUsername", isLoggedIn: false }));
+    dispatch(
+      userActions.loginUser({ username: "defaultUsername", isLoggedIn: false })
+    );
   }
 
   let userPathParam = userState.username;
@@ -25,8 +23,6 @@ function Navbar() {
     // Dispatch the action to update the user state when the "Logout" link is clicked
     dispatch(userActions.logoutUser());
   };
-
-  
 
   return (
     <nav>
@@ -44,12 +40,11 @@ function Navbar() {
           </li>
 
           <li>
-          <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       ) : (
         <ul>
-          <li>test to see if conditional render works</li>
           <li>
             <Link to="/login">Login</Link>
           </li>
