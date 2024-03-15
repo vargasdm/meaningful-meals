@@ -72,7 +72,7 @@ router.post("/create", validateRecipeBody, async (req: any, res: any) => {
   }
 });
 
-router.delete("/delete/:id", validateRecipeID, async (req: any, res: any) => {
+router.delete("/user-recipes/delete/:id", validateRecipeID, async (req: any, res: any) => {
   console.log(req.params);
 
   const idParam = req.params;

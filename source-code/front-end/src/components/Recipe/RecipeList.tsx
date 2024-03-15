@@ -49,7 +49,8 @@ function RecipeList(prop: any) {
     setSelectedRecipe(null);
   };
 
-  const handleSubmit = async (recipeId: any) => {
+  const handleDeleteClick = async (recipeId: any) => {
+console.log(recipeId);
 
     try {
       const response = await prop.handleRemoveRecipe(recipeId);
@@ -57,7 +58,7 @@ function RecipeList(prop: any) {
 
       if (response) {
         console.log("Deleted Recipe:", recipeId);
-        handleEditClick();
+        fetchRecipes();
       }
     } catch (error) {
       console.error(error);
@@ -113,7 +114,7 @@ function RecipeList(prop: any) {
                     >
                       {recipe.title}
                     </Link>
-                    <button onClick={() => handleSubmit(recipe.id)}>Remove Recipe</button>
+                    <button onClick={() => handleDeleteClick(recipe.id)}>Remove Recipe</button>
                   </h1>
                 </div>
               ))
