@@ -3,7 +3,7 @@ require("dotenv").config();
 import express from "express";
 import { logger } from "../util/logger";
 
-import type { Validation } from "../util/response";
+import type { Validation } from "../util/validation.type";
 const router = express.Router();
 
 import FavoriteService from "../service/favoriteService";

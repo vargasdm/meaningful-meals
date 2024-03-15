@@ -1,5 +1,5 @@
 import { UserDoesNotExistError } from '../util/errors';
-import type { Validation } from '../util/response';
+import type { Validation } from '../util/validation.type';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
 
