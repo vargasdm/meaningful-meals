@@ -5,6 +5,7 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store, { persistor } from "./store/store";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 import LoginContainer from "./components/Login/LoginContainer";
 import RegisterContainer from "./components/Register/RegisterContainer";
