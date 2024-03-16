@@ -4,6 +4,8 @@ import {
   DynamoDBDocumentClient,
   PutCommand,
   QueryCommand,
+  DeleteCommand,
+  ScanCommand
 } from "@aws-sdk/lib-dynamodb";
 import { logger } from "../util/logger";
 
@@ -30,27 +32,6 @@ async function createFavorite(Item: favorite) {
   await documentClient.send(command);
 }
 
-async function getFavoriteByUserAndContent(
-  input: favoriteNoId
-): Promise<favorite> {
-  const command = new QueryCommand({
-    TableName,
-    IndexName: "user_id-content_id-index",
-    KeyConditionExpression: "#u = :u AND #c = :c",
-    ExpressionAttributeNames: { "#u": "user_id", "#c": "content_id" },
-    ExpressionAttributeValues: { ":u": input.user_id, ":c": input.content_id },
-  });
-
-  try {
-    const data: any = await documentClient.send(command);
-    return data.Items[0];
-  } catch (err) {
-    console.error(err);
-    logger.error(err);
-    throw err;
-  }
-}
-
 async function getFavoritesByUserId(input: string): Promise<favorite[]> {
   const command = new QueryCommand({
     TableName,
@@ -70,20 +51,50 @@ async function getFavoritesByUserId(input: string): Promise<favorite[]> {
   }
 }
 
-async function getFavoritesByContentId(input: string): Promise<favorite[]> {
+async function getFavoriteByUserAndContent(
+  input: favoriteNoId
+): Promise<favorite[]> {
   const command = new QueryCommand({
     TableName,
     IndexName: "user_id-content_id-index",
-    KeyConditionExpression: "#c = :c",
-    ExpressionAttributeNames: { "#c": "content_id" },
-    ExpressionAttributeValues: { ":c": input },
+    KeyConditionExpression: "#u = :u AND #c = :c",
+    ExpressionAttributeNames: { "#c": "content_id", "#u": "user_id" },
+    ExpressionAttributeValues: { ":c": input.content_id, ":u": input.user_id },
   });
 
   try {
     const data: any = await documentClient.send(command);
     return data.Items;
   } catch (err) {
-    console.error(err);
+    logger.error(err);
+    throw err;
+  }
+}
+
+async function deleteFavorite(favoriteId: string) {
+  const command = new DeleteCommand({
+    TableName,
+    Key: {
+      favorite_id: favoriteId,
+    },
+  });
+  try {
+    const data: any = await documentClient.send(command);
+    return data.Items;
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+}
+
+async function getFavorites() {
+  const command = new ScanCommand({
+    TableName,
+  });
+  try {
+    const data: any = await documentClient.send(command);
+    return data.Items;
+  } catch (err) {
     logger.error(err);
     throw err;
   }
@@ -91,7 +102,8 @@ async function getFavoritesByContentId(input: string): Promise<favorite[]> {
 
 export default {
   createFavorite: createFavorite,
-  getFavoriteByUserAndContent: getFavoriteByUserAndContent,
   getFavoritesByUserId: getFavoritesByUserId,
-  getFavoritesByContentId: getFavoritesByContentId,
+  getFavoriteByUserAndContent: getFavoriteByUserAndContent,
+  deleteFavorite: deleteFavorite,
+  getFavorites:getFavorites
 };

@@ -1,9 +1,10 @@
 require("dotenv").config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-	DynamoDBDocumentClient,
-	PutCommand,
-	QueryCommand,
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  GetCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { logger } from "../util/logger";
 import { UserDoesNotExistError } from "../util/errors";
@@ -15,57 +16,61 @@ const TableName: string = process.env.USERS_TABLE as string;
 // This should return the user who has the given username.
 // Otherwise, it should throw a UserDoesNotExistError
 async function getUserByUsername(username: string) {
-	const command = new QueryCommand({
-		TableName,
-		IndexName: "username-index",
-		KeyConditionExpression: "#u = :u",
-		ExpressionAttributeNames: { "#u": "username" },
-		ExpressionAttributeValues: { ":u": username },
-	});
+  const command = new QueryCommand({
+    TableName,
+    IndexName: "username-index",
+    KeyConditionExpression: "#u = :u",
+    ExpressionAttributeNames: { "#u": "username" },
+    ExpressionAttributeValues: { ":u": username },
+  });
 
-	try {
-		const users: any = (await documentClient.send(command)).Items;
+  try {
+    const users: any = (await documentClient.send(command)).Items;
 
-		if(users.length !== 1){
-			throw new UserDoesNotExistError();
-		}
+    if (users.length !== 1) {
+      throw new UserDoesNotExistError();
+    }
 
-		return users[0];
-	} catch (err) {
-		console.error(err);
-		logger.error(err);
-		throw err;
-	}
+    return users[0];
+  } catch (err) {
+    console.error(err);
+    logger.error(err);
+    throw err;
+  }
 }
 
 async function getUserById(userId: string) {
-	const command = new QueryCommand({
-		TableName,
-		KeyConditionExpression: "#id = :id",
-		ExpressionAttributeNames: { "#id": "user_id" },
-		ExpressionAttributeValues: { ":id": userId },
-	});
+  const command = new GetCommand({
+    TableName,
+    Key: {
+      user_id: userId,
+    },
+  });
 
-	try {
-		const data: any = await documentClient.send(command);
-		return data.Items[0];
-	} catch (err) {
-		console.error(err);
-		logger.error(err);
-		throw err;
-	}
+  try {
+    const data: any = await documentClient.send(command);
+    return data.Item;
+  } catch (err) {
+    console.error(err);
+    logger.error(err);
+    throw err;
+  }
 
-	// return null;
+  // return null;
 }
 
 // CREATE
 async function createUser(Item: any) {
-	const command = new PutCommand({
-		TableName,
-		Item
-	});
+  const command = new PutCommand({
+    TableName,
+    Item,
+  });
 
-	await documentClient.send(command);
+  await documentClient.send(command);
 }
 
-export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById:getUserById };
+export default {
+  createUser: createUser,
+  getUserByUsername: getUserByUsername,
+  getUserById: getUserById,
+};

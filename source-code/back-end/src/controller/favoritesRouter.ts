@@ -7,8 +7,10 @@ import type { Validation } from "../util/response";
 const router = express.Router();
 
 import FavoriteService from "../service/favoriteService";
-import * as favoriteDAO from "../repository/favoriteDAO";
-import * as userDAO from "../repository/userDAO";
+import favoriteDAO from "../repository/favoriteDAO";
+import userDAO from "../repository/userDAO";
+import { authenticateToken } from "../util/authenticateToken";
+import { validateFavoriteBody } from "../util/authenticateBody";
 const favoriteService = FavoriteService(favoriteDAO, userDAO);
 
 /**
@@ -24,57 +26,67 @@ const favoriteService = FavoriteService(favoriteDAO, userDAO);
  * getall recipe comment
  */
 
-router.post("/", async (req: any, res: any) => {
-  try {
-    const validation: Validation = await favoriteService.validateInputFavorite(
-      req.body
-    );
+router.post(
+  "/",
+  authenticateToken,
+  validateFavoriteBody,
+  async (req: any, res: any) => {
+    try {
+      const validation: Validation =
+        await favoriteService.validateInputFavorite(req.body);
 
-    if (!validation.isValid) {
-      res.status(400).json({ errors: validation.errors });
-      return;
+      if (!validation.isValid) {
+        res.status(400).json({ errors: validation.errors });
+        return;
+      }
+
+      await favoriteService.createFavorite(req.body);
+      res.sendStatus(201);
+    } catch (err) {
+      console.error(err);
+      logger.error(err);
+      res.sendStatus(500);
     }
-
-    await favoriteService.createFavorite(req.body);
-    res.sendStatus(201);
-  } catch (err) {
-    console.error(err);
-    logger.error(err);
-    res.sendStatus(500);
   }
-});
+);
 
-router.delete("/", async (req: any, res: any) => {
-  try {
-    const validation: Validation = await favoriteService.validateUpdateFavorite(
-      req.body
-    );
+router.delete(
+  "/",
+  authenticateToken,
+  validateFavoriteBody,
+  async (req: any, res: any) => {
+    try {
+      const validation: Validation =
+        await favoriteService.validateUpdateFavorite(req.body);
 
-    if (!validation.isValid) {
-      res.status(400).json({ errors: validation.errors });
-      return;
+      if (!validation.isValid) {
+        res.status(400).json({ errors: validation.errors });
+        return;
+      }
+
+      await favoriteService.deleteFavorite(req.body);
+      res.sendStatus(202);
+    } catch (err) {
+      console.error(err);
+      logger.error(err);
+      res.sendStatus(500);
     }
-
-    await favoriteService.deleteFavorite(req.body);
-    res.sendStatus(201);
-  } catch (err) {
-    console.error(err);
-    logger.error(err);
-    res.sendStatus(500);
   }
-});
+);
 
-router.get("/", async (req: any, res: any) => {
+// not full working
+router.get("/", authenticateToken, async (req: any, res: any) => {
   try {
     const user: string = req.query.user;
-    const content: string = req.query.content;
-    let validation: Validation = { isValid: false, errors: []};
-
-    if (user) {
-      validation = await favoriteService.validateId(user);
-    } else if (content) {
-      validation = await favoriteService.validateId(content);
-    } 
+    const item: string = req.query.user;
+    if (!user && !item) {
+      res.status(400).json({ errors: "MISSING QUERIES" });
+      return;
+    }
+    let validation: Validation = await favoriteService.validateInputFavorite({
+      user_id: user,
+      content_id: item,
+    });
 
     if (!validation.isValid) {
       res.status(400).json({ errors: validation.errors });
@@ -82,13 +94,19 @@ router.get("/", async (req: any, res: any) => {
     }
 
     let data;
-    if (user) {
-      data = await favoriteService.getUserFavorites(user);
-    } else if (content) {
-      data = await favoriteService.getContentFavorites(content);
-    } 
 
-    res.sendStatus(201).json(data);
+    if (user && !item) {
+      data = await favoriteService.getUserFavorites(user);
+    } else if (!user && item) {
+      data = await favoriteService.getContentFavorites(user);
+    } else if (user && item) {
+      data = await favoriteService.getUserContentFavorite({
+        user_id: user,
+        content_id: item,
+      });
+    }
+
+    res.status(200).json(data);
   } catch (err) {
     console.error(err);
     logger.error(err);

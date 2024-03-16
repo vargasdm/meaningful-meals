@@ -14,30 +14,6 @@ type favorite = {
 };
 
 export default function (favoriteDb: any, userDb: any) {
-  /*async function validateAddFavorite(
-    input: favoriteInput
-  ): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input || !input.content_id || !input.user_id) {
-      errors.push("INPUTS ARE NULL");
-      return { isValid: false, errors };
-    }
-    // check if user is real
-    if (!(await userDb.getUserById(input.user_id))) {
-      errors.push("USER DOES NOT EXISTS");
-    }
-    // check if content is real
-    if (!(await recipeDb.getContentById(input.content_id))) {
-      errors.push("CONTENT DOES NOT EXISTS");
-    }
-    // add new favorite to db
-    if (errors.length > 0) {
-      return { isValid: false, errors };
-    }
-
-    return { isValid: true, errors: [] };
-  }*/
 
   async function validateInputFavorite(
     input: favoriteInput
@@ -53,23 +29,17 @@ export default function (favoriteDb: any, userDb: any) {
       errors.push("USER DOES NOT EXISTS");
     }
     // check if favorite exists
-    const favorite = await favoriteDb.getFavoritesByContentId(input.content_id);
-    /*console.log(favorite);
+    const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
     if (!favorite) {
       errors.push("FAVORITE DOES NOT EXISTS");
-    }*/
-    // check if user owns the favorite
-    favorite.forEach((item: any) => {
-      if (
-        item.user_id === input.user_id &&
-        item.content_id === input.content_id
-      ) {
-        errors.push("FAVORITE ALREADY EXISTS");
-      }
-    });
-    /*if (input.user_id != favorite.user_id) {
-      errors.push("USER ALREADY FAVORITE CONTENT");
-    }*/
+    } else {
+      // check if user owns the favorite
+      favorite.forEach((item: any) => {
+        if (item.content_id === input.content_id) {
+          errors.push("FAVORITE ALREADY EXISTS");
+        }
+      });
+    }
 
     if (errors.length > 0) {
       return { isValid: false, errors };
@@ -92,15 +62,23 @@ export default function (favoriteDb: any, userDb: any) {
       errors.push("USER DOES NOT EXISTS");
     }
     // check if content is real
-    const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
+    const favorite: favorite[] = await favoriteDb.getFavoritesByUserId(
+      input.user_id
+    );
+
     if (!favorite) {
       errors.push("FAVORITE DOES NOT EXISTS");
-    } else if (
-      favorite.user_id != input.user_id ||
-      favorite.content_id != input.content_id
-    ) {
+    }
+
+    let isUsers = true;
+    favorite.forEach((item) => {
       // check if user owns the favorite
-      errors.push("USER DOES NOT OWN FAVORITE");
+      if (item.content_id == input.content_id) {
+        isUsers = false;
+      }
+    });
+    if (isUsers) {
+      errors.push("FAVORITE DOES NOT EXISTS");
     }
 
     if (errors.length > 0) {
@@ -139,9 +117,19 @@ export default function (favoriteDb: any, userDb: any) {
 
   async function deleteFavorite(input: favoriteInput) {
     try {
-      const data = await favoriteDb.getFavoriteByUserAndContent(input);
+      const data: favorite[] = await favoriteDb.getFavoritesByUserId(
+        input.user_id
+      );
 
-      await favoriteDb.deleteFavorite(data.favorite_id);
+      let favoriteId;
+
+      data.forEach((item) => {
+        if (item.content_id === input.content_id) {
+          favoriteId = item.favorite_id;
+        }
+      });
+
+      await favoriteDb.deleteFavorite(favoriteId);
     } catch (err) {
       throw err;
     }
@@ -158,7 +146,26 @@ export default function (favoriteDb: any, userDb: any) {
 
   async function getContentFavorites(input: string): Promise<favorite[]> {
     try {
-      const result = await favoriteDb.getFavoritesByContentId(input);
+      const result = await favoriteDb.getFavorites();
+
+      let data: favorite[] = [];
+
+      result.forEach((item: favorite) => {
+        if (item.content_id === input) {
+          data.push(item);
+        }
+      });
+
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async function getUserContentFavorite(
+    input: favoriteInput
+  ): Promise<favorite[]> {
+    try {
+      const result = await favoriteDb.getFavoriteByUserAndContent(input);
       return result;
     } catch (err) {
       throw err;
@@ -173,5 +180,6 @@ export default function (favoriteDb: any, userDb: any) {
     deleteFavorite,
     getUserFavorites,
     getContentFavorites,
+    getUserContentFavorite,
   };
 }

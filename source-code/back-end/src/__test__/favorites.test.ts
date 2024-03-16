@@ -49,13 +49,13 @@ const mockDeleteFavorite = jest.fn(async (input) => {
 
 const mockGetFavoriteByUserAndContent = jest.fn(async (input) => {
   try {
-    let data: any;
+    let data: any[] = [];
     favoriteTable.forEach((item) => {
       if (
         item.user_id === input.user_id &&
         item.content_id === input.content_id
       ) {
-        data = item;
+        data.push(item);
       }
     });
     return data;
@@ -115,48 +115,30 @@ const userTable = [
 ];
 
 const mockGetUserByUsername = jest.fn(async (username) => {
-  try {
-    let data;
-    userTable.forEach((user) => {
-      if (user.username === username) {
-        data = user;
-      }
-    });
+  let data;
+  userTable.forEach((user) => {
+    if (user.username === username) {
+      data = user;
+    }
+  });
 
-    return data;
-  } catch (err) {
-    throw new Error(`Unable to get item. Error: ${err}`);
-  }
-
-  return null;
+  return data;
 });
 
 const mockGetUserById = jest.fn(async (id) => {
-  try {
-    let data;
-    userTable.forEach((user) => {
-      if (user.user_id === id) {
-        data = user;
-      }
-    });
+  let data;
+  userTable.forEach((user) => {
+    if (user.user_id === id) {
+      data = user;
+    }
+  });
 
-    return data;
-  } catch (err) {
-    throw new Error(`Unable to get item. Error: ${err}`);
-  }
-
-  return null;
+  return data;
 });
 
 const mockCreateUser = jest.fn(async (item) => {
-  try {
-    userTable.push(item);
-    return item;
-  } catch (err) {
-    throw new Error(`Unable to post item. Error: ${err}`);
-  }
-
-  return null;
+  userTable.push(item);
+  return item;
 });
 
 const userDao = {
@@ -168,7 +150,7 @@ const userDao = {
 const favoriteService = FavoriteService(favoriteDAO, userDao);
 
 describe("Favorite Test", () => {
-  test("User can favorite content", async () => {
+  test("User can favorite content.", async () => {
     // Arrange
     const input = { user_id: "3", content_id: "1" };
     // Act
@@ -201,7 +183,7 @@ describe("Favorite Test", () => {
     expect(userId).toBe(input.user_id);
     expect(contentId).toBe(input.content_id);
   });
-  test("User can only favorite content once", async () => {
+  test("User can only favorite content once.", async () => {
     // Arrange
     const input = { user_id: "3", content_id: "3" };
     const expected = "FAVORITE ALREADY EXISTS";
@@ -211,7 +193,7 @@ describe("Favorite Test", () => {
     expect(result.isValid).toBe(false);
     expect(result.errors.find((error) => error === expected)).toBe(expected);
   });
-  test("User can delete their favorite", async () => {
+  test("User can delete their favorite.", async () => {
     // Arrange
     const input = { user_id: "3", content_id: "3" };
     // Act
@@ -243,7 +225,7 @@ describe("Favorite Test", () => {
     expect(userId).toBe(undefined);
     expect(contentId).toBe(undefined);
   });
-  test("User cannot delete other user's likes", async () => {
+  test("User cannot delete other user's likes.", async () => {
     // Arrange
     const input = { user_id: "3", content_id: "2" };
     const expected = "FAVORITE DOES NOT EXISTS";
@@ -254,5 +236,23 @@ describe("Favorite Test", () => {
     // Assert
     expect(result.isValid).toBe(false);
     expect(result.errors.find((error) => error === expected)).toBe(expected);
+  });
+  test("User can get all of their favorites.", async () => {
+    // Arrange
+    const input = {user_id: "3"};
+    let index: number = 0;
+    favoriteTable.forEach((item) => {
+      if(item.user_id===input.user_id) {
+        ++index;
+      }
+    });
+    const expected = index;
+
+    // Act
+    const result = await favoriteService.getUserFavorites(input.user_id)
+
+    // Assert
+    expect(result.length).toBe(expected);
+
   });
 });
