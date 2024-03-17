@@ -34,7 +34,6 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
   const userState = useSelector((state: any) => state.user);
 
   let globalUser = userState.username;
-  const navigate = useNavigate();
 
   function handleInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,7 +61,6 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
       if (response) {
         console.log("Updated Recipe:", editedRecipe);
         handleEditClick();
-        // navigate(`/recipes/user-recipes/${globalUser}`);
       }
     } catch (error) {
       console.error(error);

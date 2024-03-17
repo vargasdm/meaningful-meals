@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import { RootState } from "../../store/store";
 import { userActions } from "../../store/slices/userSlice";
@@ -10,6 +10,8 @@ function Navbar() {
 	const userState = useSelector((state: any) => state.user); // Access the user state from the global state
 	//   console.log(userState); // Log the current user state
 	const dispatch = useDispatch(); // Get the dispatch function
+	const navigate = useNavigate();
+
 
 	if (!userState) {
 		dispatch(
@@ -23,6 +25,7 @@ function Navbar() {
 	const handleLogout = () => {
 		// Dispatch the action to update the user state when the "Logout" link is clicked
 		dispatch(userActions.logoutUser());
+		navigate("/")
 	};
 
 	return (
