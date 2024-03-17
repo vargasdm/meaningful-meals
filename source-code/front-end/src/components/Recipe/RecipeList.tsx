@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
 import axios from "axios";
+
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
@@ -50,7 +51,7 @@ function RecipeList(prop: any) {
   };
 
   const handleDeleteClick = async (recipeId: any) => {
-console.log(recipeId);
+    console.log(recipeId);
 
     try {
       const response = await prop.handleRemoveRecipe(recipeId);
@@ -78,15 +79,12 @@ console.log(recipeId);
 
       setSelectedRecipe(null);
       setIsEditing(false);
+      fetchRecipes();
       return response;
     } catch (error) {
       console.error(error);
     }
   }
-
-
-
-
 
   return (
     <>
@@ -114,7 +112,9 @@ console.log(recipeId);
                     >
                       {recipe.title}
                     </Link>
-                    <button onClick={() => handleDeleteClick(recipe.id)}>Remove Recipe</button>
+                    <button onClick={() => handleDeleteClick(recipe.id)}>
+                      Remove Recipe
+                    </button>
                   </h1>
                 </div>
               ))
