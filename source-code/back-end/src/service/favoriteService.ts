@@ -13,8 +13,7 @@ type favorite = {
   content_id: string;
 };
 
-export default function (favoriteDb: any, userDb: any) {
-
+export default function (favoriteDb: any) {
   async function validateInputFavorite(
     input: favoriteInput
   ): Promise<Validation> {
@@ -24,21 +23,10 @@ export default function (favoriteDb: any, userDb: any) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
-    // check if user is real
-    if (!(await userDb.getUserById(input.user_id))) {
-      errors.push("USER DOES NOT EXISTS");
-    }
     // check if favorite exists
     const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
-    if (!favorite) {
-      errors.push("FAVORITE DOES NOT EXISTS");
-    } else {
-      // check if user owns the favorite
-      favorite.forEach((item: any) => {
-        if (item.content_id === input.content_id) {
-          errors.push("FAVORITE ALREADY EXISTS");
-        }
-      });
+    if (favorite) {
+      errors.push("FAVORITE ALREADY EXISTS");
     }
 
     if (errors.length > 0) {
@@ -57,16 +45,12 @@ export default function (favoriteDb: any, userDb: any) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
-    // check if user is real
-    if (!(await userDb.getUserById(input.user_id))) {
-      errors.push("USER DOES NOT EXISTS");
-    }
     // check if content is real
     const favorite: favorite[] = await favoriteDb.getFavoritesByUserId(
       input.user_id
     );
 
-    if (!favorite) {
+    if (!favorite.length) {
       errors.push("FAVORITE DOES NOT EXISTS");
     }
 
@@ -90,10 +74,11 @@ export default function (favoriteDb: any, userDb: any) {
 
   async function validateId(input: string): Promise<Validation> {
     const errors: string[] = [];
+    console.log(input)
+    console.log(!input)
     // validate input
     if (!input) {
       errors.push("INPUT IS NULL");
-      return { isValid: false, errors };
     }
 
     if (errors.length > 0) {
@@ -163,7 +148,7 @@ export default function (favoriteDb: any, userDb: any) {
   }
   async function getUserContentFavorite(
     input: favoriteInput
-  ): Promise<favorite[]> {
+  ): Promise<favorite> {
     try {
       const result = await favoriteDb.getFavoriteByUserAndContent(input);
       return result;

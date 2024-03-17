@@ -7,7 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import recipeRouter from "./controller/recipeRouter";
 import userRouter from "./controller/userRouter";
-import favoritesRouter from "./controller/favoritesRouter";
+import favoritesRouter from "./controller/favoriteRouter";
 import { logger } from "./util/logger";
 
 const app = express();

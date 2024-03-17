@@ -6,24 +6,18 @@ import { logger } from "../util/logger";
 import type { Validation } from "../util/response";
 const router = express.Router();
 
-import FavoriteService from "../service/favoriteService";
-import favoriteDAO from "../repository/favoriteDAO";
-import userDAO from "../repository/userDAO";
 import { authenticateToken } from "../util/authenticateToken";
 import { validateFavoriteBody } from "../util/authenticateBody";
-const favoriteService = FavoriteService(favoriteDAO, userDAO);
+
+import favoriteDAO from "../repository/favoriteDAO";
+import FavoriteService from "../service/favoriteService";
+const favoriteService = FavoriteService(favoriteDAO);
 
 /**
  * postlike
  * deletelike
  * getalluserlike
  * getallrecipelike
- *
- * post comment
- * update comment
- * delete comment
- * getall user comment
- * getall recipe comment
  */
 
 router.post(
@@ -43,7 +37,6 @@ router.post(
       await favoriteService.createFavorite(req.body);
       res.sendStatus(201);
     } catch (err) {
-      console.error(err);
       logger.error(err);
       res.sendStatus(500);
     }
@@ -67,14 +60,12 @@ router.delete(
       await favoriteService.deleteFavorite(req.body);
       res.sendStatus(202);
     } catch (err) {
-      console.error(err);
       logger.error(err);
       res.sendStatus(500);
     }
   }
 );
 
-// not full working
 router.get("/", authenticateToken, async (req: any, res: any) => {
   try {
     const user: string = req.query.user;
@@ -83,10 +74,21 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
       res.status(400).json({ errors: "MISSING QUERIES" });
       return;
     }
-    let validation: Validation = await favoriteService.validateInputFavorite({
-      user_id: user,
-      content_id: item,
-    });
+    let validation: Validation = {
+      isValid: false,
+      errors: ["MISSING QUERIES"],
+    };
+
+    if (user && item) {
+      validation = await favoriteService.validateInputFavorite({
+        user_id: user,
+        content_id: item,
+      });
+    } else if (!user && item) {
+      validation = await favoriteService.validateId(item);
+    } else if (user && !item) {
+      validation = await favoriteService.validateId(user);
+    }
 
     if (!validation.isValid) {
       res.status(400).json({ errors: validation.errors });
@@ -95,20 +97,19 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
 
     let data;
 
-    if (user && !item) {
-      data = await favoriteService.getUserFavorites(user);
-    } else if (!user && item) {
-      data = await favoriteService.getContentFavorites(user);
-    } else if (user && item) {
+    if (user && item) {
       data = await favoriteService.getUserContentFavorite({
         user_id: user,
         content_id: item,
       });
+    } else if (!user && item) {
+      data = await favoriteService.getContentFavorites(item);
+    } else if (user && !item) {
+      data = await favoriteService.getUserFavorites(user);
     }
 
     res.status(200).json(data);
   } catch (err) {
-    console.error(err);
     logger.error(err);
     res.sendStatus(500);
   }

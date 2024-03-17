@@ -64,7 +64,7 @@ async function getFavoriteByUserAndContent(
 
   try {
     const data: any = await documentClient.send(command);
-    return data.Items;
+    return data.Items[0];
   } catch (err) {
     logger.error(err);
     throw err;
