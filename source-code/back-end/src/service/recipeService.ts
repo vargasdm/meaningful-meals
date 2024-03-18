@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { v4 as uuid } from 'uuid';
-const recipeDAO = require("../repository/recipeDAO.ts");
+// const recipeDAO = require("../repository/recipeDAO.ts");
+import recipeDAO from "../repository/recipeDAO";
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;

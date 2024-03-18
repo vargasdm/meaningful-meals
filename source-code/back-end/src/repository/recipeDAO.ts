@@ -79,11 +79,11 @@ async function postRecipe(recipe: any) {
 
 async function deleteRecipe(recipe: any) {
   console.log(recipe);
-  
+
   const command = new DeleteCommand({
     TableName: RECIPES_TABLE,
     Key: {
-      id: recipe.id
+      id: recipe.id,
     },
   });
   try {
@@ -95,4 +95,9 @@ async function deleteRecipe(recipe: any) {
   }
 }
 
-module.exports = { getRecipesByUsername, updateRecipe, postRecipe, deleteRecipe };
+export default {
+  getRecipesByUsername,
+  updateRecipe,
+  postRecipe,
+  deleteRecipe,
+};

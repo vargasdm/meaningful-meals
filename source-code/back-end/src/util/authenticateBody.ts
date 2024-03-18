@@ -46,7 +46,7 @@ const validateRecipeID = (req: any, res: any, next: any) => {
 	console.log('validateRecipeID');
 	if (!req.params || !req.params.id) {
 		console.log('Recipe request params/params field missing.');
-		logger.error(`Recipe request params/params field missing. ${req.params.id}`);
+		logger.error(`Recipe request params/params field missing. ${req.params ? req.params.id : 'N/A'}`);
 		return res.status(400).json({ message: `Recipe request params/params field missing.` });
 	}
 
