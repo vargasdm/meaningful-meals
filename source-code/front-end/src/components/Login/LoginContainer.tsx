@@ -19,7 +19,7 @@ function LoginContainer() {
 				password: user.password,
 			});
 
-			console.log(res.data);
+			// console.log(res.data);
 
 			if (res) {
 				dispatch(userActions.loginUser({
@@ -31,7 +31,7 @@ function LoginContainer() {
 					jwt: res.data.token
 				}));
 
-				return redirect("/");
+				// return redirect("/");
 			}
 		} catch (error) {
 			console.error(error);
