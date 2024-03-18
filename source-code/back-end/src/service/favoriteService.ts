@@ -11,6 +11,7 @@ type favorite = {
   favorite_id: string;
   user_id: string;
   content_id: string;
+  created_at: string
 };
 
 export default function (favoriteDb: any) {
@@ -92,6 +93,7 @@ export default function (favoriteDb: any) {
         favorite_id: uuid(),
         user_id: input.user_id,
         content_id: input.content_id,
+        created_at: Date.now()
       });
     } catch (err) {
       throw err;
