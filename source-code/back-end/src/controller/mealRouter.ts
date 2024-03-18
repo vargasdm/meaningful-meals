@@ -36,17 +36,20 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 });
 
 router.delete('/', authenticateToken, async (req: any, res: any) => {
-	try{
+	try {
 		const validation: Validation = await mealService.validateRemoveMeal(
 			req.user.user_id,
 			req.body.recipeID
 		);
-	
+
 		if (!validation.isValid) {
 			res.status(400).json({ errors: validation.errors });
 			return;
 		}
-	}catch(err){
+
+		await mealService.deleteMeal(req.user.user_id, req.body.recipeID);
+		res.sendStatus(200);
+	} catch (err) {
 		console.error(err);
 		res.sendStatus(500);
 	}

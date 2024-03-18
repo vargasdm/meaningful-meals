@@ -3,7 +3,8 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
 	DynamoDBDocumentClient,
 	PutCommand,
-	QueryCommand
+	QueryCommand,
+	DeleteCommand
 } from "@aws-sdk/lib-dynamodb";
 import { MealDoesNotExistError } from "../util/errors";
 
@@ -68,6 +69,21 @@ async function getMealByUserIDAndRecipeID(
 		}
 
 		return meals[0];
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function deleteMealByID(mealID: string) {
+	const command = new DeleteCommand({
+		TableName: MEALS_TABLE,
+		Key: {
+			meal_id: mealID
+		}
+	});
+
+	try {
+		await documentClient.send(command);
 	} catch (err) {
 		throw err;
 	}

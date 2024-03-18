@@ -25,9 +25,12 @@ async function validateAddMeal(
 		if (!(await recipeService.recipeExists(recipeID))) {
 			validation.errors.push('RECIPE DOES NOT EXIST');
 		}
+
+		if (await mealExists(userID, recipeID)) {
+			console.log('meal exists');
+			validation.errors.push('MEAL EXISTS');
+		}
 	} catch (err) {
-		// validation.errors.push('INTERNAL SERVER ERROR');
-		// return validation;
 		throw err;
 	}
 
@@ -50,27 +53,11 @@ async function validateRemoveMeal(
 	const validation: Validation = { isValid: false, errors: [] };
 
 	try {
-		// const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-
-		// if (meal) {
-		// 	validation.isValid = true;
-		// 	return validation;
-		// }
-
-		// validation.errors.push('MEAL DOES NOT EXIST');
-		// return validation;
 		if (!(await mealExists(userID, recipeID))) {
 			validation.errors.push('MEAL DOES NOT EXIST');
 			return validation;
 		}
 	} catch (err) {
-		// if (err instanceof MealDoesNotExistError) {
-		// 	validation.errors.push('MEAL DOES NOT EXIST');
-		// 	return validation;
-		// }
-
-		// throw err;
-		// validation.errors.push()
 		throw err;
 	}
 
@@ -85,12 +72,29 @@ async function createMeal(
 	recipeID: string,
 	date: string
 ): Promise<void> {
-	await mealDAO.createMeal(
-		uuid(),
-		userID,
-		recipeID,
-		date
-	);
+	try {
+		await mealDAO.createMeal(
+			uuid(),
+			userID,
+			recipeID,
+			date
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function deleteMeal(
+	userID: string,
+	recipeID: string
+): Promise<void> {
+	try {
+		const meal = await getMealByUserIDAndRecipeID(userID, recipeID);
+		console.log(JSON.stringify(meal));
+		// await mealDAO.delete
+	} catch (err) {
+		throw err;
+	}
 }
 
 async function getMealsByUserID(userID: string) {
@@ -111,6 +115,10 @@ async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
 }
 
 async function mealExists(userID: string, recipeID: string) {
+	if (!userID || !recipeID) {
+		return false;
+	}
+
 	try {
 		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
 		return meal ? true : false;
@@ -128,6 +136,7 @@ export default {
 	validateAddMeal: validateAddMeal,
 	validateRemoveMeal,
 	createMeal,
+	deleteMeal,
 	getMealsByUserID,
 	getMealByUserIDAndRecipeID,
 };
