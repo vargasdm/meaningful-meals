@@ -5,13 +5,13 @@ type comment = {
   comment_id: string;
   user_id: string;
   content_id: string;
-  comment: string;
+  user_comment: string;
 };
 
 type commentInput = {
   user_id: string;
   content_id: string;
-  comment: string;
+  user_comment: string;
 };
 
 type commentUserContentInput = {
@@ -25,21 +25,21 @@ export default function (commentDb: any) {
   ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
-    if (!input || !input.user_id || !input.content_id || !input.comment) {
+    if (!input || !input.user_id || !input.content_id || !input.user_comment) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
     // check if comment exists
     const comment = await commentDb.getCommentByUserAndContent(input);
-    if (comment) {
-      comment.forEach((item: any) => {
-        if (item.content_id === input.content_id) {
-          errors.push("COMMENT ALREADY EXISTS");
-        }
-      });
+
+    if (comment && comment.content_id === input.content_id) {
+      errors.push("COMMENT ALREADY EXISTS");
     }
 
     // apply comment restrictions
+    if (input.user_comment.length > 750) {
+      errors.push("COMMENT IS TOO LARGE");
+    }
 
     if (errors.length > 0) {
       return { isValid: false, errors };
@@ -53,7 +53,7 @@ export default function (commentDb: any) {
   ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
-    if (!input || !input.content_id || !input.user_id || !input.comment) {
+    if (!input || !input.content_id || !input.user_id || !input.user_comment) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
@@ -78,6 +78,9 @@ export default function (commentDb: any) {
     }
 
     // apply comment restrictions
+    if (input.user_comment.length > 750) {
+      errors.push("COMMENT IS TOO LARGE");
+    }
 
     if (errors.length > 0) {
       return { isValid: false, errors };
@@ -101,7 +104,7 @@ export default function (commentDb: any) {
     );
 
     if (!comments) {
-      errors.push("COMMENT DOES NOT EXISTS");
+      errors.push("NO USER COMMENTS");
     }
 
     let notUsers = true;
@@ -160,7 +163,7 @@ export default function (commentDb: any) {
         comment_id: uuid(),
         user_id: input.user_id,
         content_id: input.content_id,
-        comment: input.comment,
+        user_comment: input.user_comment,
       });
     } catch (err) {
       throw err;
@@ -189,8 +192,15 @@ export default function (commentDb: any) {
 
   async function updateComment(input: commentInput) {
     try {
-      const result = await commentDb.updateComment(input);
-      return result;
+      const data = await commentDb.getCommentByUserAndContent({
+        user_id: input.user_id,
+        content_id: input.content_id,
+      });
+      if (data) {
+        data.comment = input.user_comment;
+        const result = await commentDb.updateComment(data);
+        return result;
+      }
     } catch (err) {
       throw err;
     }

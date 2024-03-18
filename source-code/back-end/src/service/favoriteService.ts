@@ -74,8 +74,6 @@ export default function (favoriteDb: any) {
 
   async function validateId(input: string): Promise<Validation> {
     const errors: string[] = [];
-    console.log(input)
-    console.log(!input)
     // validate input
     if (!input) {
       errors.push("INPUT IS NULL");

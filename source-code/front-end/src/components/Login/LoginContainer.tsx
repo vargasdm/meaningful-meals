@@ -6,7 +6,8 @@ import axios from "axios";
 import { render } from "@testing-library/react";
 import SearchContainer from "../Search/SearchContainer";
 import { redirect } from "react-router-dom";
-import Favorite from "../Favorite/FavoriteButton";
+import FavoriteButton from "../Favorite/FavoriteButton";
+import CommentButton from "../Comment/CommentButton";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/user`;
 
@@ -42,7 +43,9 @@ function LoginContainer() {
 	return (
 		<>
 			<LoginInput handleLogin={handleLogin} />
-			<Favorite />
+			<FavoriteButton />
+			<CommentButton />
+
 		</>
 	);
 }

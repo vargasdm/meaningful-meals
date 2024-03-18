@@ -260,12 +260,12 @@ describe("Favorite Test", () => {
     const result = await favoriteService.validateUpdateFavorite(input as any);
     // Assert
     expect(result.isValid).toBe(false);
-    expect(result.errors.find((error) => error === expected)).toBe(expected);;
+    expect(result.errors.find((error) => error === expected)).toBe(expected);
   });
   test("Empty id input", async () => {
     // Arrange
     const input = "";
-    const expected = "INPUTS ARE NULL";
+    const expected = "INPUT IS NULL";
     // Act
     const result = await favoriteService.validateId(input);
     // Assert

@@ -13,13 +13,6 @@ const client = new DynamoDBClient({ region: process.env.AWS_REGION as string });
 const documentClient = DynamoDBDocumentClient.from(client);
 const TableName: string = process.env.FAVORITES_TABLE as string;
 
-/**
- * createFavorite
- * deleteFavorite
- * getFavoritesByUserId
- * getFavoritesByContentId
- */
-
 type favorite = { favorite_id: string; user_id: string; content_id: string };
 type favoriteNoId = { user_id: string; content_id: string };
 
@@ -32,20 +25,19 @@ async function createFavorite(Item: favorite) {
   await documentClient.send(command);
 }
 
-async function getFavoritesByUserId(input: string): Promise<favorite[]> {
+async function getFavoritesByUserId(userId: string): Promise<favorite[]> {
   const command = new QueryCommand({
     TableName,
     IndexName: "user_id-content_id-index",
     KeyConditionExpression: "#u = :u",
     ExpressionAttributeNames: { "#u": "user_id" },
-    ExpressionAttributeValues: { ":u": input },
+    ExpressionAttributeValues: { ":u": userId },
   });
 
   try {
     const data: any = await documentClient.send(command);
     return data.Items;
   } catch (err) {
-    console.error(err);
     logger.error(err);
     throw err;
   }
@@ -80,14 +72,14 @@ async function deleteFavorite(favoriteId: string) {
   });
   try {
     const data: any = await documentClient.send(command);
-    return data.Items;
+    return;
   } catch (err) {
     logger.error(err);
     throw err;
   }
 }
 
-async function getFavorites() {
+async function getFavorites(): Promise<favorite[]> {
   const command = new ScanCommand({
     TableName,
   });
