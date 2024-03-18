@@ -14,17 +14,9 @@ const DAY_NAMES: string[] = [
 
 type MealPlanWeekProp = {
 	firstDateOfWeek: number,
-	// currentDayOfWeek: number
 }
 
 export default function MealPlanWeek(props: MealPlanWeekProp) {
-	// const now: Date = new Date();
-	// const today: number = now.getDay();
-
-	// const namedCalendarDays: any = DAY_NAMES.map(
-	// 	dayName => <MealPlanDay key={dayName} name={dayName} />
-	// );
-
 	const calendarDays = [];
 
 	for (let i = 0; i < DAY_NAMES.length; i++) {
