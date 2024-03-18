@@ -119,6 +119,7 @@ describe("Register Tests", () => {
     // Arrange
     const username = "testregistration";
     const password = "TestPass1";
+    const expected = "USER EXISTS";
 
     // ACT
     const result = await userService.validateRegistration({
@@ -127,6 +128,6 @@ describe("Register Tests", () => {
     });
 
     // Assert
-    expect(result.errors.find((error) => error === "USER EXISTS")).toBeTruthy();
+    expect(result.errors.find((error) => error === expected)).toBe(expected);
   });
 });

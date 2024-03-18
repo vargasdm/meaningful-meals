@@ -1,0 +1,26 @@
+.recipe-div {
+	display: block;
+	width: var(--main-panel-width);
+	/* width: 800px; */
+	/* background-color: blue; */
+	margin: auto;
+	text-align: left;
+}
+
+.recipe-main-header {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	/* justify-content: flex-start; */
+}
+
+.recipe-main-header>h1 {
+	flex-grow: 1;
+	flex-shrink: 0;
+}
+
+.recipe-main-header>input[type='button'] {
+	flex-grow: 0;
+	flex-shrink: 0;
+	align-self: center;
+}

@@ -1,3 +1,7 @@
+:root{
+	--main-panel-width: 800px;
+}
+
 .App {
   text-align: center;
 }
