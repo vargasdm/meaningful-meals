@@ -20,10 +20,10 @@ export async function loader({ params }: any) {
 	}
 }
 
-
 export default function Recipe() {
 	const id = useParams().id;
 	const [isInMealPlan, setIsInMealPlan] = useState(false);
+	// const [isFavorited, setIsFavorited] = useState(false);
 	const recipeData: any = useLoaderData();
 	console.log(recipeData);
 
@@ -50,7 +50,7 @@ export default function Recipe() {
 
 	useEffect(() => {
 		getIsInMealPlan();
-	}, [])
+	}, []);
 
 	async function handleAddToMealPlan() {
 		try {
