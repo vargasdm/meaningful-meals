@@ -22,14 +22,13 @@ const authenticateToken = (req: any, res: any, next: any) => {
 };
 
 const authenticateNoToken = (req: any, res: any, next: any) => {
-	console.log('authenticateToken.authenticateNoToken...');
 	const authHeader = req.headers["authorization"];
 	const token = authHeader && authHeader.split(" ")[1];
 
 	if (token) {
 		return res.status(401).json({ message: "Unauthorized Access" });
 	} else {
-		console.log('Confirmed no token.');
+		logger.error('Confirmed no token.');
 	}
 
 	next();

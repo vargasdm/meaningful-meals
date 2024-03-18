@@ -25,13 +25,18 @@ function FavoriteContainer() {
     }
   }
 
-  function handleToggle() {
+  const handleToggle = () => {
     setFavorited(!isFavorited);
   }
 
   useEffect(() => {
+    if (isFavorited) {
+        // user favorites content
+    } else {
+        // user unfavorites content
+    }
     getSpecificFavorite();
-  }, [isFavorited]);
+  }, []);
 
   return (
     <FavoriteButton isFavorited={isFavorited} handleToggle={handleToggle} />

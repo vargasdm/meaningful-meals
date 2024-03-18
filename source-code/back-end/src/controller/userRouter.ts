@@ -29,7 +29,6 @@ router.post("/login", async (req: any, res: any) => {
     }
 
     const targetUser = await userService.getUserByUsername(req.body.username);
-    const targetUser = await userService.getUserByUsername(req.body.username);
 
     if (await userService.credentialsMatch(req.body, targetUser)) {
       const token = jwt.sign(
@@ -62,13 +61,11 @@ router.post("/login", async (req: any, res: any) => {
 
     res.status(401).json({ error: "CREDENTIALS DO NOT MATCH" });
   } catch (err) {
-    console.error(err);
     logger.error(err);
     res.sendStatus(500);
   }
     res.status(401).json({ error: "CREDENTIALS DO NOT MATCH" });
   } catch (err) {
-    console.error(err);
     logger.error(err);
     res.sendStatus(500);
   }
@@ -97,14 +94,12 @@ router.post("/register", async (req: any, res: any) => {
     await userService.createUser(req.body);
     res.sendStatus(201);
   } catch (err) {
-    console.error(err);
     logger.error(err);
     res.sendStatus(500);
   }
     await userService.createUser(req.body);
     res.sendStatus(201);
   } catch (err) {
-    console.error(err);
     logger.error(err);
     res.sendStatus(500);
   }

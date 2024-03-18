@@ -35,7 +35,6 @@ async function getUserByUsername(username: string) {
 
 		return users[0];
 	} catch (err) {
-		console.error(err);
 		logger.error(err);
 		throw err;
 	}
@@ -53,7 +52,6 @@ async function getUserById(userId: string) {
 		const data: any = await documentClient.send(command);
 		return data.Item;
 	} catch (err) {
-		console.error(err);
 		logger.error(err);
 		throw err;
 	}
