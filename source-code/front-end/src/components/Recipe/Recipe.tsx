@@ -2,8 +2,9 @@ import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import './Recipe.css';
 
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/recipes`;
+const BACKEND_PORT = process.env.REACT_APP_PORT;
+const URL = `http://localhost:${BACKEND_PORT}/recipes`;
+
 export async function loader({ params }: any) {
 	try {
 		const res = await axios.get(`${URL}?id=${params.id}`);
@@ -30,7 +31,9 @@ export default function Recipe() {
 		<div className='recipe-div'>
 			<div className='recipe-main-header'>
 				<h1>{data.title}</h1>
-				<input type='button' value='Add to Meal Plan' />
+				<input
+					type='button'
+					value='Add to Meal Plan' />
 			</div>
 			<img src={data.image} alt={data.title} />
 			<h2>Ingredients</h2>

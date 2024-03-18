@@ -5,7 +5,7 @@ import {
 	PutCommand,
 	QueryCommand
 } from "@aws-sdk/lib-dynamodb";
-import { logger } from '../util/logger';
+import { MealDoesNotExistError } from "../util/errors";
 
 const MEALS_TABLE: string = process.env.MEALS_TABLE as string;
 const AWS_REGION: string = process.env.AWS_REGION as string;
@@ -46,8 +46,8 @@ async function getMealsByUserID(userID: string) {
 	});
 
 	try {
-		const data: any = await documentClient.send(command);
-		return data;
+		const meals: any = (await documentClient.send(command)).Items;
+		return meals;
 	} catch (err) {
 		// console.error(err);
 		// logger.error(err);
@@ -55,14 +55,28 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealsByUserIDAndRecipeID(
+async function getMealByUserIDAndRecipeID(
 	userID: string,
 	recipeID: string
 ) {
+	try {
+		let meals = await getMealsByUserID(userID);
+		meals = meals.filter((meal: any) => meal.recipe_id === recipeID);
 
+		if (meals.length !== 1) {
+			throw new MealDoesNotExistError();
+		}
+
+		// console.log(meals);
+
+		return meals[0];
+	} catch (err) {
+		throw err;
+	}
 }
 
 export default {
 	createMeal,
-	getMealsByUserID
+	getMealsByUserID,
+	getMealByUserIDAndRecipeID
 }

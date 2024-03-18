@@ -52,7 +52,18 @@ async function createMeal(
 
 async function getMealsByUserID(userID: string) {
 	try {
-		return (await mealDAO.getMealsByUserID(userID)).Items;
+		return await mealDAO.getMealsByUserID(userID);
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
+	try {
+		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+		// return await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+		// console.log(meal);
+		return meal;
 	} catch (err) {
 		throw err;
 	}
@@ -61,5 +72,6 @@ async function getMealsByUserID(userID: string) {
 export default {
 	validateMeal,
 	createMeal,
-	getMealsByUserID
+	getMealsByUserID,
+	getMealByUserIDAndRecipeID
 };
