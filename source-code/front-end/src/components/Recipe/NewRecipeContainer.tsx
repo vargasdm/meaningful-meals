@@ -14,17 +14,26 @@ function NewRecipeContainer() {
   const userState = useSelector((state: any) => state.user);
 
   let globalUser = userState.username;
+  let jwt = userState.jwt;
 
   const navigate = useNavigate();
   async function handleCreateRecipe(newRecipe: any) {
     try {
       // Make the update request and handle the response
-      const response = await axios.post(`${URL}/create`, {
-        title: newRecipe.title,
-        ingredients: newRecipe.ingredients,
-        instructions: newRecipe.instructions,
-        user: globalUser,
-      });
+      const response = await axios.post(
+        `${URL}/create`,
+        {
+          title: newRecipe.title,
+          ingredients: newRecipe.ingredients,
+          instructions: newRecipe.instructions,
+          user: globalUser,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       if (response.request.status === 201) {
         navigate(`/recipes/user-recipes/${globalUser}`); // Navigate to the RecipeList component
       }

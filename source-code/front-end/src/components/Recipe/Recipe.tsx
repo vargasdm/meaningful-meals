@@ -21,13 +21,14 @@ export default function Recipe() {
     (step: any) => <li key={step.number}>{step.step}</li>
   );
   const ingredients: any = data.nutrition.ingredients.map(
-    (ingridients: any) => <li key={ingridients.id}>{ingridients.name}</li>
+    (ingridients: any) => <li key={ingridients.id}><span>{ingridients.amount}</span><span>{ingridients.unit}</span>{ingridients.name}</li>
   );
 
   return (
     <>
       <h1>{data.title}</h1>
       <img src={data.image} alt={data.title} />
+      {/* maybe add summary data, will have to format it since it containst html elements in the data */}
       <h2>Ingredients</h2>
       <ul>{ingredients}</ul>
       <h2>Instructions</h2>

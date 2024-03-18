@@ -69,13 +69,20 @@ function RecipeList(prop: any) {
   async function handleUpdateRecipe(editedRecipe: any) {
     try {
       // Make the update request and handle the response
-      const response = await axios.put(`${URL}/update`, {
-        id: editedRecipe.id,
-        title: editedRecipe.title,
-        ingredients: editedRecipe.ingredients,
-        instructions: editedRecipe.instructions,
-        user: globalUser,
-      });
+      const response = await axios.put(
+        `${URL}/update`,
+        {
+          id: editedRecipe.id,
+          title: editedRecipe.title,
+          ingredients: editedRecipe.ingredients,
+          instructions: editedRecipe.instructions,
+          user: globalUser,
+        },
+        {
+          headers: { authorization: `Bearer ${userState.jwt}` },
+        }
+      );
+      console.log(response);
 
       setSelectedRecipe(null);
       setIsEditing(false);

@@ -31,9 +31,9 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
 
   const [editedRecipe, setEditedRecipe] = useState(recipe);
 
-  const userState = useSelector((state: any) => state.user);
+  // const userState = useSelector((state: any) => state.user);
 
-  let globalUser = userState.username;
+  // let globalUser = userState.username;
 
   function handleInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
