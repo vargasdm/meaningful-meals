@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import { authenticateToken } from '../util/authenticateToken';
 import mealService from '../service/mealService';
 import type { Validation } from '../util/validation.type';
 
@@ -31,6 +32,10 @@ router.post('/', async (req: any, res: any) => {
 		console.log(err);
 		res.sendStatus(500);
 	}
+});
+
+router.get('/', authenticateToken, async (req: any, res: any) => {
+	res.send(req.user);
 });
 
 export default router;

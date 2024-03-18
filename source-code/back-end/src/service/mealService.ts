@@ -35,11 +35,13 @@ async function validateMeal(
 	return validation;
 }
 
+// This should create a meal with the given arguments.
+// It should return nothing on succes, and implicitly throw an error on error.
 async function createMeal(
 	userID: string,
 	recipeID: string,
 	date: string
-) {
+): Promise<void> {
 	await mealDAO.createMeal(
 		uuid(),
 		userID,

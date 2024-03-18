@@ -12,12 +12,14 @@ const AWS_REGION: string = process.env.AWS_REGION as string;
 const client = new DynamoDBClient({ region: AWS_REGION as string });
 const documentClient = DynamoDBDocumentClient.from(client);
 
+// This should create a meal with the given arguments.
+// It should return nothing on success, and implicitly throw an error on error.
 async function createMeal(
 	mealID: string,
 	userID: string,
 	recipeID: string,
 	date: string
-) {
+): Promise<void> {
 	const command = new PutCommand({
 		TableName: MEALS_TABLE,
 		Item: {
@@ -47,6 +49,13 @@ async function getMealsByUserID(userID: string) {
 		logger.error(err);
 		throw err;
 	}
+}
+
+async function getMealsByUserIDAndRecipeID(
+	userID: string,
+	recipeID: string
+) {
+
 }
 
 export default {
