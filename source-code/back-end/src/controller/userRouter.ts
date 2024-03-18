@@ -1,10 +1,12 @@
 // endpoint: /user
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
 import jwt from "jsonwebtoken";
 import { logger } from "../util/logger";
 
-import type { Validation } from '../util/response';
+import type { Validation } from '../util/validation.type';
 const router = express.Router();
 
 import createUserService from "../service/userService";

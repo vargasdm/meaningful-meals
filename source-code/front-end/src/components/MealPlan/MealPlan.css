@@ -5,7 +5,11 @@
 	align-items: stretch;
 }
 
-.calendar-day {
+.meal-plan-day {
 	flex-grow: 1;
 	flex-shrink: 1;
+}
+
+.meal-plan-day > h1{
+	font-size: 16px;
 }
