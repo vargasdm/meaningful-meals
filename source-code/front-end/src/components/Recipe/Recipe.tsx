@@ -1,13 +1,18 @@
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import './Recipe.css';
+import endpoints from '../../endpoints';
 
 const BACKEND_PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${BACKEND_PORT}/recipes`;
+const RECIPES_ENDPOINT = 
+	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
+const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
+
+// console.log(MEALS_ENDPOINT);
 
 export async function loader({ params }: any) {
 	try {
-		const res = await axios.get(`${URL}?id=${params.id}`);
+		const res = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
 
 		return res.data;
 	} catch (err) {

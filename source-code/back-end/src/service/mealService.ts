@@ -61,8 +61,6 @@ async function getMealsByUserID(userID: string) {
 async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
 	try {
 		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		// return await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		// console.log(meal);
 		return meal;
 	} catch (err) {
 		throw err;
