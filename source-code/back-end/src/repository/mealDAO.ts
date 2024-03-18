@@ -13,24 +13,28 @@ const client = new DynamoDBClient({ region: AWS_REGION as string });
 const documentClient = DynamoDBDocumentClient.from(client);
 
 // This should create a meal with the given arguments.
-// It should return nothing on success, and implicitly throw an error on error.
+// It should return nothing on success, and throw an error on error.
 async function createMeal(
 	mealID: string,
 	userID: string,
 	recipeID: string,
 	date: string
 ): Promise<void> {
-	const command = new PutCommand({
-		TableName: MEALS_TABLE,
-		Item: {
-			meal_id: mealID,
-			user_id: userID,
-			recipe_id: recipeID,
-			date
-		}
-	});
+	try {
+		const command = new PutCommand({
+			TableName: MEALS_TABLE,
+			Item: {
+				meal_id: mealID,
+				user_id: userID,
+				recipe_id: recipeID,
+				date
+			}
+		});
 
-	await documentClient.send(command);
+		await documentClient.send(command);
+	} catch (err) {
+		throw err;
+	}
 }
 
 async function getMealsByUserID(userID: string) {
@@ -45,8 +49,8 @@ async function getMealsByUserID(userID: string) {
 		const data: any = await documentClient.send(command);
 		return data;
 	} catch (err) {
-		console.error(err);
-		logger.error(err);
+		// console.error(err);
+		// logger.error(err);
 		throw err;
 	}
 }

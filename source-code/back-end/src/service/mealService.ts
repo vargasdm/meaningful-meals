@@ -50,7 +50,16 @@ async function createMeal(
 	);
 }
 
+async function getMealsByUserID(userID: string) {
+	try {
+		return (await mealDAO.getMealsByUserID(userID)).Items;
+	} catch (err) {
+		throw err;
+	}
+}
+
 export default {
 	validateMeal,
-	createMeal
+	createMeal,
+	getMealsByUserID
 };

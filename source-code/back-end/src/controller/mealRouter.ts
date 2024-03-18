@@ -34,8 +34,17 @@ router.post('/', async (req: any, res: any) => {
 	}
 });
 
+// This will return the meals of the user indicated by the JWT sent with the request.
+// If there is no JWT, then a 403 will be returned instead.
 router.get('/', authenticateToken, async (req: any, res: any) => {
-	res.send(req.user);
+	// res.send(req.user);
+	try {
+		const meals = await mealService.getMealsByUserID(req.user.user_id);
+		res.status(200).json(meals);
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
+	}
 });
 
 export default router;
