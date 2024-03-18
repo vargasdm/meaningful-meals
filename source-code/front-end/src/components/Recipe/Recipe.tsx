@@ -34,7 +34,7 @@ export default function Recipe() {
 	async function getIsInMealPlan(): Promise<void> {
 		try {
 			const meal = await axios.get(
-				`${MEALS_ENDPOINT}/params.id`,
+				`${MEALS_ENDPOINT}/${id}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${jwt}`
@@ -73,6 +73,21 @@ export default function Recipe() {
 		}
 	}
 
+	async function handleRemoveFromMealPlan() {
+		try {
+			await axios.delete(
+				`${MEALS_ENDPOINT}/${id}`,
+				{
+					headers: {
+						'Authorization': `Bearer ${jwt}`
+					}
+				}
+			);
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
 	const instructions: any = recipeData.analyzedInstructions[0].steps.map(
 		(step: any) => <li key={step.number}>{step.step}</li>
 	);
@@ -87,7 +102,7 @@ export default function Recipe() {
 				<input
 					type='button'
 					value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'}
-					onClick={handleAddToMealPlan}
+					onClick={isInMealPlan ? handleRemoveFromMealPlan : handleAddToMealPlan}
 				/>
 			</div>
 			<img src={recipeData.image} alt={recipeData.title} />

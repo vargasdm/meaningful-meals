@@ -35,11 +35,11 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-router.delete('/', authenticateToken, async (req: any, res: any) => {
+router.delete('/:recipeID', authenticateToken, async (req: any, res: any) => {
 	try {
 		const validation: Validation = await mealService.validateRemoveMeal(
 			req.user.user_id,
-			req.body.recipeID
+			req.params.recipeID
 		);
 
 		if (!validation.isValid) {
@@ -47,7 +47,7 @@ router.delete('/', authenticateToken, async (req: any, res: any) => {
 			return;
 		}
 
-		await mealService.deleteMeal(req.user.user_id, req.body.recipeID);
+		await mealService.deleteMeal(req.user.user_id, req.params.recipeID);
 		res.sendStatus(200);
 	} catch (err) {
 		console.error(err);

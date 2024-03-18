@@ -92,5 +92,6 @@ async function deleteMealByID(mealID: string) {
 export default {
 	createMeal,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID
+	getMealByUserIDAndRecipeID,
+	deleteMealByID
 }

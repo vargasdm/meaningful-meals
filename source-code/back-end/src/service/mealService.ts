@@ -27,7 +27,7 @@ async function validateAddMeal(
 		}
 
 		if (await mealExists(userID, recipeID)) {
-			console.log('meal exists');
+			// console.log('meal exists');
 			validation.errors.push('MEAL EXISTS');
 		}
 	} catch (err) {
@@ -91,7 +91,7 @@ async function deleteMeal(
 	try {
 		const meal = await getMealByUserIDAndRecipeID(userID, recipeID);
 		console.log(JSON.stringify(meal));
-		// await mealDAO.delete
+		await mealDAO.deleteMealByID(meal.meal_id);
 	} catch (err) {
 		throw err;
 	}
