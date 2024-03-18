@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import store from "../../store/store";
 import './Recipe.css';
 import endpoints from '../../endpoints';
 
@@ -11,19 +10,8 @@ const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-console.log(MEALS_ENDPOINT);
-
 export async function loader({ params }: any) {
 	try {
-		// const isUserMeal = await axios.get(
-		// 	`${MEALS_ENDPOINT}/params.id`,
-		// 	{
-		// 		headers: {
-		// 			'Authorization': 'Bearer'
-		// 		}
-		// 	}
-		// )
-		// console.log(store.getState());
 		const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
 		return recipeData.data;
 	} catch (err) {
