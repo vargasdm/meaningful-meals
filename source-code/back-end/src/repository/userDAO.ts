@@ -6,6 +6,7 @@ import {
 	DynamoDBDocumentClient,
 	PutCommand,
 	QueryCommand,
+	GetCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { logger } from "../util/logger";
 import { UserDoesNotExistError } from "../util/errors";
@@ -28,7 +29,7 @@ async function getUserByUsername(username: string) {
 	try {
 		const users: any = (await documentClient.send(command)).Items;
 
-		if(users.length !== 1){
+		if (users.length !== 1) {
 			throw new UserDoesNotExistError();
 		}
 
@@ -41,23 +42,16 @@ async function getUserByUsername(username: string) {
 }
 
 async function getUserById(userId: string) {
-	const command = new QueryCommand({
+	const command = new GetCommand({
 		TableName,
-		KeyConditionExpression: "#id = :id",
-		ExpressionAttributeNames: { "#id": "user_id" },
-		ExpressionAttributeValues: { ":id": userId },
+		Key: {
+			user_id: userId,
+		},
 	});
 
 	try {
-		// const data: any = await documentClient.send(command);
-		// return data.Items[0];
-		const users: any = (await documentClient.send(command)).Items;
-
-		if(users.length !== 1){
-			throw new UserDoesNotExistError();
-		}
-
-		return users[0];
+		const data: any = await documentClient.send(command);
+		return data.Item;
 	} catch (err) {
 		console.error(err);
 		logger.error(err);
@@ -71,10 +65,14 @@ async function getUserById(userId: string) {
 async function createUser(Item: any) {
 	const command = new PutCommand({
 		TableName,
-		Item
+		Item,
 	});
 
 	await documentClient.send(command);
 }
 
-export default { createUser: createUser, getUserByUsername: getUserByUsername, getUserById };
+export default {
+	createUser: createUser,
+	getUserByUsername: getUserByUsername,
+	getUserById: getUserById,
+};
