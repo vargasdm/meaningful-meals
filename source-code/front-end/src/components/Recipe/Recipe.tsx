@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import store from "../../store/store";
 import './Recipe.css';
@@ -34,19 +34,15 @@ export async function loader({ params }: any) {
 
 
 export default function Recipe() {
-
+	const id = useParams().id;
 	const [isInMealPlan, setIsInMealPlan] = useState(false);
 	const recipeData: any = useLoaderData();
 	console.log(recipeData);
 
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
-	// isMeal();
-	// isInMealPlan();
-	async function getIsInMealPlan(): Promise<void> {
-		// console.log(store.getState());
-		const jwt = store.getState().user.jwt;
 
+	async function getIsInMealPlan(): Promise<void> {
 		try {
 			const meal = await axios.get(
 				`${MEALS_ENDPOINT}/params.id`,
@@ -57,7 +53,6 @@ export default function Recipe() {
 				}
 			);
 
-			// console.log(meal);
 			setIsInMealPlan(meal ? true : false);
 		} catch (err) {
 			console.error(err);
@@ -68,6 +63,26 @@ export default function Recipe() {
 	useEffect(() => {
 		getIsInMealPlan();
 	}, [])
+
+	async function handleAddToMealPlan() {
+		try {
+			await axios.post(
+				MEALS_ENDPOINT,
+				{
+					userID: user.user_id,
+					recipeID: id,
+					date: new Date().toString()
+				},
+				{
+					headers: {
+						'Authorization': `Bearer ${jwt}`
+					}
+				}
+			);
+		} catch (err) {
+			console.error(err);
+		}
+	}
 
 	const instructions: any = recipeData.analyzedInstructions[0].steps.map(
 		(step: any) => <li key={step.number}>{step.step}</li>
@@ -82,7 +97,9 @@ export default function Recipe() {
 				<h1>{recipeData.title}</h1>
 				<input
 					type='button'
-					value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'} />
+					value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'}
+					onClick={handleAddToMealPlan}
+				/>
 			</div>
 			<img src={recipeData.image} alt={recipeData.title} />
 			<h2>Ingredients</h2>

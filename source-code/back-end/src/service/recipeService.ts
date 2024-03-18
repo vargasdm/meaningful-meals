@@ -34,10 +34,12 @@ async function getRecipe(id: string) {
 async function recipeExists(id: string): Promise<boolean> {
 	console.log(`recipeService.recipeExists(${id})...`);
 	if (!id) {
+		// console.log(false);
 		return false;
 	}
 
 	const recipe = await getRecipe(id);
+	// console.log(recipe);
 	return recipe;
 }
 

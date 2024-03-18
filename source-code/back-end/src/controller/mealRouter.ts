@@ -9,9 +9,9 @@ import { MealDoesNotExistError } from '../util/errors';
 
 const router = express.Router();
 
-router.post('/', async (req: any, res: any) => {
+router.post('/', authenticateToken, async (req: any, res: any) => {
 	const validation: Validation = await mealService.validateMeal(
-		req.body.userID,
+		req.user.user_id,
 		req.body.recipeID,
 		req.body.date
 	);
@@ -23,7 +23,7 @@ router.post('/', async (req: any, res: any) => {
 
 	try {
 		await mealService.createMeal(
-			req.body.userID,
+			req.user.user_id,
 			req.body.recipeID,
 			req.body.date
 		);
