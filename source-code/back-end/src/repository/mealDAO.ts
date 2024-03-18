@@ -67,8 +67,6 @@ async function getMealByUserIDAndRecipeID(
 			throw new MealDoesNotExistError();
 		}
 
-		// console.log(meals);
-
 		return meals[0];
 	} catch (err) {
 		throw err;

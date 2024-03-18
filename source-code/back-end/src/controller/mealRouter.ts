@@ -10,18 +10,18 @@ import { MealDoesNotExistError } from '../util/errors';
 const router = express.Router();
 
 router.post('/', authenticateToken, async (req: any, res: any) => {
-	const validation: Validation = await mealService.validateMeal(
-		req.user.user_id,
-		req.body.recipeID,
-		req.body.date
-	);
-
-	if (!validation.isValid) {
-		res.status(400).json({ errors: validation.errors });
-		return;
-	}
-
 	try {
+		const validation: Validation = await mealService.validateAddMeal(
+			req.user.user_id,
+			req.body.recipeID,
+			req.body.date
+		);
+
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
 		await mealService.createMeal(
 			req.user.user_id,
 			req.body.recipeID,
@@ -30,10 +30,27 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 
 		res.sendStatus(201);
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 		res.sendStatus(500);
 	}
 });
+
+router.delete('/', authenticateToken, async (req: any, res: any) => {
+	try{
+		const validation: Validation = await mealService.validateRemoveMeal(
+			req.user.user_id,
+			req.body.recipeID
+		);
+	
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+	}catch(err){
+		console.error(err);
+		res.sendStatus(500);
+	}
+})
 
 // This should return the meals of the user indicated by the JWT sent with the request.
 // If there is no JWT, then a 403 will be returned instead.

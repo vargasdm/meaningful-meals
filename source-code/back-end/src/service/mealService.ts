@@ -6,21 +6,29 @@ import userDAO from '../repository/userDAO';
 import recipeService from './recipeService';
 import createUserService from './userService';
 import type { Validation } from '../util/validation.type';
+import { MealDoesNotExistError } from '../util/errors';
 
 const userService = createUserService(userDAO);
 
-async function validateMeal(
+async function validateAddMeal(
 	userID: string,
 	recipeID: string,
-	date: string): Promise<Validation> {
+	date: string
+): Promise<Validation> {
 	const validation: Validation = { isValid: false, errors: [] };
 
-	if (!(await userService.userExistsByID(userID))) {
-		validation.errors.push('USER DOES NOT EXIST');
-	}
+	try {
+		if (!(await userService.userExistsByID(userID))) {
+			validation.errors.push('USER DOES NOT EXIST');
+		}
 
-	if (!(await recipeService.recipeExists(recipeID))) {
-		validation.errors.push('RECIPE DOES NOT EXIST');
+		if (!(await recipeService.recipeExists(recipeID))) {
+			validation.errors.push('RECIPE DOES NOT EXIST');
+		}
+	} catch (err) {
+		// validation.errors.push('INTERNAL SERVER ERROR');
+		// return validation;
+		throw err;
 	}
 
 	if (isNaN(Date.parse(date))) {
@@ -29,6 +37,41 @@ async function validateMeal(
 
 	if (validation.errors.length > 0) {
 		return validation;
+	}
+
+	validation.isValid = true;
+	return validation;
+}
+
+async function validateRemoveMeal(
+	userID: string,
+	recipeID: string
+): Promise<Validation> {
+	const validation: Validation = { isValid: false, errors: [] };
+
+	try {
+		// const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+
+		// if (meal) {
+		// 	validation.isValid = true;
+		// 	return validation;
+		// }
+
+		// validation.errors.push('MEAL DOES NOT EXIST');
+		// return validation;
+		if (!(await mealExists(userID, recipeID))) {
+			validation.errors.push('MEAL DOES NOT EXIST');
+			return validation;
+		}
+	} catch (err) {
+		// if (err instanceof MealDoesNotExistError) {
+		// 	validation.errors.push('MEAL DOES NOT EXIST');
+		// 	return validation;
+		// }
+
+		// throw err;
+		// validation.errors.push()
+		throw err;
 	}
 
 	validation.isValid = true;
@@ -67,9 +110,24 @@ async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
 	}
 }
 
+async function mealExists(userID: string, recipeID: string) {
+	try {
+		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+		return meal ? true : false;
+	} catch (err) {
+		if (err instanceof MealDoesNotExistError) {
+			return false;
+		}
+
+		console.error(err);
+		throw err;
+	}
+}
+
 export default {
-	validateMeal,
+	validateAddMeal: validateAddMeal,
+	validateRemoveMeal,
 	createMeal,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID
+	getMealByUserIDAndRecipeID,
 };

@@ -10,6 +10,8 @@ const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
+console.log(MEALS_ENDPOINT);
+
 export async function loader({ params }: any) {
 	try {
 		const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
@@ -23,9 +25,8 @@ export async function loader({ params }: any) {
 export default function Recipe() {
 	const id = useParams().id;
 	const [isInMealPlan, setIsInMealPlan] = useState(false);
-	// const [isFavorited, setIsFavorited] = useState(false);
 	const recipeData: any = useLoaderData();
-	console.log(recipeData);
+	// console.log(recipeData);
 
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
@@ -57,7 +58,7 @@ export default function Recipe() {
 			await axios.post(
 				MEALS_ENDPOINT,
 				{
-					userID: user.user_id,
+					// userID: user.user_id,
 					recipeID: id,
 					date: new Date().toString()
 				},
