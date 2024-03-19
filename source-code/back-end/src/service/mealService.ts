@@ -30,7 +30,7 @@ async function validateAddMeal(
 	}
 
 	if (new Date(timestamp).getTime() <= 0) {
-		validation.errors.push('DATE IS INVALID');
+		validation.errors.push('TIMESTAMP IS INVALID');
 	}
 
 	if (validation.errors.length > 0) {
@@ -78,32 +78,88 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-// async function getMealsByUserIDAndRecipeID(userID: string, recipeID: string) {
-// 	try {
-// 		const meals = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-// 		return meals;
-// 	} catch (err) {
-// 		throw err;
-// 	}
-// }
+async function validateGetMealsOfUserInTimeRange(
+	userID: string,
+	minTimestamp: string,
+	maxTimestamp: number
+): Promise<Validation> {
+	const validation: Validation = { isValid: false, errors: [] };
 
-// async function hi() {
-// 	const meals = mealDAO.getMealsOfUserInTimeRange(
-// 		'd2f7a396-9392-4a17-ac06-bbd1b85cfa03',
-// 		Date.now() - 1000 * 60 * 60 * 24,
-// 		Date.now() + 1000 * 60 * 60 * 24
-// 	);
+	if (!userID) {
+		validation.errors.push('USER ID DOES NOT EXIST');
+	}
 
-// 	console.log(await meals);
+	if (!minTimestamp) {
+		validation.errors.push('MINIMUM TIMESTAMP DOES NOT EXIST');
+	}
 
-// }
+	if (!maxTimestamp) {
+		validation.errors.push('MAXIMUM TIMESTAMP DOES NOT EXIST');
+	}
 
-// hi();
+	if (validation.errors.length > 0) {
+		return validation;
+	}
+
+	try {
+		if (!(await userService.userExistsByID(userID))) {
+			validation.errors.push('USER DOES NOT EXIST');
+		}
+	} catch (err) {
+		throw err;
+	}
+	// const validation: Validation = { isValid: false, errors: [] };
+
+
+	// 	if (!(await recipeService.recipeExists(recipeID))) {
+	// 		validation.errors.push('RECIPE DOES NOT EXIST');
+	// 	}
+	// } catch (err) {
+	// 	throw err;
+	// }
+
+	if (new Date(minTimestamp).getTime() <= 0) {
+		validation.errors.push('MINIMUM TIMESTAMP IS INVALID');
+	}
+
+	if (new Date(maxTimestamp).getTime() <= 0) {
+		validation.errors.push('MAXIMUM TIMESTAMP IS INVALID');
+	}
+
+	if (validation.errors.length > 0) {
+		return validation;
+	}
+
+	validation.isValid = true;
+	return validation;
+
+	// if (validation.errors.length > 0) {
+	// 	return validation;
+	// }
+
+	// validation.isValid = true;
+	// return validation;
+}
+
+async function getMealsOfUserInTimeRange(
+	userID: string,
+	minTimestamp: number,
+	maxTimestamp: number
+) {
+	try {
+		return await mealDAO.getMealsOfUserInTimeRange(
+			userID, minTimestamp, maxTimestamp
+		)
+	} catch (err) {
+		throw err;
+	}
+}
 
 export default {
 	validateAddMeal: validateAddMeal,
 	createMeal,
 	deleteMeal: deleteMealByID,
 	getMealsByUserID,
-	// getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
+	validateGetMealsOfUserInTimeRange,
+	getMealsOfUserInTimeRange
 };
