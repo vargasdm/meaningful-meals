@@ -1,4 +1,3 @@
-// import { Link } from "react-router-dom";
 const DAY_NAMES: string[] = [
 	'Sunday',
 	'Monday',
@@ -9,10 +8,6 @@ const DAY_NAMES: string[] = [
 	'Saturday'
 ];
 type MealPlanDayProp = {
-	// dayName: string,
-	// dateOfTheMonth: number,
-	// month: number,
-	// year: number
 	date: Date
 }
 

@@ -53,23 +53,52 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealsByUserIDAndRecipeID(
+async function getMealsOfUserInTimeRange(
 	userID: string,
-	recipeID: string
+	minTimestamp: number,
+	maxTimestamp: number
 ) {
 	try {
-		let meals = await getMealsByUserID(userID);
-		meals = meals.filter((meal: any) => meal.recipe_id === recipeID);
-
-		// if (meals.length !== 1) {
-		// 	throw new MealDoesNotExistError();
-		// }
-
-		return meals;
+		const meals = await getMealsByUserID(userID);
+		return meals.filter((meal: any) => meal.timestamp >= minTimestamp
+			&& meal.timestamp < maxTimestamp);
 	} catch (err) {
 		throw err;
 	}
 }
+
+// async function getMealsInTimeRange(minTimestamp: number, maxTimestamp: number) {
+// 	const command = new QueryCommand({
+// 		TableName: MEALS_TABLE,
+// 		IndexName: 'timestamp-index',
+// 		KeyConditionExpression:
+// 			'#timestamp >= :minTimestamp AND #timestamp < :maxTimestamp',
+// 		ExpressionAttributeValues: {
+// 			':minTimestamp': minTimestamp,
+// 			':maxTimestamp': maxTimestamp
+// 		}
+// 	});
+
+// 	try {
+// 		const meals: any = (await documentClient.send(command)).Items;
+// 		return meals;
+// 	} catch (err) {
+// 		throw err;
+// 	}
+// }
+
+// async function getMealsByUserIDAndRecipeID(
+// 	userID: string,
+// 	recipeID: string
+// ) {
+// 	try {
+// 		let meals = await getMealsByUserID(userID);
+// 		meals = meals.filter((meal: any) => meal.recipe_id === recipeID);
+// 		return meals;
+// 	} catch (err) {
+// 		throw err;
+// 	}
+// }
 
 async function deleteMealByID(mealID: string) {
 	const command = new DeleteCommand({
@@ -86,9 +115,11 @@ async function deleteMealByID(mealID: string) {
 	}
 }
 
+
 export default {
 	createMeal,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
-	deleteMealByID
+	// getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
+	deleteMealByID,
+	getMealsOfUserInTimeRange
 }

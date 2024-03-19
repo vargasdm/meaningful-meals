@@ -7,7 +7,6 @@ import recipeService from './recipeService';
 import createUserService from './userService';
 import type { Validation } from '../util/validation.type';
 import { Meal } from '../util/meal';
-// import { MealDoesNotExistError } from '../util/errors';
 
 const userService = createUserService(userDAO);
 
@@ -79,19 +78,32 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealsByUserIDAndRecipeID(userID: string, recipeID: string) {
-	try {
-		const meals = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		return meals;
-	} catch (err) {
-		throw err;
-	}
-}
+// async function getMealsByUserIDAndRecipeID(userID: string, recipeID: string) {
+// 	try {
+// 		const meals = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+// 		return meals;
+// 	} catch (err) {
+// 		throw err;
+// 	}
+// }
+
+// async function hi() {
+// 	const meals = mealDAO.getMealsOfUserInTimeRange(
+// 		'd2f7a396-9392-4a17-ac06-bbd1b85cfa03',
+// 		Date.now() - 1000 * 60 * 60 * 24,
+// 		Date.now() + 1000 * 60 * 60 * 24
+// 	);
+
+// 	console.log(await meals);
+
+// }
+
+// hi();
 
 export default {
 	validateAddMeal: validateAddMeal,
 	createMeal,
 	deleteMeal: deleteMealByID,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
+	// getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
 };

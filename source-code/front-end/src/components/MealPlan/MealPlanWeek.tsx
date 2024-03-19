@@ -1,16 +1,7 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import MealPlanDay from "./MealPlanDay";
 
 const NUM_DAYS_PER_WEEK: number = 7;
-const DAY_NAMES: string[] = [
-	'Sunday',
-	'Monday',
-	'Tuesday',
-	'Wednesday',
-	'Thursday',
-	'Friday',
-	'Saturday'
-];
 
 type MealPlanWeekProp = {
 	firstDateOfWeek: Date,
@@ -22,9 +13,6 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 
 	for (let i = 0; i < NUM_DAYS_PER_WEEK; i++) {
 		const date = new Date(
-			// new Date(props.firstDateOfWeek).setDate(
-			// 	props.firstDateOfWeek.getDate() + i
-			// )
 			props.firstDateOfWeek.getFullYear(),
 			props.firstDateOfWeek.getMonth(),
 			props.firstDateOfWeek.getDate() + i
@@ -32,11 +20,6 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 
 		calendarDays.push(
 			<MealPlanDay
-				// key={date.toString()}
-				// dayName={DAY_NAMES[i]}
-				// dateOfTheMonth={date.getDate()}
-				// month={date.getMonth()}
-				// year={date.getFullYear()}
 				date={date}
 			/>
 		)
