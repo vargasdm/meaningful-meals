@@ -10,7 +10,7 @@ import {
 	DeleteCommand
 } from "@aws-sdk/lib-dynamodb";
 import { Meal } from "../util/meal";
-import { MealDoesNotExistError } from "../util/errors";
+// import { MealDoesNotExistError } from "../util/errors";
 
 const MEALS_TABLE: string = process.env.MEALS_TABLE as string;
 const AWS_REGION: string = process.env.AWS_REGION as string;

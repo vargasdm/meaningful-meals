@@ -24,35 +24,35 @@ export async function loader({ params }: any) {
 
 export default function Recipe() {
 	const id = useParams().id;
-	const [isInMealPlan, setIsInMealPlan] = useState(false);
+	// const [isInMealPlan, setIsInMealPlan] = useState(false);
 	const recipeData: any = useLoaderData();
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
-	async function getIsInMealPlan(): Promise<void> {
-		try {
-			const meal = await axios.get(
-				`${MEALS_ENDPOINT}/${id}`,
-				{
-					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
-				}
-			);
+	// async function getIsInMealPlan(): Promise<void> {
+	// 	try {
+	// 		const meal = await axios.get(
+	// 			`${MEALS_ENDPOINT}/${id}`,
+	// 			{
+	// 				headers: {
+	// 					'Authorization': `Bearer ${jwt}`
+	// 				}
+	// 			}
+	// 		);
 
-			setIsInMealPlan(meal ? true : false);
-		} catch (err: any) {
-			if (err.response.status !== 404) {
-				console.error(err);
-			}
+	// 		setIsInMealPlan(meal ? true : false);
+	// 	} catch (err: any) {
+	// 		if (err.response.status !== 404) {
+	// 			console.error(err);
+	// 		}
 
-			setIsInMealPlan(false);
-		}
-	}
+	// 		setIsInMealPlan(false);
+	// 	}
+	// }
 
-	useEffect(() => {
-		getIsInMealPlan();
-	}, []);
+	// useEffect(() => {
+	// 	getIsInMealPlan();
+	// }, []);
 
 	async function handleAddToMealPlan() {
 		try {
@@ -61,7 +61,8 @@ export default function Recipe() {
 				{
 					// userID: user.user_id,
 					recipeID: id,
-					date: new Date().toString()
+					// date: new Date().toString()
+					timestamp: Date.now()
 				},
 				{
 					headers: {
@@ -70,28 +71,28 @@ export default function Recipe() {
 				}
 			);
 
-			await getIsInMealPlan();
+			// await getIsInMealPlan();
 		} catch (err) {
 			console.error(err);
 		}
 	}
 
-	async function handleRemoveFromMealPlan() {
-		try {
-			await axios.delete(
-				`${MEALS_ENDPOINT}/${id}`,
-				{
-					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
-				}
-			);
+	// async function handleRemoveFromMealPlan() {
+	// 	try {
+	// 		await axios.delete(
+	// 			`${MEALS_ENDPOINT}/${id}`,
+	// 			{
+	// 				headers: {
+	// 					'Authorization': `Bearer ${jwt}`
+	// 				}
+	// 			}
+	// 		);
 
-			await getIsInMealPlan();
-		} catch (err) {
-			console.error(err);
-		}
-	}
+	// 		await getIsInMealPlan();
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }
 
 	const instructions: any = recipeData.analyzedInstructions[0].steps.map(
 		(step: any) => <li key={step.number}>{step.step}</li>
@@ -106,8 +107,10 @@ export default function Recipe() {
 				<h1>{recipeData.title}</h1>
 				<input
 					type='button'
-					value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'}
-					onClick={isInMealPlan ? handleRemoveFromMealPlan : handleAddToMealPlan}
+					// value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'}
+					// onClick={isInMealPlan ? handleRemoveFromMealPlan : handleAddToMealPlan}
+					value='Add to Meal Plan'
+					onClick={handleAddToMealPlan}
 				/>
 			</div>
 			<img src={recipeData.image} alt={recipeData.title} />
