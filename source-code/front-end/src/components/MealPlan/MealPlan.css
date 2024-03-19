@@ -5,7 +5,7 @@
 	flex-wrap: nowrap;
 }
 
-.meal-plan-div>h1{
+.meal-plan-div>h1 {
 	font-size: 32px;
 }
 
@@ -30,9 +30,13 @@
 	cursor: pointer;
 }
 
-.meal-plan-day {
+.meal-plan-day-container {
 	flex-grow: 1;
 	flex-shrink: 1;
+}
+
+.meal-plan-day {
+	height: 100%;
 	padding: 8px;
 }
 

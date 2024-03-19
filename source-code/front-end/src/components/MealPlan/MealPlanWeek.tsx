@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import MealPlanDay from "./MealPlanDay";
-import axios from "axios";
-import endpoints from "../../endpoints";
+// import axios from "axios";
+// import endpoints from "../../endpoints";
 import { useSelector } from "react-redux";
 
 const NUM_DAYS_PER_WEEK: number = 7;
-const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
+// const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
 type MealPlanWeekProp = {
 	firstDateOfWeek: Date,
@@ -13,9 +13,9 @@ type MealPlanWeekProp = {
 }
 
 export default function MealPlanWeek(props: MealPlanWeekProp) {
-	const [meals, setMeals] = useState([]);
-	const user = useSelector((state: any) => state.user);
-	const jwt = user.jwt;
+	// const [meals, setMeals] = useState([]);
+	// const user = useSelector((state: any) => state.user);
+	// const jwt = user.jwt;
 	const calendarDays = [];
 
 	for (let i = 0; i < NUM_DAYS_PER_WEEK; i++) {
@@ -26,9 +26,13 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		);
 
 		calendarDays.push(
-			<MealPlanDay
-				date={date}
-			/>
+			// <li key={date.getTime()}>
+			<div className='meal-plan-day-container' key={date.getTime()}>
+				<MealPlanDay
+					date={date}
+				/>
+			</div>
+			// </li>
 		)
 	}
 
@@ -46,34 +50,31 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		}
 	}
 
-	async function getMeals() {
-		const firstTimestampOfWeek = props.firstDateOfWeek.getTime();
-		const lastTimestampOfWeek = firstTimestampOfWeek + 1000 * 60 * 60 * 24 * 7;
+	// async function getMeals() {
+	// 	const firstTimestampOfWeek = props.firstDateOfWeek.getTime();
+	// 	const lastTimestampOfWeek = firstTimestampOfWeek + 1000 * 60 * 60 * 24 * 7;
 
-		try {
-			const meals = await axios.get(
-				`${MEALS_ENDPOINT}?minTimestamp=${firstTimestampOfWeek}`
-				+ `&maxTimestamp=${lastTimestampOfWeek}`,
-				{
-					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
-				}
-			);
+	// 	try {
+	// 		const meals = await axios.get(
+	// 			`${MEALS_ENDPOINT}?minTimestamp=${firstTimestampOfWeek}`
+	// 			+ `&maxTimestamp=${lastTimestampOfWeek}`,
+	// 			{
+	// 				headers: {
+	// 					'Authorization': `Bearer ${jwt}`
+	// 				}
+	// 			}
+	// 		);
 
-			console.log(meals);
-			setMeals(meals.data);
-		} catch (err) {
-			console.error(err);
-		}
-	}
+	// 		setMeals(meals.data);
+	// 	} catch (err) {
+	// 		setMeals([]);
+	// 		console.error(err);
+	// 	}
+	// }
 
-	useEffect(() => {
-		getMeals();
-	}, [])
-
-	// getMeals();
-
+	// useEffect(() => {
+	// 	getMeals();
+	// }, [])
 
 	return (
 		<div className='weekly-calendar'>
