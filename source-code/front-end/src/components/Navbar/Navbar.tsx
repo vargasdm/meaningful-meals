@@ -40,7 +40,7 @@ function Navbar() {
 						<Link to={`/recipes/user-recipes/${userPathParam}`}>Recipes</Link>
 					</li>
 					<li>
-						<Link to="/plan">Meal Plans</Link>
+						<Link to="/plan">Meal Plan</Link>
 					</li>
 					<li>
 						<Link to='/search'>Search Recipes</Link>
