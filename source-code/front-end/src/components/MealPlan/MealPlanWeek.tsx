@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MealPlanDay from "./MealPlanDay";
 
-const DAYS_PER_WEEK: number = 7;
+const NUM_DAYS_PER_WEEK: number = 7;
 const DAY_NAMES: string[] = [
 	'Sunday',
 	'Monday',
@@ -56,12 +56,12 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		<div className='weekly-calendar'>
 			<i
 				className='bi bi-arrow-left'
-				onClick={changeFirstDateOfWeek(-7)}
+				onClick={changeFirstDateOfWeek(-NUM_DAYS_PER_WEEK)}
 			/>
 			{calendarDays}
 			<i
 				className='bi bi-arrow-right'
-				onClick={changeFirstDateOfWeek(7)}
+				onClick={changeFirstDateOfWeek(NUM_DAYS_PER_WEEK)}
 			/>
 		</div>
 	);
