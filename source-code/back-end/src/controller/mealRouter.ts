@@ -5,40 +5,70 @@ import express from 'express';
 import { authenticateToken } from '../util/authenticateToken';
 import mealService from '../service/mealService';
 import type { Validation } from '../util/validation.type';
-import { MealDoesNotExistError } from '../util/errors';
 
 const router = express.Router();
 
 router.post('/', authenticateToken, async (req: any, res: any) => {
-	const validation: Validation = await mealService.validateMeal(
-		req.user.user_id,
-		req.body.recipeID,
-		req.body.date
-	);
-
-	if (!validation.isValid) {
-		res.status(400).json({ errors: validation.errors });
-		return;
-	}
-
 	try {
+		const validation: Validation = await mealService.validateAddMeal(
+			req.user.user_id,
+			req.body.recipeID,
+			req.body.timestamp
+		);
+
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
+
 		await mealService.createMeal(
 			req.user.user_id,
 			req.body.recipeID,
-			req.body.date
+			req.body.timestamp
 		);
 
 		res.sendStatus(201);
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 		res.sendStatus(500);
 	}
 });
 
+router.delete('/:recipeID', authenticateToken, async (req: any, res: any) => {
+	try {
+		await mealService.deleteMeal(req.body.mealID);
+		res.sendStatus(200);
+	} catch (err) {
+		console.error(err);
+		res.sendStatus(500);
+	}
+})
+
 // This should return the meals of the user indicated by the JWT sent with the request.
 // If there is no JWT, then a 403 will be returned instead.
 router.get('/', authenticateToken, async (req: any, res: any) => {
-	// res.send(req.user);
+	if (req.query.minTimestamp && req.query.maxTimestamp) {
+		const validations = await mealService.validateGetMealsOfUserInTimeRange(
+			req.user.user_id,
+			req.query.minTimestamp,
+			req.query.maxTimestamp
+		);
+
+		if (!validations.isValid) {
+			res.status(400).json({ errors: validations.errors });
+			return;
+		}
+
+		const meals = await mealService.getMealsOfUserInTimeRange(
+			req.user.user_id,
+			req.query.minTimestamp,
+			req.query.maxTimestamp
+		);
+
+		res.status(200).json(meals);
+		return;
+	}
+
 	try {
 		const meals = await mealService.getMealsByUserID(req.user.user_id);
 		res.status(200).json(meals);
@@ -47,26 +77,5 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 		res.sendStatus(500);
 	}
 });
-
-// This should return the meal of the user indicated by the JWT sent with the request
-// and with the given recipe ID.
-router.get('/:recipeID', authenticateToken, async (req: any, res: any) => {
-	try {
-		const meal = await mealService.getMealByUserIDAndRecipeID(
-			req.user.user_id,
-			req.params.recipeID
-		);
-
-		res.status(200).json(meal);
-	} catch (err) {
-		if (err instanceof MealDoesNotExistError) {
-			res.sendStatus(404);
-			return;
-		}
-
-		console.error(err);
-		res.sendStatus(500);
-	}
-})
 
 export default router;

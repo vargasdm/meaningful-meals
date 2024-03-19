@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import './Recipe.css';
@@ -9,6 +9,8 @@ const BACKEND_PORT = process.env.REACT_APP_PORT;
 const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
+
+// console.log(MEALS_ENDPOINT);
 
 export async function loader({ params }: any) {
 	try {
@@ -22,44 +24,17 @@ export async function loader({ params }: any) {
 
 export default function Recipe() {
 	const id = useParams().id;
-	const [isInMealPlan, setIsInMealPlan] = useState(false);
-	// const [isFavorited, setIsFavorited] = useState(false);
 	const recipeData: any = useLoaderData();
-	console.log(recipeData);
-
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
-
-	async function getIsInMealPlan(): Promise<void> {
-		try {
-			const meal = await axios.get(
-				`${MEALS_ENDPOINT}/params.id`,
-				{
-					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
-				}
-			);
-
-			setIsInMealPlan(meal ? true : false);
-		} catch (err) {
-			console.error(err);
-			setIsInMealPlan(false);
-		}
-	}
-
-	useEffect(() => {
-		getIsInMealPlan();
-	}, []);
 
 	async function handleAddToMealPlan() {
 		try {
 			await axios.post(
 				MEALS_ENDPOINT,
 				{
-					userID: user.user_id,
 					recipeID: id,
-					date: new Date().toString()
+					timestamp: Date.now()
 				},
 				{
 					headers: {
@@ -85,7 +60,7 @@ export default function Recipe() {
 				<h1>{recipeData.title}</h1>
 				<input
 					type='button'
-					value={isInMealPlan ? 'Remove from Meal Plan' : 'Add to Meal Plan'}
+					value='Add to Meal Plan'
 					onClick={handleAddToMealPlan}
 				/>
 			</div>
