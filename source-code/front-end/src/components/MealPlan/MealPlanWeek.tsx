@@ -38,18 +38,6 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		)
 	}
 
-	function setPreviousWeek() {
-		// let newFirstDateOfWeek: Date = new Date(props.firstDateOfWeek);
-
-		// newFirstDateOfWeek = new Date(
-		// 	newFirstDateOfWeek.setDate(props.firstDateOfWeek.getDate() - 7)
-		// );
-
-		// props.setFirstDateOfWeek(
-		// 	newFirstDateOfWeek
-		// )
-	}
-
 	function changeFirstDateOfWeek(change: number) {
 		return () => {
 			let newFirstDateOfWeek: Date = new Date(props.firstDateOfWeek);

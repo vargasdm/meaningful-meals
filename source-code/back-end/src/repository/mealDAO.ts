@@ -6,7 +6,9 @@ import {
 	QueryCommand,
 	DeleteCommand
 } from "@aws-sdk/lib-dynamodb";
+import { Meal } from "../util/meal";
 import { MealDoesNotExistError } from "../util/errors";
+
 
 const MEALS_TABLE: string = process.env.MEALS_TABLE as string;
 const AWS_REGION: string = process.env.AWS_REGION as string;
@@ -16,19 +18,20 @@ const documentClient = DynamoDBDocumentClient.from(client);
 // This should create a meal with the given arguments.
 // It should return nothing on success, and throw an error on error.
 async function createMeal(
-	mealID: string,
-	userID: string,
-	recipeID: string,
-	date: string
+	// mealID: string,
+	// userID: string,
+	// recipeID: string,
+	// date: string
+	meal: Meal
 ): Promise<void> {
 	try {
 		const command = new PutCommand({
 			TableName: MEALS_TABLE,
 			Item: {
-				meal_id: mealID,
-				user_id: userID,
-				recipe_id: recipeID,
-				date
+				meal_id: meal.mealID,
+				user_id: meal.userID,
+				recipe_id: meal.recipeID,
+				timestamp: meal.timestamp
 			}
 		});
 
@@ -50,8 +53,6 @@ async function getMealsByUserID(userID: string) {
 		const meals: any = (await documentClient.send(command)).Items;
 		return meals;
 	} catch (err) {
-		// console.error(err);
-		// logger.error(err);
 		throw err;
 	}
 }

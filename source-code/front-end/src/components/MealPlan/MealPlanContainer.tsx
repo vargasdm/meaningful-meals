@@ -12,15 +12,9 @@ export default function MealPlanContainer() {
 	);
 
 	return (
-		<>
-			{/* <MealPlanWeekSwitch
-				firstDateOfWeek={firstDateOfWeek}
-				setFirstDateOfWeek={setFirstDateOfWeek}
-			/> */}
-			<MealPlanWeek
-				firstDateOfWeek={firstDateOfWeek}
-				setFirstDateOfWeek={setFirstDateOfWeek}
-			/>
-		</>
+		<MealPlanWeek
+			firstDateOfWeek={firstDateOfWeek}
+			setFirstDateOfWeek={setFirstDateOfWeek}
+		/>
 	)
 }

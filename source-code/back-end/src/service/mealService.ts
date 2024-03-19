@@ -6,6 +6,7 @@ import userDAO from '../repository/userDAO';
 import recipeService from './recipeService';
 import createUserService from './userService';
 import type { Validation } from '../util/validation.type';
+import { Meal } from '../util/meal';
 import { MealDoesNotExistError } from '../util/errors';
 
 const userService = createUserService(userDAO);
@@ -13,7 +14,7 @@ const userService = createUserService(userDAO);
 async function validateAddMeal(
 	userID: string,
 	recipeID: string,
-	date: string
+	timestamp: number
 ): Promise<Validation> {
 	const validation: Validation = { isValid: false, errors: [] };
 
@@ -26,15 +27,16 @@ async function validateAddMeal(
 			validation.errors.push('RECIPE DOES NOT EXIST');
 		}
 
-		if (await mealExists(userID, recipeID)) {
-			// console.log('meal exists');
-			validation.errors.push('MEAL EXISTS');
-		}
+		// if (await mealExists(userID, recipeID)) {
+		// 	// console.log('meal exists');
+		// 	validation.errors.push('MEAL EXISTS');
+		// }
 	} catch (err) {
 		throw err;
 	}
 
-	if (isNaN(Date.parse(date))) {
+	// if (isNaN(Date.parse(date))) {
+	if (new Date(timestamp).getTime() > 0) {
 		validation.errors.push('DATE IS INVALID');
 	}
 
@@ -70,14 +72,16 @@ async function validateRemoveMeal(
 async function createMeal(
 	userID: string,
 	recipeID: string,
-	date: string
+	timestamp: number
 ): Promise<void> {
 	try {
 		await mealDAO.createMeal(
-			uuid(),
-			userID,
-			recipeID,
-			date
+			new Meal(
+				uuid(),
+				userID,
+				recipeID,
+				timestamp
+			)
 		);
 	} catch (err) {
 		throw err;
