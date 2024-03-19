@@ -22,19 +22,22 @@ export default function MealPlanContainer() {
 
 	const [firstDateOfWeek, setFirstDateOfWeek] = useState(
 		new Date(
-			new Date().setDate(now.getDate() - now.getDay())
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate() - now.getDay()
 		)
 	);
 
 	function handleGoToToday() {
 		setFirstDateOfWeek(new Date(
-			new Date().setDate(now.getDate() - now.getDay())
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate() - now.getDay()
 		));
 	}
 
 	return (
 		<div className='meal-plan-div'>
-			{/* <div className='month-banner'> */}
 			<h1>{MONTH_NAMES[firstDateOfWeek.getMonth()]}</h1>
 			<MealPlanWeek
 				firstDateOfWeek={firstDateOfWeek}
@@ -46,6 +49,5 @@ export default function MealPlanContainer() {
 				onClick={handleGoToToday}
 			/>
 		</div>
-		// </div >
-	)
+	);
 }

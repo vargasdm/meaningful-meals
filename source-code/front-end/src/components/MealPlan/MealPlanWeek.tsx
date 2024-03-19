@@ -20,20 +20,24 @@ type MealPlanWeekProp = {
 export default function MealPlanWeek(props: MealPlanWeekProp) {
 	const calendarDays = [];
 
-	for (let i = 0; i < DAY_NAMES.length; i++) {
+	for (let i = 0; i < NUM_DAYS_PER_WEEK; i++) {
 		const date = new Date(
-			new Date(props.firstDateOfWeek).setDate(
-				props.firstDateOfWeek.getDate() + i
-			)
+			// new Date(props.firstDateOfWeek).setDate(
+			// 	props.firstDateOfWeek.getDate() + i
+			// )
+			props.firstDateOfWeek.getFullYear(),
+			props.firstDateOfWeek.getMonth(),
+			props.firstDateOfWeek.getDate() + i
 		);
 
 		calendarDays.push(
 			<MealPlanDay
-				key={date.toString()}
-				dayName={DAY_NAMES[i]}
-				dateOfTheMonth={date.getDate()}
-				month={date.getMonth()}
-				year={date.getFullYear()}
+				// key={date.toString()}
+				// dayName={DAY_NAMES[i]}
+				// dateOfTheMonth={date.getDate()}
+				// month={date.getMonth()}
+				// year={date.getFullYear()}
+				date={date}
 			/>
 		)
 	}
