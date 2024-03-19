@@ -168,6 +168,7 @@ describe("Comments Test", () => {
     const process = await commentService.createComment(input);
 
     const result = await commentService.getUserComments(input.user_id);
+    console.log(result)
 
     let userId: string = "";
     let contentId: string = "";

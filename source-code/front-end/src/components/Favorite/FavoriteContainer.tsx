@@ -2,13 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import FavoriteButton from "./FavoriteButton";
+import endpoints from "../../endpoints";
 
-function FavoriteContainer() {
+const BACKEND_PORT = process.env.REACT_APP_PORT;
+const FAVORITES_ENDPOINT = `http://localhost:${BACKEND_PORT}/favorites`;
+
+type fcProps = { content_id: string };
+function FavoriteContainer(prop: fcProps) {
+  console.log(FAVORITES_ENDPOINT)
   const [isFavorited, setFavorited] = useState(false);
 
   const user = useSelector((state: any) => state.user);
   const jwt = user.jwt;
-  const url = `url/?user=${/*user id*/ 0}&item=${/*item id*/ 0}`;
+  const url = `${FAVORITES_ENDPOINT}/?user=${user.user_id}&item=${prop.content_id}`;
 
   async function getSpecificFavorite(): Promise<void> {
     try {
@@ -26,14 +32,39 @@ function FavoriteContainer() {
   }
 
   const handleToggle = () => {
+    if (isFavorited) {
+      // user unfavorites content
+      deleteFavorite();
+    }
     setFavorited(!isFavorited);
+  };
+
+  async function createFavorite() {
+    await axios.post(
+      FAVORITES_ENDPOINT,
+      {
+        user_id: user.user_id,
+        content_id: prop.content_id,
+      },
+      {
+        headers: { Authorization: `Bearer ${jwt}` },
+      }
+    );
+  }
+
+  async function deleteFavorite() {
+    try {
+      const result = await axios.delete(FAVORITES_ENDPOINT);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
     if (isFavorited) {
-        // user favorites content
+      // user favorites content
+      createFavorite();
     } else {
-        // user unfavorites content
     }
     getSpecificFavorite();
   }, []);

@@ -6,7 +6,6 @@ type comment = {
   user_id: string;
   content_id: string;
   user_comment: string;
-  created_at: string
 };
 
 type commentInput = {
@@ -165,7 +164,6 @@ export default function (commentDb: any) {
         user_id: input.user_id,
         content_id: input.content_id,
         user_comment: input.user_comment,
-        created_at: Date.now()
       });
     } catch (err) {
       throw err;
