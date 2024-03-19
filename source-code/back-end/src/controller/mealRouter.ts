@@ -5,7 +5,7 @@ import express from 'express';
 import { authenticateToken } from '../util/authenticateToken';
 import mealService from '../service/mealService';
 import type { Validation } from '../util/validation.type';
-import { MealDoesNotExistError } from '../util/errors';
+// import { MealDoesNotExistError } from '../util/errors';
 
 const router = express.Router();
 
@@ -37,17 +37,17 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 
 router.delete('/:recipeID', authenticateToken, async (req: any, res: any) => {
 	try {
-		const validation: Validation = await mealService.validateRemoveMeal(
-			req.user.user_id,
-			req.params.recipeID
-		);
+		// const validation: Validation = await mealService.validateRemoveMeal(
+		// 	req.user.user_id,
+		// 	req.params.recipeID
+		// );
 
-		if (!validation.isValid) {
-			res.status(400).json({ errors: validation.errors });
-			return;
-		}
+		// if (!validation.isValid) {
+		// 	res.status(400).json({ errors: validation.errors });
+		// 	return;
+		// }
 
-		await mealService.deleteMeal(req.user.user_id, req.params.recipeID);
+		await mealService.deleteMeal(req.body.mealID);
 		res.sendStatus(200);
 	} catch (err) {
 		console.error(err);
@@ -70,23 +70,23 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 
 // This should return the meal of the user indicated by the JWT sent with the request
 // and with the given recipe ID.
-router.get('/:recipeID', authenticateToken, async (req: any, res: any) => {
-	try {
-		const meal = await mealService.getMealByUserIDAndRecipeID(
-			req.user.user_id,
-			req.params.recipeID
-		);
+// router.get('/:recipeID', authenticateToken, async (req: any, res: any) => {
+// 	try {
+// 		const meal = await mealService.getMealByUserIDAndRecipeID(
+// 			req.user.user_id,
+// 			req.params.recipeID
+// 		);
 
-		res.status(200).json(meal);
-	} catch (err) {
-		if (err instanceof MealDoesNotExistError) {
-			res.sendStatus(404);
-			return;
-		}
+// 		res.status(200).json(meal);
+// 	} catch (err) {
+// 		if (err instanceof MealDoesNotExistError) {
+// 			res.sendStatus(404);
+// 			return;
+// 		}
 
-		console.error(err);
-		res.sendStatus(500);
-	}
-})
+// 		console.error(err);
+// 		res.sendStatus(500);
+// 	}
+// })
 
 export default router;

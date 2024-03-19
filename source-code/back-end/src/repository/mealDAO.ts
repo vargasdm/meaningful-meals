@@ -1,4 +1,7 @@
-require('dotenv').config();
+// require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
 	DynamoDBDocumentClient,
@@ -9,7 +12,6 @@ import {
 import { Meal } from "../util/meal";
 import { MealDoesNotExistError } from "../util/errors";
 
-
 const MEALS_TABLE: string = process.env.MEALS_TABLE as string;
 const AWS_REGION: string = process.env.AWS_REGION as string;
 const client = new DynamoDBClient({ region: AWS_REGION as string });
@@ -17,13 +19,7 @@ const documentClient = DynamoDBDocumentClient.from(client);
 
 // This should create a meal with the given arguments.
 // It should return nothing on success, and throw an error on error.
-async function createMeal(
-	// mealID: string,
-	// userID: string,
-	// recipeID: string,
-	// date: string
-	meal: Meal
-): Promise<void> {
+async function createMeal(meal: Meal): Promise<void> {
 	try {
 		const command = new PutCommand({
 			TableName: MEALS_TABLE,
@@ -57,7 +53,7 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealByUserIDAndRecipeID(
+async function getMealsByUserIDAndRecipeID(
 	userID: string,
 	recipeID: string
 ) {
@@ -65,11 +61,11 @@ async function getMealByUserIDAndRecipeID(
 		let meals = await getMealsByUserID(userID);
 		meals = meals.filter((meal: any) => meal.recipe_id === recipeID);
 
-		if (meals.length !== 1) {
-			throw new MealDoesNotExistError();
-		}
+		// if (meals.length !== 1) {
+		// 	throw new MealDoesNotExistError();
+		// }
 
-		return meals[0];
+		return meals;
 	} catch (err) {
 		throw err;
 	}
@@ -93,6 +89,6 @@ async function deleteMealByID(mealID: string) {
 export default {
 	createMeal,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID,
+	getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
 	deleteMealByID
 }

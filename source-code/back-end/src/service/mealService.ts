@@ -26,17 +26,11 @@ async function validateAddMeal(
 		if (!(await recipeService.recipeExists(recipeID))) {
 			validation.errors.push('RECIPE DOES NOT EXIST');
 		}
-
-		// if (await mealExists(userID, recipeID)) {
-		// 	// console.log('meal exists');
-		// 	validation.errors.push('MEAL EXISTS');
-		// }
 	} catch (err) {
 		throw err;
 	}
 
-	// if (isNaN(Date.parse(date))) {
-	if (new Date(timestamp).getTime() > 0) {
+	if (new Date(timestamp).getTime() <= 0) {
 		validation.errors.push('DATE IS INVALID');
 	}
 
@@ -48,24 +42,24 @@ async function validateAddMeal(
 	return validation;
 }
 
-async function validateRemoveMeal(
-	userID: string,
-	recipeID: string
-): Promise<Validation> {
-	const validation: Validation = { isValid: false, errors: [] };
+// async function validateRemoveMeal(
+// 	userID: string,
+// 	recipeID: string
+// ): Promise<Validation> {
+// 	const validation: Validation = { isValid: false, errors: [] };
 
-	try {
-		if (!(await mealExists(userID, recipeID))) {
-			validation.errors.push('MEAL DOES NOT EXIST');
-			return validation;
-		}
-	} catch (err) {
-		throw err;
-	}
+// 	try {
+// 		if (!(await mealExists(userID, recipeID))) {
+// 			validation.errors.push('MEAL DOES NOT EXIST');
+// 			return validation;
+// 		}
+// 	} catch (err) {
+// 		throw err;
+// 	}
 
-	validation.isValid = true;
-	return validation;
-}
+// 	validation.isValid = true;
+// 	return validation;
+// }
 
 // This should create a meal with the given arguments.
 // It should return nothing on succes, and implicitly throw an error on error.
@@ -89,13 +83,14 @@ async function createMeal(
 }
 
 async function deleteMeal(
-	userID: string,
-	recipeID: string
+	// userID: string,
+	// recipeID: string
+	mealID: string
 ): Promise<void> {
 	try {
-		const meal = await getMealByUserIDAndRecipeID(userID, recipeID);
-		console.log(JSON.stringify(meal));
-		await mealDAO.deleteMealByID(meal.meal_id);
+		// const meal = await getMealsByUserIDAndRecipeID(userID, recipeID);
+		// console.log(JSON.stringify(meal));
+		await mealDAO.deleteMealByID(mealID);
 	} catch (err) {
 		throw err;
 	}
@@ -109,38 +104,38 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
+async function getMealsByUserIDAndRecipeID(userID: string, recipeID: string) {
 	try {
-		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		return meal;
+		const meals = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+		return meals;
 	} catch (err) {
 		throw err;
 	}
 }
 
-async function mealExists(userID: string, recipeID: string) {
-	if (!userID || !recipeID) {
-		return false;
-	}
+// async function mealExists(userID: string, recipeID: string) {
+// 	if (!userID || !recipeID) {
+// 		return false;
+// 	}
 
-	try {
-		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		return meal ? true : false;
-	} catch (err) {
-		if (err instanceof MealDoesNotExistError) {
-			return false;
-		}
+// 	try {
+// 		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
+// 		return meal ? true : false;
+// 	} catch (err) {
+// 		if (err instanceof MealDoesNotExistError) {
+// 			return false;
+// 		}
 
-		console.error(err);
-		throw err;
-	}
-}
+// 		console.error(err);
+// 		throw err;
+// 	}
+// }
 
 export default {
 	validateAddMeal: validateAddMeal,
-	validateRemoveMeal,
+	// validateRemoveMeal,
 	createMeal,
 	deleteMeal,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID,
+	getMealByUserIDAndRecipeID: getMealsByUserIDAndRecipeID,
 };
