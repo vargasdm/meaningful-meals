@@ -13,13 +13,6 @@ import favoriteDAO from "../repository/favoriteDAO";
 import FavoriteService from "../service/favoriteService";
 const favoriteService = FavoriteService(favoriteDAO);
 
-/**
- * postlike
- * deletelike
- * getalluserlike
- * getallrecipelike
- */
-
 router.post(
   "/",
   authenticateToken,

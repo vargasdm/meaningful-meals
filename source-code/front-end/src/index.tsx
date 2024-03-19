@@ -20,6 +20,7 @@ import NewRecipeContainer from "./components/Recipe/NewRecipeContainer";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import MealPlanContainer from "./components/MealPlan/MealPlanContainer";
+import CommentPage from "./components/Comment/CommentPage";
 
 
 const router = createBrowserRouter([
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
 			{
 				path: '/search',
 				element: <SearchContainer />
+			},
+			{
+				path: '/comments',
+				element: <CommentPage contentId="0"/>
 			}
 		],
 	},

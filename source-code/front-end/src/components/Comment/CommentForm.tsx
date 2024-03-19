@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 
-function CommentForm() {
+type cfProps = {handleSubmit: any}
+function CommentForm(prop: cfProps) {
   const [comment, setComment] = useState('')
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = (event: any) => {
     setComment(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent the form from submitting normally
-    console.log(comment)
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={prop.handleSubmit}>
       <label htmlFor="commentInput">Your Comment:</label>
       <textarea
         id="commentInput"
         value={comment}
         onChange={handleInputChange}
-        rows={5} // Adjust the number of rows as needed
-        cols={50} // Adjust the number of columns as needed
+        rows={5}
+        cols={50}
+        
       />
       <button type="submit">Submit</button>
     </form>

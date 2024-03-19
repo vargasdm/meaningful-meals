@@ -14,7 +14,7 @@ function CommentButton() {
 
   return (
     <Link
-      to="/comment"
+      to="/comments"
       onMouseOver={handleIsHover}
       onMouseLeave={handleNotHover}
       onMouseDown={handleNotHover}

@@ -1,6 +1,8 @@
 import React from "react";
 import RecipeList from "./RecipeList";
 import axios from "axios";
+import FavoriteContainer from "../Favorite/FavoriteContainer";
+import CommentButton from "../Comment/CommentButton";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes/user-recipes`;
 
@@ -36,6 +38,8 @@ function RecipeContainer() {
         getUserRecipes={getUserRecipes}
         handleRemoveRecipe={handleRemoveRecipe}
       />
+      <FavoriteContainer content_id="test"/>
+      <CommentButton />
     </div>
   );
 }

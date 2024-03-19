@@ -9,7 +9,7 @@ const FAVORITES_ENDPOINT = `http://localhost:${BACKEND_PORT}/favorites`;
 
 type fcProps = { content_id: string };
 function FavoriteContainer(prop: fcProps) {
-  console.log(FAVORITES_ENDPOINT)
+  console.log(FAVORITES_ENDPOINT);
   const [isFavorited, setFavorited] = useState(false);
 
   const user = useSelector((state: any) => state.user);
@@ -36,20 +36,29 @@ function FavoriteContainer(prop: fcProps) {
       // user unfavorites content
       deleteFavorite();
     }
+
+    if (!isFavorited) {
+      // user favorites content
+      createFavorite();
+    }
     setFavorited(!isFavorited);
   };
 
   async function createFavorite() {
-    await axios.post(
-      FAVORITES_ENDPOINT,
-      {
-        user_id: user.user_id,
-        content_id: prop.content_id,
-      },
-      {
-        headers: { Authorization: `Bearer ${jwt}` },
-      }
-    );
+    try {
+      await axios.post(
+        FAVORITES_ENDPOINT,
+        {
+          user_id: user.user_id,
+          content_id: prop.content_id,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwt}` },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function deleteFavorite() {
@@ -61,11 +70,6 @@ function FavoriteContainer(prop: fcProps) {
   }
 
   useEffect(() => {
-    if (isFavorited) {
-      // user favorites content
-      createFavorite();
-    } else {
-    }
     getSpecificFavorite();
   }, []);
 
