@@ -1,0 +1,94 @@
+.recipeContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.recipeContainer #recipeTitle {
+  color: #333;
+  font-size: 35px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.recipeContainer .recipeDescription {
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.recipeContainer #recipeIngredientsList {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  list-style-type: square;
+  margin-bottom: 10px;
+}
+
+.recipeContainer #recipeInstructionsList {
+  flex-wrap: wrap;
+  align-self: flex-start;
+  list-style-type: decimal;
+  margin-bottom: 10px;
+}
+
+.recipeContainer #editButton {
+  align-self: flex-end;
+  background-color: #ff1100;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recipeContainer #backButton {
+  align-self: flex-end;
+  background-color: #00c3ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.editRecipeContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.editRecipeContainer input,
+.editRecipeContainer textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#saveButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#saveButton:hover {
+  background-color: #0056b3;
+}

@@ -1,15 +1,11 @@
 import React, { useState, ChangeEvent } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-// import { RootState } from "../../store/store";
-
-// type CleanedRootState = Omit<RootState, "_persist">;
+import "./RecipeStyles/RecipeSingle.css";
 
 interface RecipeSingleProps {
   selectedRecipe: any;
   updateRecipe: (editedRecipe: any) => Promise<any>;
   isEditing: boolean;
-  handleEditClick: () => void; // Add handleEditClick to the interface
+  handleEditClick: () => void;
   handleBackClick: () => void;
 }
 
@@ -27,13 +23,8 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
   handleBackClick,
 }) => {
   const recipe = selectedRecipe;
-  console.log(selectedRecipe);
 
   const [editedRecipe, setEditedRecipe] = useState(recipe);
-
-  // const userState = useSelector((state: any) => state.user);
-
-  // let globalUser = userState.username;
 
   function handleInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -70,15 +61,30 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
   return (
     <div>
       {isEditing ? (
-        <div>
+        <div className="editRecipeContainer">
+          <h2>Edit Recipe</h2>
           <input
+            id="recipeTitle"
             type="text"
             name="title"
             value={editedRecipe.title}
+            placeholder="add a title"
             onChange={handleInputChange}
+            data-testid="title-input"
+          />
+          <input
+            id="recipeDescription"
+            type="text"
+            name="description"
+            value={editedRecipe.description}
+            placeholder="add a description"
+            onChange={handleInputChange}
+            data-testid="description-input"
           />
           <textarea
+            id="recipeIngredients"
             name="ingredients"
+            placeholder="add ingredients. Put each ingredient on a new line."
             value={
               Array.isArray(editedRecipe.ingredients)
                 ? editedRecipe.ingredients.join("\n")
@@ -87,7 +93,9 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
             onChange={handleInputChange}
           />
           <textarea
+            id="recipeInstructions"
             name="instructions"
+            placeholder="add instructions. Put each instruction on a new line."
             value={
               Array.isArray(editedRecipe.instructions)
                 ? editedRecipe.instructions.join("\n")
@@ -95,23 +103,34 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
             }
             onChange={handleInputChange}
           />
-          <button onClick={handleSubmit}>Save Changes</button>
+          <button id="saveButton" onClick={handleSubmit}>
+            Save Changes
+          </button>
         </div>
       ) : (
-        <div>
-          <h2>{recipe.title}</h2>
-          <ul>
+        <div className="recipeContainer">
+          <h2 id="recipeTitle">{recipe.title}</h2>
+          <p id="recipeDescription">{recipe.description}</p>
+          <ul id="recipeIngredientsList">
             {recipe.ingredients.map((ingredient: string, index: number) => (
-              <li key={index}>{ingredient}</li>
+              <li className="recipeIngredient" key={index}>
+                {ingredient}
+              </li>
             ))}
           </ul>
-          <ol>
+          <ol id="recipeInstructionsList">
             {recipe.instructions.map((instruction: string, index: number) => (
-              <li key={index}>{instruction}</li>
+              <li className="recipeInstruction" key={index}>
+                {instruction}
+              </li>
             ))}
           </ol>
-          <button onClick={handleEditClick}>Edit Recipe</button>
-          <button onClick={handleBackClick}>Back to My Recipes</button>
+          <button id="editButton" onClick={handleEditClick}>
+            Edit Recipe
+          </button>
+          <button id="backButton" onClick={handleBackClick}>
+            Back to My Recipes
+          </button>
         </div>
       )}
     </div>
@@ -119,4 +138,4 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
 };
 
 export default RecipeSingle;
-export type { RecipeSingleProps }; // Export the RecipeSingleProps type
+export type { RecipeSingleProps };
