@@ -3,13 +3,27 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: stretch;
+
+	height: 100%;
+}
+
+.weekly-calendar>i {
+	width: var(--calendar-scroll-button-width);
+	font-size: 32px;
+	text-align: center;
+}
+
+.weekly-calendar>i:hover {
+	background-color: #bfbfbf;
+	cursor: pointer;
 }
 
 .meal-plan-day {
 	flex-grow: 1;
 	flex-shrink: 1;
+	padding: 8px;
 }
 
-.meal-plan-day > h1{
+.meal-plan-day>h1 {
 	font-size: 16px;
 }

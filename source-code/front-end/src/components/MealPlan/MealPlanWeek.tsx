@@ -13,15 +13,19 @@ const DAY_NAMES: string[] = [
 ];
 
 type MealPlanWeekProp = {
-	firstDateOfWeek: number,
+	firstDateOfWeek: Date,
+	setFirstDateOfWeek: Function
 }
 
 export default function MealPlanWeek(props: MealPlanWeekProp) {
 	const calendarDays = [];
 
 	for (let i = 0; i < DAY_NAMES.length; i++) {
-		const timestamp: number = (new Date()).setDate(props.firstDateOfWeek + i);
-		const date: Date = new Date(timestamp);
+		const date = new Date(
+			new Date(props.firstDateOfWeek).setDate(
+				props.firstDateOfWeek.getDate() + i
+			)
+		);
 
 		calendarDays.push(
 			<MealPlanDay
@@ -34,9 +38,43 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		)
 	}
 
+	function setPreviousWeek() {
+		// let newFirstDateOfWeek: Date = new Date(props.firstDateOfWeek);
+
+		// newFirstDateOfWeek = new Date(
+		// 	newFirstDateOfWeek.setDate(props.firstDateOfWeek.getDate() - 7)
+		// );
+
+		// props.setFirstDateOfWeek(
+		// 	newFirstDateOfWeek
+		// )
+	}
+
+	function changeFirstDateOfWeek(change: number) {
+		return () => {
+			let newFirstDateOfWeek: Date = new Date(props.firstDateOfWeek);
+
+			newFirstDateOfWeek = new Date(
+				newFirstDateOfWeek.setDate(props.firstDateOfWeek.getDate() + change)
+			);
+
+			props.setFirstDateOfWeek(
+				newFirstDateOfWeek
+			);
+		}
+	}
+
 	return (
 		<div className='weekly-calendar'>
+			<i
+				className='bi bi-arrow-left'
+				onClick={changeFirstDateOfWeek(-7)}
+			/>
 			{calendarDays}
+			<i
+				className='bi bi-arrow-right'
+				onClick={changeFirstDateOfWeek(7)}
+			/>
 		</div>
 	);
 }

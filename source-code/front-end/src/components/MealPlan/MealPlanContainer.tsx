@@ -1,15 +1,26 @@
+import { useState } from "react";
 import MealPlanWeek from "./MealPlanWeek";
 import './MealPlan.css';
 
 export default function MealPlanContainer() {
 	const now: Date = new Date();
-	const currentDayOfWeek: number = now.getDay();
-	const firstDateOfWeek: number = now.getDate() - currentDayOfWeek;
+
+	const [firstDateOfWeek, setFirstDateOfWeek] = useState(
+		new Date(
+			new Date().setDate(now.getDate() - now.getDay())
+		)
+	);
 
 	return (
-		<MealPlanWeek
-			firstDateOfWeek={firstDateOfWeek}
-			// currentDayOfWeek={currentDayOfWeek}
-		/>
+		<>
+			{/* <MealPlanWeekSwitch
+				firstDateOfWeek={firstDateOfWeek}
+				setFirstDateOfWeek={setFirstDateOfWeek}
+			/> */}
+			<MealPlanWeek
+				firstDateOfWeek={firstDateOfWeek}
+				setFirstDateOfWeek={setFirstDateOfWeek}
+			/>
+		</>
 	)
 }
