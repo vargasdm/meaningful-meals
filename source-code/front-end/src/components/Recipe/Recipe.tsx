@@ -10,7 +10,7 @@ const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-console.log(MEALS_ENDPOINT);
+// console.log(MEALS_ENDPOINT);
 
 export async function loader({ params }: any) {
 	try {
@@ -26,8 +26,6 @@ export default function Recipe() {
 	const id = useParams().id;
 	const [isInMealPlan, setIsInMealPlan] = useState(false);
 	const recipeData: any = useLoaderData();
-	// console.log(recipeData);
-
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
@@ -43,8 +41,11 @@ export default function Recipe() {
 			);
 
 			setIsInMealPlan(meal ? true : false);
-		} catch (err) {
-			console.error(err);
+		} catch (err: any) {
+			if (err.response.status !== 404) {
+				console.error(err);
+			}
+
 			setIsInMealPlan(false);
 		}
 	}
@@ -68,6 +69,8 @@ export default function Recipe() {
 					}
 				}
 			);
+
+			await getIsInMealPlan();
 		} catch (err) {
 			console.error(err);
 		}
@@ -83,6 +86,8 @@ export default function Recipe() {
 					}
 				}
 			);
+
+			await getIsInMealPlan();
 		} catch (err) {
 			console.error(err);
 		}
