@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
@@ -45,9 +45,18 @@ export default function MealPlanDay(props: MealPlanDayProp) {
 		}
 	}
 
+	useEffect(() => {
+		getMeals();
+	}, [])
+
+	const renderMeals = meals.map((meal: any) => <div>
+		{meal.meal_id}
+	</div>)
+
 	return (
 		<div className='meal-plan-day'>
 			<h1>{DAY_NAMES[props.date.getDay()]} {props.date.getDate()}</h1 >
+			{renderMeals}
 		</div>
 	);
 }
