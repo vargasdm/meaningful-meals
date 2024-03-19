@@ -52,14 +52,8 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 			req.user.user_id,
 			req.query.minTimestamp,
 			req.query.maxTimestamp
-		)
-		// if(!(await mealService.validateGetMealsOfUserInTimeRange(
-		// 	req.user.jwt,
-		// 	req.query.minTimestamp,
-		// 	req.query.maxTimestamp
-		// ))){
+		);
 
-		// }
 		if (!validations.isValid) {
 			res.status(400).json({ errors: validations.errors });
 			return;
@@ -72,7 +66,9 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 		);
 
 		res.status(200).json(meals);
+		return;
 	}
+
 	try {
 		const meals = await mealService.getMealsByUserID(req.user.user_id);
 		res.status(200).json(meals);
@@ -81,7 +77,5 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 		res.sendStatus(500);
 	}
 });
-
-// router.get()
 
 export default router;

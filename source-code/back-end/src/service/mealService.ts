@@ -85,22 +85,6 @@ async function validateGetMealsOfUserInTimeRange(
 ): Promise<Validation> {
 	const validation: Validation = { isValid: false, errors: [] };
 
-	if (!userID) {
-		validation.errors.push('USER ID DOES NOT EXIST');
-	}
-
-	if (!minTimestamp) {
-		validation.errors.push('MINIMUM TIMESTAMP DOES NOT EXIST');
-	}
-
-	if (!maxTimestamp) {
-		validation.errors.push('MAXIMUM TIMESTAMP DOES NOT EXIST');
-	}
-
-	if (validation.errors.length > 0) {
-		return validation;
-	}
-
 	try {
 		if (!(await userService.userExistsByID(userID))) {
 			validation.errors.push('USER DOES NOT EXIST');
@@ -108,15 +92,6 @@ async function validateGetMealsOfUserInTimeRange(
 	} catch (err) {
 		throw err;
 	}
-	// const validation: Validation = { isValid: false, errors: [] };
-
-
-	// 	if (!(await recipeService.recipeExists(recipeID))) {
-	// 		validation.errors.push('RECIPE DOES NOT EXIST');
-	// 	}
-	// } catch (err) {
-	// 	throw err;
-	// }
 
 	if (new Date(minTimestamp).getTime() <= 0) {
 		validation.errors.push('MINIMUM TIMESTAMP IS INVALID');
@@ -132,13 +107,6 @@ async function validateGetMealsOfUserInTimeRange(
 
 	validation.isValid = true;
 	return validation;
-
-	// if (validation.errors.length > 0) {
-	// 	return validation;
-	// }
-
-	// validation.isValid = true;
-	// return validation;
 }
 
 async function getMealsOfUserInTimeRange(
