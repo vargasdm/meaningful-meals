@@ -79,6 +79,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 			imageSource={meal.imageSource}
 			numCalories={meal.numCalories}
 			key={meal.id}
+			getMeals={getMeals}
 		/>
 	);
 

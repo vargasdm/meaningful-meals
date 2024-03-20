@@ -34,9 +34,9 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-router.delete('/:recipeID', authenticateToken, async (req: any, res: any) => {
+router.delete('/:mealID', authenticateToken, async (req: any, res: any) => {
 	try {
-		await mealService.deleteMeal(req.body.mealID);
+		await mealService.deleteMeal(req.params.mealID);
 		res.sendStatus(200);
 	} catch (err) {
 		console.error(err);

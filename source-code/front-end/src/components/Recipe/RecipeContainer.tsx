@@ -6,9 +6,10 @@ import RecipeList from "./RecipeList";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import endpoints from "../../endpoints";
-const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 import FavoriteContainer from "../Favorite/FavoriteContainer";
 import CommentButton from "../Comment/CommentButton";
+
+const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes/user-recipes`;
 
