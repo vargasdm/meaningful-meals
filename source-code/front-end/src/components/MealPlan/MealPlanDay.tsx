@@ -45,7 +45,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 
 			mealsData = await Promise.all(
 				mealsData.data.map(async (meal: any) => {
-					// console.log(meal);
+					console.log(meal);
 					const recipeData = await axios.get(
 						`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
 					);
