@@ -28,6 +28,8 @@ export default function Recipe() {
 	const jwt = user.jwt;
 
 	async function handleAddToMealPlan() {
+		console.log(MEALS_ENDPOINT);
+		
 		try {
 			await axios.post(
 				MEALS_ENDPOINT,
