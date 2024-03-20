@@ -12,14 +12,15 @@ type MealCardProps = {
 	numCalories: number,
 	key: string,
 	getMeals: Function,
-	// date: Date
 }
+
+type DateFieldType = null | number;
 
 export default function MealCard(props: MealCardProps) {
 	const [isEditingDate, setIsEditingDate] = useState(false);
-	// const [month, setMonth] = useState(props.date.getMonth());
-	// const [day, setDay] = useState(props.date.getDate());
-	// const [year, setYear] = useState(props.date.getFullYear());
+	const [month, setMonth] = useState<DateFieldType>(null);
+	const [day, setDay] = useState<DateFieldType>(null);
+	const [year, setYear] = useState<DateFieldType>(null);
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
@@ -38,10 +39,6 @@ export default function MealCard(props: MealCardProps) {
 		} catch (err) {
 			console.error(err);
 		}
-	}
-
-	function handleMonthChange() {
-
 	}
 
 	return (

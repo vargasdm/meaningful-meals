@@ -57,7 +57,6 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 						name: recipe.title,
 						imageSource: recipe.image,
 						numCalories: util.getNumCalories(recipe),
-						// date: new Date(meal.timestamp)
 					}
 				})
 			);
@@ -81,11 +80,9 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 			numCalories={meal.numCalories}
 			key={meal.id}
 			getMeals={getMeals}
-			// date={meal.date}
 		/>
 	);
 
-	// console.log(meals);
 	const totalNumCalories = meals.reduce(
 		(accumulator: number, currentValue: any) =>
 			accumulator + currentValue.numCalories,
