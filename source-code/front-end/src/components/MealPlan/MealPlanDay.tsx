@@ -43,11 +43,9 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 				}
 			);
 
-			// console.log(mealsData);
-
 			mealsData = await Promise.all(
 				mealsData.data.map(async (meal: any) => {
-					console.log(meal);
+					// console.log(meal);
 					const recipeData = await axios.get(
 						`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
 					);
@@ -57,13 +55,12 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 					return {
 						id: meal.meal_id,
 						name: recipe.title,
-						image: recipe.image,
+						imageSource: recipe.image,
 						numCalories: util.getNumCalories(recipe)
 					}
 				})
 			);
 
-			// console.log(mealsData);
 			setMeals(mealsData);
 		} catch (err) {
 			setMeals([]);
@@ -80,13 +77,21 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 			name={meal.name}
 			imageSource={meal.imageSource}
 			numCalories={meal.numCalories}
-			key={meal.meal_id}
+			key={meal.id}
 		/>
+	);
+
+	// console.log(meals);
+	const totalNumCalories = meals.reduce(
+		(accumulator: number, currentValue: any) =>
+			accumulator + currentValue.numCalories,
+		0
 	);
 
 	return (
 		<div className='meal-plan-day'>
 			<h1>{DAY_NAMES[props.date.getDay()]} {props.date.getDate()}</h1 >
+			<h2>{totalNumCalories} kcal</h2>
 			{renderMeals}
 		</div>
 	);

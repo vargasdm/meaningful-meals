@@ -7,6 +7,5 @@ function getNumCalories(recipe: any) {
 }
 
 export default {
-	// NumCaloriesDoNotExistError,
 	getNumCalories
 };
