@@ -21,8 +21,8 @@ app.use(express.json());
 app.use("/recipes", recipeRouter);
 app.use("/user", userRouter);
 app.use('/meals', mealRouter);
-app.use("/favorite", favoriteRouter);
-app.use("/comment", commentRouter);
+app.use("/favorites", favoriteRouter);
+app.use("/comments", commentRouter);
 
 app.use((req, res, next) => {
 	logger.info(`Incoming ${req.method} : ${req.url}`);

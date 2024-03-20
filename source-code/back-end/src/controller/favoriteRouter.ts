@@ -13,13 +13,6 @@ import favoriteDAO from "../repository/favoriteDAO";
 import FavoriteService from "../service/favoriteService";
 const favoriteService = FavoriteService(favoriteDAO);
 
-/**
- * postlike
- * deletelike
- * getalluserlike
- * getallrecipelike
- */
-
 router.post(
   "/",
   authenticateToken,
@@ -43,33 +36,35 @@ router.post(
   }
 );
 
-router.delete(
-  "/",
-  authenticateToken,
-  validateFavoriteBody,
-  async (req: any, res: any) => {
-    try {
-      const validation: Validation =
-        await favoriteService.validateUpdateFavorite(req.body);
-
-      if (!validation.isValid) {
-        res.status(400).json({ errors: validation.errors });
-        return;
-      }
-
-      await favoriteService.deleteFavorite(req.body);
-      res.sendStatus(202);
-    } catch (err) {
-      logger.error(err);
-      res.sendStatus(500);
+router.delete("/", authenticateToken, async (req: any, res: any) => {
+  try {
+    const user: string = req.query.user;
+    const item: string = req.query.item;
+    if (!user || !item) {
+      res.status(400).json({ errors: "MISSING QUERIES" });
+      return;
     }
+    const validation: Validation = await favoriteService.validateUpdateFavorite(
+      { user_id: user, content_id: item }
+    );
+
+    if (!validation.isValid) {
+      res.status(400).json({ errors: validation.errors });
+      return;
+    }
+
+    await favoriteService.deleteFavorite({ user_id: user, content_id: item });
+    res.sendStatus(202);
+  } catch (err) {
+    logger.error(err);
+    res.sendStatus(500);
   }
-);
+});
 
 router.get("/", authenticateToken, async (req: any, res: any) => {
   try {
     const user: string = req.query.user;
-    const item: string = req.query.user;
+    const item: string = req.query.item;
     if (!user && !item) {
       res.status(400).json({ errors: "MISSING QUERIES" });
       return;
@@ -80,7 +75,7 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
     };
 
     if (user && item) {
-      validation = await favoriteService.validateInputFavorite({
+      validation = await favoriteService.validateGetFavorite({
         user_id: user,
         content_id: item,
       });
