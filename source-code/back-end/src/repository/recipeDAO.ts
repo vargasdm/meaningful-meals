@@ -34,6 +34,25 @@ async function getRecipesByUsername(username: any) {
   return null;
 }
 
+async function getRecipeById(recipeId: any) {
+  const command = new QueryCommand({
+    TableName: RECIPES_TABLE,
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames: { "#id": "id" },
+    ExpressionAttributeValues: { ":id": recipeId },
+  });
+
+  try {
+    const data = await documentClient.send(command);
+    console.log(data.Items);
+    return data.Items;
+  } catch (err) {
+    logger.error(err);
+  }
+
+  return null;
+}
+
 async function updateRecipe(recipe: any) {
   const command = new PutCommand({
     TableName: RECIPES_TABLE,
@@ -102,4 +121,5 @@ export default {
   updateRecipe,
   postRecipe,
   deleteRecipe,
+  getRecipeById,
 };

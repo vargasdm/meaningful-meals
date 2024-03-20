@@ -32,7 +32,7 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         const targetUser = yield userService.getUserByUsername(req.body.username);
         if (yield userService.credentialsMatch(req.body, targetUser)) {
-            const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: '1h' });
+            const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: '30m' });
             res.status(200).json({
                 token: token,
                 user_id: targetUser.user_id,

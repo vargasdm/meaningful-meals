@@ -10,18 +10,25 @@ import FavoriteContainer from "../Favorite/FavoriteContainer";
 import CommentButton from "../Comment/CommentButton";
 
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/recipes/user-recipes`;
+const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
 function RecipeContainer() {
 	const user = useSelector((state: any) => state.user);
+	console.log(user);
+
+	let userId = user.userID;
+	console.log(userId);
+
 	let jwt = user.jwt;
 
 	async function getUserRecipes(user: string) {
 		try {
-			let response = await axios.get(`${URL}/${user}`, {
-				headers: { authorization: `Bearer ${jwt}` },
-			});
+			let response = await axios.get(
+				`${RECIPES_ENDPOINT}/user-recipes/${user}`,
+				{
+					headers: { authorization: `Bearer ${jwt}` },
+				}
+			);
 			return response;
 		} catch (error) {
 			console.error(error);
@@ -30,9 +37,43 @@ function RecipeContainer() {
 
 	async function handleRemoveRecipe(recipeId: string) {
 		try {
-			const response = await axios.delete(`${URL}/delete/${recipeId}`, {
-				headers: { authorization: `Bearer ${jwt}` },
-			});
+			console.log(`${RECIPES_ENDPOINT}/user-recipes/delete/${recipeId}`);
+
+			const response = await axios.delete(
+				`${RECIPES_ENDPOINT}/user-recipes/delete/${recipeId}`,
+				{
+					headers: { authorization: `Bearer ${jwt}` },
+				}
+			);
+
+			return response;
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	async function handleAddToMealPlan(recipeId: string) {
+		try {
+			console.log(recipeId,
+				userId,
+				Date.now(),);
+			console.log(jwt);
+
+
+
+			const response = await axios.post(
+				MEALS_ENDPOINT,
+				{
+					recipeID: recipeId,
+					timestamp: Date.now(),
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${jwt}`,
+					},
+				}
+			);
+			console.log(response);
 
 			return response;
 		} catch (error) {
@@ -54,6 +95,7 @@ function RecipeContainer() {
 					<RecipeList
 						getUserRecipes={getUserRecipes}
 						handleRemoveRecipe={handleRemoveRecipe}
+						handleAddToMealPlan={handleAddToMealPlan}
 					/>
 					<FavoriteContainer contentId="test" />
 					<CommentButton contentId="test" />

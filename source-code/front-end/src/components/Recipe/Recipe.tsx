@@ -10,7 +10,6 @@ const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-// console.log(MEALS_ENDPOINT);
 
 export async function loader({ params }: any) {
 	try {
@@ -29,6 +28,8 @@ export default function Recipe() {
 	const jwt = user.jwt;
 
 	async function handleAddToMealPlan() {
+		console.log(MEALS_ENDPOINT);
+		
 		try {
 			await axios.post(
 				MEALS_ENDPOINT,

@@ -4,8 +4,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
 import { useNavigate } from "react-router-dom";
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/recipes`;
+
+import endpoints from "../../endpoints";
+const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 
 function NewRecipeContainer() {
   const userState = useSelector((state: any) => state.user);
@@ -17,7 +18,7 @@ function NewRecipeContainer() {
   async function handleCreateRecipe(newRecipe: any) {
     try {
       const response = await axios.post(
-        `${URL}/create`,
+        `${RECIPES_ENDPOINT}/create`,
         {
           title: newRecipe.title,
           description: newRecipe.description,

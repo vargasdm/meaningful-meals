@@ -61,7 +61,9 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
         placeholder="Instructions (One per line)"
         onChange={handleInputChange}
       />
-      <button id="createRecipeButton" onClick={handleSubmit}>Create Recipe</button>
+      <button id="createRecipeButton" onClick={handleSubmit}>
+        Create Recipe
+      </button>
     </div>
   );
 };
