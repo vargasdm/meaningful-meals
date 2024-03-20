@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import {
-  authenticateNoToken,
   authenticateToken,
 } from "../util/authenticateToken";
 import { validateRecipeBody, validateRecipeID } from "../util/authenticateBody";
@@ -9,7 +8,6 @@ import { validateRecipeBody, validateRecipeID } from "../util/authenticateBody";
 import express from "express";
 const router = express.Router();
 import recipeService from "../service/recipeService";
-import { log } from "console";
 import { logger } from "../util/logger";
 
 // This should return search results if there's a 'query' query parameter,

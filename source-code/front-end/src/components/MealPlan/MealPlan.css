@@ -39,7 +39,9 @@
 }
 
 .meal-plan-day>h1 {
-	font-size: 16px;
+	font-size: 24px;
 }
 
-.meal-card-div {}
+.meal-card-div>h1 {
+	font-size: 16px;
+}

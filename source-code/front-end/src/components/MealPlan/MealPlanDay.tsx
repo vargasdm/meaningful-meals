@@ -39,7 +39,6 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 				}
 			);
 
-			// console.log(meals);
 			setMeals(meals.data);
 		} catch (err) {
 			setMeals([]);
@@ -51,12 +50,10 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 		getMeals();
 	}, [])
 
-	// const renderMeals = meals.map((meal: any) => <div>
-	// 	{meal.meal_id}
-	// </div>)
 	const renderMeals = meals.map((meal: any) =>
 		<MealCard
 			mealID={meal.meal_id}
+			recipeID={meal.recipe_id}
 			key={meal.meal_id}
 		/>
 	);
