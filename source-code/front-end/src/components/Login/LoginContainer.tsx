@@ -47,9 +47,6 @@ function LoginContainer() {
 	return (
 		<>
 			<LoginInput handleLogin={handleLogin} />
-			<FavoriteButton />
-			<CommentButton />
-
 		</>
 	);
 }

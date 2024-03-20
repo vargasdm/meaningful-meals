@@ -17,12 +17,18 @@ type favorite = { favorite_id: string; user_id: string; content_id: string };
 type favoriteNoId = { user_id: string; content_id: string };
 
 async function createFavorite(Item: favorite) {
-  const command = new PutCommand({
-    TableName,
-    Item,
-  });
-
-  await documentClient.send(command);
+  try {
+    const command = new PutCommand({
+      TableName,
+      Item,
+    });
+  
+    await documentClient.send(command);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+  
 }
 
 async function getFavoritesByUserId(userId: string): Promise<favorite[]> {
@@ -45,7 +51,7 @@ async function getFavoritesByUserId(userId: string): Promise<favorite[]> {
 
 async function getFavoriteByUserAndContent(
   input: favoriteNoId
-): Promise<favorite[]> {
+): Promise<favorite> {
   const command = new QueryCommand({
     TableName,
     IndexName: "user_id-content_id-index",
@@ -72,7 +78,6 @@ async function deleteFavorite(favoriteId: string) {
   });
   try {
     const data: any = await documentClient.send(command);
-    return;
   } catch (err) {
     logger.error(err);
     throw err;

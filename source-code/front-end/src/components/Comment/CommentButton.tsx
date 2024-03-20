@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-function CommentButton() {
+type cbProps = {contentId: string}
+function CommentButton(prop: cbProps) {
   const [isHover, setIsHover] = useState(false);
 
   const handleIsHover = () => {
@@ -12,13 +14,18 @@ function CommentButton() {
   };
 
   return (
-    <button onMouseOver={handleIsHover} onMouseLeave={handleNotHover} onMouseDown={handleNotHover}>
-      {isHover ? (
-        <i className="bi bi-chat-dots-fill"></i>
-      ) : (
-        <i className="bi bi-chat-dots"></i>
-      )}
-    </button>
+      <Link
+        to={`/comments/${prop.contentId}`}
+        onMouseOver={handleIsHover}
+        onMouseLeave={handleNotHover}
+        onMouseDown={handleNotHover}
+      >
+        {isHover ? (
+          <i className="bi bi-chat-dots-fill">Comments</i>
+        ) : (
+          <i className="bi bi-chat-dots">Comments</i>
+        )}
+      </Link>
   );
 }
 
