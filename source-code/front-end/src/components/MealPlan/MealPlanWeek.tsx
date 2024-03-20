@@ -18,11 +18,12 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 		);
 
 		calendarDays.push(
-			<div className='meal-plan-day-container' key={date.getTime()}>
-				<MealPlanDay
-					date={date}
-				/>
-			</div>
+			// <div className='meal-plan-day-container' key={date.getTime()}>
+			<MealPlanDay
+				date={date}
+				key={date.toString()}
+			/>
+			// </div>
 		)
 	}
 

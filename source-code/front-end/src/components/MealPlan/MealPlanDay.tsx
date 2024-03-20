@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
+import MealCard from "./MealCard";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 const DAY_NAMES: string[] = [
@@ -13,11 +14,12 @@ const DAY_NAMES: string[] = [
 	'Friday',
 	'Saturday'
 ];
-type MealPlanDayProp = {
-	date: Date
+type MealPlanDayProps = {
+	date: Date,
+	key: string
 }
 
-export default function MealPlanDay(props: MealPlanDayProp) {
+export default function MealPlanDay(props: MealPlanDayProps) {
 	const [meals, setMeals] = useState([]);
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
@@ -37,7 +39,7 @@ export default function MealPlanDay(props: MealPlanDayProp) {
 				}
 			);
 
-			console.log(meals);
+			// console.log(meals);
 			setMeals(meals.data);
 		} catch (err) {
 			setMeals([]);
@@ -49,9 +51,15 @@ export default function MealPlanDay(props: MealPlanDayProp) {
 		getMeals();
 	}, [])
 
-	const renderMeals = meals.map((meal: any) => <div>
-		{meal.meal_id}
-	</div>)
+	// const renderMeals = meals.map((meal: any) => <div>
+	// 	{meal.meal_id}
+	// </div>)
+	const renderMeals = meals.map((meal: any) =>
+		<MealCard
+			mealID={meal.meal_id}
+			key={meal.meal_id}
+		/>
+	);
 
 	return (
 		<div className='meal-plan-day'>
