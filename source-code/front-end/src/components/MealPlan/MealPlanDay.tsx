@@ -74,6 +74,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 
 	const renderMeals = meals.map((meal: any) =>
 		<MealCard
+			id={meal.id}
 			name={meal.name}
 			imageSource={meal.imageSource}
 			numCalories={meal.numCalories}

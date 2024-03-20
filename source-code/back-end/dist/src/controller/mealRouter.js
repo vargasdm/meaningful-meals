@@ -47,9 +47,6 @@ router.delete('/:recipeID', authenticateToken_1.authenticateToken, (req, res) =>
 // If there is no JWT, then a 403 will be returned instead.
 router.get('/', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.query.minTimestamp && req.query.maxTimestamp) {
-        console.log(req.query.minTimestamp);
-        console.log(req.query.maxTimestamp);
-        console.log(req.user.user_id);
         const validations = yield mealService_1.default.validateGetMealsOfUserInTimeRange(req.user.user_id, req.query.minTimestamp, req.query.maxTimestamp);
         if (!validations.isValid) {
             res.status(400).json({ errors: validations.errors });
