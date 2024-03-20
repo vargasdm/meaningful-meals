@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { authenticateNoToken } from "../util/authenticateToken";
+import {
+  authenticateNoToken,
+  authenticateToken,
+} from "../util/authenticateToken";
 import { validateRecipeBody, validateRecipeID } from "../util/authenticateBody";
 
 import express from "express";
@@ -29,65 +32,82 @@ router.get("/", async (req: any, res: any) => {
 
 // this is endpoint for when user is looking at thier recipe tab
 // this is a protected endpoint, but I didnt want to make a token so I will need to add the authenticateNoToken later
-router.get("/user-recipes/:username", async (req: any, res: any) => {
-  console.log(req.params);
-  console.log(req.params.username);
+router.get(
+  "/user-recipes/:username",
+  authenticateToken,
+  async (req: any, res: any) => {
+    console.log(req.params);
+    console.log(req.params.username);
 
-  if (req.params) {
-    const recipes = await recipeService.getUserRecipes(req.params);
-    res.status(200).json(recipes);
-    return;
+    if (req.params) {
+      const recipes = await recipeService.getUserRecipes(req.params);
+      res.status(200).json(recipes);
+      return;
+    }
   }
-});
+);
 
-router.put("/update", validateRecipeBody, async (req: any, res: any) => {
-  console.log("recipeRouter.post(/update)...");
-  console.log(req.body);
+router.put(
+  "/update",
+  validateRecipeBody,
+  authenticateToken,
+  async (req: any, res: any) => {
+    console.log("recipeRouter.post(/update)...");
+    console.log(req.body);
 
-  const data = await recipeService.putRecipe(req.body);
+    const data = await recipeService.putRecipe(req.body);
 
-  if (data) {
-    logger.info(`Updated Recipe: ${data.title}`);
-    res.status(201).json({ message: `Recipe Updated Successfully` });
-  } else {
-    res.status(401).json({
-      message: "Recipe was not updated. Invalid Inputs.",
-    });
+    if (data) {
+      logger.info(`Updated Recipe: ${data.title}`);
+      res.status(201).json({ message: `Recipe Updated Successfully` });
+    } else {
+      res.status(401).json({
+        message: "Recipe was not updated. Invalid Inputs.",
+      });
+    }
   }
-});
+);
 
-router.post("/create", validateRecipeBody, async (req: any, res: any) => {
-  console.log("recipeRouter.post(/create)...");
-  console.log(req.body);
+router.post(
+  "/create",
+  validateRecipeBody,
+  authenticateToken,
+  async (req: any, res: any) => {
+    console.log("recipeRouter.post(/create)...");
+    console.log(req.body);
 
-  const data = await recipeService.createRecipe(req.body);
+    const data = await recipeService.createRecipe(req.body);
 
-  if (data) {
-    logger.info(`New Recipe: ${data.title}`);
-    res.status(201).json({ message: `New Recipe Created Successfully` });
-  } else {
-    res.status(401).json({
-      message: "Recipe was not created. Invalid Inputs.",
-    });
+    if (data) {
+      logger.info(`New Recipe: ${data.title}`);
+      res.status(201).json({ message: `New Recipe Created Successfully` });
+    } else {
+      res.status(401).json({
+        message: "Recipe was not created. Invalid Inputs.",
+      });
+    }
   }
-});
+);
 
-router.delete("/user-recipes/delete/:id", validateRecipeID, async (req: any, res: any) => {
-  console.log(req.params);
+router.delete(
+  "/user-recipes/delete/:id",
+  validateRecipeID,
+  async (req: any, res: any) => {
+    console.log(req.params);
 
-  const idParam = req.params;
+    const idParam = req.params;
 
-  const data = await recipeService.deleteRecipe(idParam);
+    const data = await recipeService.deleteRecipe(idParam);
 
-  if (data) {
-    logger.info(`Deleted Recipe: ${data.title}`);
-    res.status(201).json({ message: `Recipe Deleted Successfully` });
-  } else {
-    res.status(401).json({
-      message: "Recipe was not deleted. Invalid Inputs.",
-    });
+    if (data) {
+      logger.info(`Deleted Recipe: ${data.title}`);
+      res.status(201).json({ message: `Recipe Deleted Successfully` });
+    } else {
+      res.status(401).json({
+        message: "Recipe was not deleted. Invalid Inputs.",
+      });
+    }
   }
-
-});
+);
 
 export default router;

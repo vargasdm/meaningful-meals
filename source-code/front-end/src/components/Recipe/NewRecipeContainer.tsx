@@ -1,6 +1,5 @@
 import React from "react";
-import RecipeContainer from "./RecipeContainer";
-// import { RootState } from "../../store/store";
+import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
@@ -8,25 +7,32 @@ import { useNavigate } from "react-router-dom";
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
 
-// type CleanedRootState = Omit<RootState, "_persist">;
-
 function NewRecipeContainer() {
   const userState = useSelector((state: any) => state.user);
 
-  let globalUser = userState.username;
+  let user = userState.username;
+  let jwt = userState.jwt;
 
   const navigate = useNavigate();
   async function handleCreateRecipe(newRecipe: any) {
     try {
-      // Make the update request and handle the response
-      const response = await axios.post(`${URL}/create`, {
-        title: newRecipe.title,
-        ingredients: newRecipe.ingredients,
-        instructions: newRecipe.instructions,
-        user: globalUser,
-      });
+      const response = await axios.post(
+        `${URL}/create`,
+        {
+          title: newRecipe.title,
+          description: newRecipe.description,
+          ingredients: newRecipe.ingredients,
+          instructions: newRecipe.instructions,
+          user: user,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       if (response.request.status === 201) {
-        navigate(`/recipes/user-recipes/${globalUser}`); // Navigate to the RecipeList component
+        navigate(`/recipes/user-recipes/${user}`);
       }
       return response;
     } catch (error) {
@@ -34,7 +40,22 @@ function NewRecipeContainer() {
     }
   }
 
-  return <NewRecipe handleCreateRecipe={handleCreateRecipe} />;
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <h1 id="newRecipeContainerTitle" className="float-start">
+            Create New Recipe
+          </h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <NewRecipe handleCreateRecipe={handleCreateRecipe} />
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default NewRecipeContainer;
