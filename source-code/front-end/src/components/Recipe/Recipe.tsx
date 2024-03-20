@@ -12,7 +12,6 @@ const RECIPES_ENDPOINT =
   endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-// console.log(MEALS_ENDPOINT);
 
 export async function loader({ params }: any) {
   try {
@@ -30,24 +29,26 @@ export default function Recipe() {
   const user = useSelector((state: any) => state.user);
   const jwt = user.jwt;
 
-  async function handleAddToMealPlan() {
-    try {
-      await axios.post(
-        MEALS_ENDPOINT,
-        {
-          recipeID: id,
-          timestamp: Date.now(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }
+	async function handleAddToMealPlan() {
+		console.log(MEALS_ENDPOINT);
+		
+		try {
+			await axios.post(
+				MEALS_ENDPOINT,
+				{
+					recipeID: id,
+					timestamp: Date.now()
+				},
+				{
+					headers: {
+						'Authorization': `Bearer ${jwt}`
+					}
+				}
+			);
+		} catch (err) {
+			console.error(err);
+		}
+	}
 
   const instructions: any = recipeData.analyzedInstructions[0].steps.map(
     (step: any) => <li key={step.number}>{step.step}</li>

@@ -4,18 +4,17 @@ import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
 import axios from "axios";
 import "./RecipeStyles/RecipeList.css";
-
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/recipes`;
+import endpoints from "../../endpoints";
+const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 
 function RecipeList(prop: any) {
   const [recipeList, setRecipeList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const userState = useSelector((state: any) => state.user);
-
-  let globalUser = userState.username;
+  const user = useSelector((state: any) => state.user);
+  let jwt = user.jwt;
+  let globalUser = user.username;
 
   useEffect(() => {
     fetchRecipes();
@@ -55,11 +54,24 @@ function RecipeList(prop: any) {
     }
   };
 
+  const handleAddClick = async (recipeId: any) => {
+    try {
+      const response = await prop.handleAddToMealPlan(recipeId);
+
+      if (response) {
+        console.log("Added Recipe to Meal Plan:", recipeId);
+        fetchRecipes();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   async function handleUpdateRecipe(editedRecipe: any) {
     try {
       // Make the update request and handle the response
       const response = await axios.put(
-        `${URL}/update`,
+        `${RECIPES_ENDPOINT}/update`,
         {
           id: editedRecipe.id,
           title: editedRecipe.title,
@@ -69,7 +81,7 @@ function RecipeList(prop: any) {
           user: globalUser,
         },
         {
-          headers: { authorization: `Bearer ${userState.jwt}` },
+          headers: { authorization: `Bearer ${jwt}` },
         }
       );
       setSelectedRecipe(null);
@@ -114,6 +126,12 @@ function RecipeList(prop: any) {
                   <p className="recipeCardDescription">
                     Description: {recipe.description}
                   </p>
+                  <button
+                    className="recipeCardAddButton"
+                    onClick={() => handleAddClick(recipe.id)}
+                  >
+                    Add to Meal Plan
+                  </button>
                   <button
                     className="recipeCardRemoveButton"
                     onClick={() => handleDeleteClick(recipe.id)}
