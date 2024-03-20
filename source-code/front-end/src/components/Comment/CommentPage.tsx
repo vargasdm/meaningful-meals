@@ -4,6 +4,7 @@ import CommentCreateContainer from "./CommentCreateContainer";
 import { useSelector } from "react-redux";
 import CommentUpdateContainer from "./CommentUpdateContainer";
 import { useParams } from 'react-router-dom';
+import "./CommentPage.css"
 
 function CommentPage() {
   const { contentId } = useParams();
@@ -20,15 +21,15 @@ function CommentPage() {
   }
 
   return (
-    <>
+    <div id="comments-page">
       <h2 className="comments-page-header">Comments Page</h2>
       <div className="comment-buttons">
         <button onClick={readContent}>Read Comments</button>
         <button onClick={makeContent}>Make a Comment</button>
         <button onClick={updateContent}>Update Comment </button>
       </div>
-      <div className="comment-content">{content}</div>
-    </>
+      <div id="comment-content">{content}</div>
+    </div>
   );
 }
 

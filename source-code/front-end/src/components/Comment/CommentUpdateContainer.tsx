@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import CommentForm from "./CommentForm";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
+import CommentDisplay from "./CommentDisplay";
+import "./CommentUpdateContainer"
 
 type cucProps = { contentId: string };
 function CommentUpdateContainer(prop: cucProps) {
   const [comment, setComment] = useState("");
-  const [display, setDisplay] = useState("loading...");
+  const [display, setDisplay] = useState(<p>loading...</p>);
 
   const user = useSelector((state: any) => state.user);
 
@@ -20,7 +21,7 @@ function CommentUpdateContainer(prop: cucProps) {
           headers: { Authorization: `Bearer ${user.jwt}` },
         }
       );
-      setDisplay(favorite.data.user_comment)
+      setDisplay(<CommentDisplay username={user.username} comment={favorite.data.user_comment}/>)
     } catch (error) {}
   }
 
@@ -52,9 +53,9 @@ function CommentUpdateContainer(prop: cucProps) {
 
   return (
     <>
-      <div id="current-comment">Current Comment: {display}</div>
+      <div id="current-comment"><h3>Current Comment:</h3>{display}</div>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="commentInput">Your Comment:</label>
+        <label htmlFor="commentInput"><h3>Your New Comment:</h3></label>
         <textarea
           id="commentInput"
           value={comment}

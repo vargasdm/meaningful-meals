@@ -1,17 +1,24 @@
 import React from "react";
+import "./RecipeStyles/RecipeContainer.css";
+import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
+
 import RecipeList from "./RecipeList";
 import axios from "axios";
-import FavoriteContainer from "../Favorite/FavoriteContainer";
-import CommentButton from "../Comment/CommentButton";
+import { useSelector } from "react-redux";
+import endpoints from "../../endpoints";
+const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes/user-recipes`;
 
 function RecipeContainer() {
+  const user = useSelector((state: any) => state.user);
+  let jwt = user.jwt;
+
   async function getUserRecipes(user: string) {
     try {
-      let response = await axios.get(`${URL}/${user}`);
-      console.log(response);
-
+      let response = await axios.get(`${URL}/${user}`, {
+        headers: { authorization: `Bearer ${jwt}` },
+      });
       return response;
     } catch (error) {
       console.error(error);
@@ -19,13 +26,11 @@ function RecipeContainer() {
   }
 
   async function handleRemoveRecipe(recipeId: string) {
-    console.log(recipeId);
-
     try {
-      // Make the delete request with the correct URL format
-      const response = await axios.delete(`${URL}/delete/${recipeId}`);
+      const response = await axios.delete(`${URL}/delete/${recipeId}`, {
+        headers: { authorization: `Bearer ${jwt}` },
+      });
 
-      // Handle the response as needed
       return response;
     } catch (error) {
       console.error(error);
@@ -33,14 +38,23 @@ function RecipeContainer() {
   }
 
   return (
-    <div>
-      <RecipeList
-        getUserRecipes={getUserRecipes}
-        handleRemoveRecipe={handleRemoveRecipe}
-      />
-      <FavoriteContainer contentId="test"/>
-      <CommentButton contentId="test"/>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1 id="recipeContainerTitle" className="float-start">
+            My Recipes
+          </h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <RecipeList
+            getUserRecipes={getUserRecipes}
+            handleRemoveRecipe={handleRemoveRecipe}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

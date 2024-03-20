@@ -24,8 +24,6 @@ function LoginContainer() {
 				password: user.password,
 			});
 
-			console.log(res.data);
-
 			if (res) {
 				dispatch(
 					userActions.loginUser({

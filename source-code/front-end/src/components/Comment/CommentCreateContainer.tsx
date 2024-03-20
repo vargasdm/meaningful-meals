@@ -34,7 +34,9 @@ function CommentCreateContainer(prop: cccProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="commentInput">Your Comment:</label>
+      <label htmlFor="commentInput">
+        <h3>Your Comment:</h3>
+      </label>
       <textarea
         id="commentInput"
         value={comment}

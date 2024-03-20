@@ -4,9 +4,6 @@ import { useSelector } from "react-redux";
 import FavoriteButton from "./FavoriteButton";
 import endpoints from "../../endpoints";
 
-const BACKEND_PORT = process.env.REACT_APP_PORT;
-//const FAVORITES_ENDPOINT = `http://localhost:${BACKEND_PORT}/favorites`;
-
 type fcProps = { contentId: string };
 function FavoriteContainer(prop: fcProps) {
   const [isFavorited, setFavorited] = useState(false);

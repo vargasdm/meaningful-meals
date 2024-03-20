@@ -6,25 +6,31 @@ import userDAO from '../repository/userDAO';
 import recipeService from './recipeService';
 import createUserService from './userService';
 import type { Validation } from '../util/validation.type';
+import { Meal } from '../util/meal';
 
 const userService = createUserService(userDAO);
 
-async function validateMeal(
+async function validateAddMeal(
 	userID: string,
 	recipeID: string,
-	date: string): Promise<Validation> {
+	timestamp: number
+): Promise<Validation> {
 	const validation: Validation = { isValid: false, errors: [] };
 
-	if (!(await userService.userExistsByID(userID))) {
-		validation.errors.push('USER DOES NOT EXIST');
+	try {
+		if (!(await userService.userExistsByID(userID))) {
+			validation.errors.push('USER DOES NOT EXIST');
+		}
+
+		if (!(await recipeService.recipeExists(recipeID))) {
+			validation.errors.push('RECIPE DOES NOT EXIST');
+		}
+	} catch (err) {
+		throw err;
 	}
 
-	if (!(await recipeService.recipeExists(recipeID))) {
-		validation.errors.push('RECIPE DOES NOT EXIST');
-	}
-
-	if (isNaN(Date.parse(date))) {
-		validation.errors.push('DATE IS INVALID');
+	if (new Date(timestamp).getTime() <= 0) {
+		validation.errors.push('TIMESTAMP IS INVALID');
 	}
 
 	if (validation.errors.length > 0) {
@@ -35,19 +41,33 @@ async function validateMeal(
 	return validation;
 }
 
-// This should create a meal with the given arguments.
-// It should return nothing on succes, and implicitly throw an error on error.
 async function createMeal(
 	userID: string,
 	recipeID: string,
-	date: string
+	timestamp: number
 ): Promise<void> {
-	await mealDAO.createMeal(
-		uuid(),
-		userID,
-		recipeID,
-		date
-	);
+	try {
+		await mealDAO.createMeal(
+			new Meal(
+				uuid(),
+				userID,
+				recipeID,
+				timestamp
+			)
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+async function deleteMealByID(
+	mealID: string
+): Promise<void> {
+	try {
+		await mealDAO.deleteMealByID(mealID);
+	} catch (err) {
+		throw err;
+	}
 }
 
 async function getMealsByUserID(userID: string) {
@@ -58,18 +78,56 @@ async function getMealsByUserID(userID: string) {
 	}
 }
 
-async function getMealByUserIDAndRecipeID(userID: string, recipeID: string) {
+async function validateGetMealsOfUserInTimeRange(
+	userID: string,
+	minTimestamp: string,
+	maxTimestamp: number
+): Promise<Validation> {
+	const validation: Validation = { isValid: false, errors: [] };
+
 	try {
-		const meal = await mealDAO.getMealByUserIDAndRecipeID(userID, recipeID);
-		return meal;
+		if (!(await userService.userExistsByID(userID))) {
+			validation.errors.push('USER DOES NOT EXIST');
+		}
+	} catch (err) {
+		throw err;
+	}
+
+	if (new Date(minTimestamp).getTime() <= 0) {
+		validation.errors.push('MINIMUM TIMESTAMP IS INVALID');
+	}
+
+	if (new Date(maxTimestamp).getTime() <= 0) {
+		validation.errors.push('MAXIMUM TIMESTAMP IS INVALID');
+	}
+
+	if (validation.errors.length > 0) {
+		return validation;
+	}
+
+	validation.isValid = true;
+	return validation;
+}
+
+async function getMealsOfUserInTimeRange(
+	userID: string,
+	minTimestamp: number,
+	maxTimestamp: number
+) {
+	try {
+		return await mealDAO.getMealsOfUserInTimeRange(
+			userID, minTimestamp, maxTimestamp
+		)
 	} catch (err) {
 		throw err;
 	}
 }
 
 export default {
-	validateMeal,
+	validateAddMeal: validateAddMeal,
 	createMeal,
+	deleteMeal: deleteMealByID,
 	getMealsByUserID,
-	getMealByUserIDAndRecipeID
+	validateGetMealsOfUserInTimeRange,
+	getMealsOfUserInTimeRange
 };

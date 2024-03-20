@@ -34,6 +34,7 @@ const validateRecipeBody = (req: any, res: any, next: any) => {
 	if (
 		!req.body ||
 		!req.body.title ||
+		!req.body.description ||
 		!req.body.ingredients ||
 		!req.body.instructions ||
 		!req.body.user

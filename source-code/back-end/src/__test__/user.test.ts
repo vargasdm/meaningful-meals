@@ -102,7 +102,7 @@ describe("Register Tests", () => {
   test("Successfully register a user.", async () => {
     // Arrange
     const username = "NewUser25";
-    const password = "TestPass01!";
+    const password = "TestPass1";
 
     // ACT
     const result = await userService.validateRegistration({

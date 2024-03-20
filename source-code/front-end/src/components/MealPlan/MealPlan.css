@@ -1,15 +1,88 @@
+.meal-plan-div {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+}
+
+.meal-plan-div>h1 {
+	font-size: 32px;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
 .weekly-calendar {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: stretch;
+
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+}
+
+.weekly-calendar>i {
+	width: var(--calendar-scroll-button-width);
+	font-size: 32px;
+	text-align: center;
+}
+
+.weekly-calendar>i:hover {
+	background-color: #bfbfbf;
+	cursor: pointer;
 }
 
 .meal-plan-day {
 	flex-grow: 1;
 	flex-shrink: 1;
+	flex-basis: 0;
+
+	padding: 8px;
+	overflow-y: scroll;
+	height: 0;
+	min-height: 100%;
+
 }
 
-.meal-plan-day > h1{
+.meal-plan-day>h1 {
+	font-size: 24px;
+}
+
+.meal-plan-day>h2 {
 	font-size: 16px;
+}
+
+.meal-card-div {
+	background-color: #bfbfbf;
+	padding: 8px;
+	margin-bottom: 8px;
+}
+
+/* .meal-card-div>h1 {
+	font-size: 16px;
+} */
+
+.meal-card-div>img {
+	max-width: 100%;
+}
+
+.meal-card-div>h2 {
+	font-size: 16px;
+}
+
+.meal-card-header-div {
+	display: grid;
+	grid-template-columns: 1fr 3fr 1fr;
+}
+
+.meal-card-header-div>h1 {
+	font-size: 16px;
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+.meal-card-header-div>i {
+	grid-column-start: 3;
+	grid-column-end: 4;
 }
