@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-function FavoriteButton(prop: any) {
-  const [isFavorited, setIsFavorited] = useState(false);
-
-  useEffect(() => {
-    if (prop.favoriteList) {
-      (prop.favoriteList as any[]).forEach((item) => {
-        if (item.content_id === prop.contentId) {
-          setIsFavorited(true);
-        }
-      });
-    }
-  }, []);
-
-  const handleToggle = () => {
-    setIsFavorited(!isFavorited);
-  };
-
+type fbProps = {isFavorited: boolean, handleToggle:any}
+function FavoriteButton(prop: fbProps) {
   return (
-    <button id="favorite-btn" onClick={handleToggle}>
-      {isFavorited ? (
-        <i className="bi bi-heart-fill"></i>
+    <button id="favorite-btn" onClick={prop.handleToggle}>
+      {prop.isFavorited ? (
+        <i className="bi bi-heart-fill">Liked</i>
       ) : (
-        <i className="bi bi-heart"></i>
+        <i className="bi bi-heart">Like</i>
       )}
     </button>
   );

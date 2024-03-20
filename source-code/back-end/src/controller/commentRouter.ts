@@ -18,6 +18,7 @@ router.post("/", authenticateToken, async (req: any, res: any) => {
     );
 
     if (!validation.isValid) {
+      logger.log(validation.errors)
       res.status(400).json({ errors: validation.errors });
       return;
     }
@@ -37,6 +38,7 @@ router.delete("/", authenticateToken, async (req: any, res: any) => {
     );
 
     if (!validation.isValid) {
+      logger.log(validation.errors)
       res.status(400).json({ errors: validation.errors });
       return;
     }
@@ -56,6 +58,7 @@ router.put("/", authenticateToken, async (req: any, res: any) => {
     );
 
     if (!validation.isValid) {
+      logger.log(validation.errors)
       res.status(400).json({ errors: validation.errors });
       return;
     }
@@ -71,8 +74,9 @@ router.put("/", authenticateToken, async (req: any, res: any) => {
 router.get("/", authenticateToken, async (req: any, res: any) => {
   try {
     const user: string = req.query.user;
-    const item: string = req.query.user;
+    const item: string = req.query.item;
     if (!user && !item) {
+      logger.log({ errors: "MISSING QUERIES" })
       res.status(400).json({ errors: "MISSING QUERIES" });
       return;
     }
@@ -94,6 +98,7 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
     }
 
     if (!validation.isValid) {
+      logger.log(validation.errors)
       res.status(400).json({ errors: validation.errors });
       return;
     }

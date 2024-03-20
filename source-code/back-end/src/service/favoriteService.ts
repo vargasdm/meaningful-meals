@@ -35,6 +35,22 @@ export default function (favoriteDb: any) {
 
     return { isValid: true, errors };
   }
+  async function validateGetFavorite(
+    input: favoriteInput
+  ): Promise<Validation> {
+    const errors: string[] = [];
+    // validate input
+    if (!input || !input.content_id || !input.user_id) {
+      errors.push("INPUTS ARE NULL");
+      return { isValid: false, errors };
+    }
+
+    if (errors.length > 0) {
+      return { isValid: false, errors };
+    }
+
+    return { isValid: true, errors };
+  }
 
   async function validateUpdateFavorite(
     input: favoriteInput
@@ -164,5 +180,6 @@ export default function (favoriteDb: any) {
     getUserFavorites,
     getContentFavorites,
     getUserContentFavorite,
+    validateGetFavorite
   };
 }

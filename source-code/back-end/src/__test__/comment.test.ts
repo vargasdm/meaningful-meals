@@ -1,36 +1,24 @@
 import CommentService from "../service/commentService";
 
-let contentTable = [
-  {
-    content_id: "1",
-    content: "Random Content 1",
-  },
-  {
-    content_id: "2",
-    content: "Random Content 2",
-  },
-  {
-    content_id: "3",
-    content: "Random Content 3",
-  },
-];
-
 let commentsTable = [
   {
     comment_id: "1",
     content_id: "1",
+    username: "testuser",
     user_id: "1",
     user_comment: "Test Comment 1",
   },
   {
     comment_id: "2",
     content_id: "2",
+    username: "testuser",
     user_id: "2",
     user_comment: "Test Comment 2",
   },
   {
     comment_id: "3",
     content_id: "3",
+    username: "testuser",
     user_id: "3",
     user_comment: "Test Comment 3",
   },
@@ -67,7 +55,7 @@ const mockUpdateComment = jest.fn(async (item) => {
         comment.user_id === item.user_id &&
         comment.content_id === item.content_id
       ) {
-        comment.user_comment = item.comment;
+        comment.user_comment = item.user_comment;
       }
     });
   } catch (error) {
@@ -156,6 +144,7 @@ describe("Comments Test", () => {
     const input = {
       content_id: "1",
       user_id: "3",
+      username: "testuser",
       user_comment: "New Test Comment 1",
     };
     // Act
@@ -168,7 +157,6 @@ describe("Comments Test", () => {
     const process = await commentService.createComment(input);
 
     const result = await commentService.getUserComments(input.user_id);
-    console.log(result)
 
     let userId: string = "";
     let contentId: string = "";
@@ -208,6 +196,7 @@ describe("Comments Test", () => {
     const input = {
       content_id: "1",
       user_id: "1",
+      username: "testuser",
       user_comment: "New Test Comment 1",
     };
     const expected = "COMMENT ALREADY EXISTS";
@@ -346,25 +335,27 @@ describe("Comments Test", () => {
 
     const process = await commentService.updateComment(input);
 
-    const result = await commentService.getUserComments(input.user_id);
+    const result = await commentService.getUserContentComment({
+      user_id: input.user_id,
+      content_id: input.content_id,
+    });
+
 
     let userId: string = "";
     let contentId: string = "";
     let userComment: string = "";
 
-    if (result) {
-      result.forEach((comment) => {
-        if (
-          comment.user_id === input.user_id &&
-          comment.content_id === input.content_id &&
-          comment.user_comment === input.user_comment
-        ) {
-          userId = comment.user_id;
-          contentId = comment.content_id;
-          userComment = comment.user_comment;
-        }
-      });
+    if (
+      result &&
+      result.user_id === input.user_id &&
+      result.content_id === input.content_id &&
+      result.user_comment === input.user_comment
+    ) {
+      userId = result.user_id;
+      contentId = result.content_id;
+      userComment = result.user_comment;
     }
+
     // Assert
     expect(userId).toBe(input.user_id);
     expect(contentId).toBe(input.content_id);
