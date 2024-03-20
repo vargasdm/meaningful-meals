@@ -3,8 +3,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
 import MealCard from "./MealCard";
+import util from "../../util";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
+const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 const DAY_NAMES: string[] = [
 	'Sunday',
 	'Monday',
@@ -19,6 +21,8 @@ type MealPlanDayProps = {
 	key: string
 }
 
+
+
 export default function MealPlanDay(props: MealPlanDayProps) {
 	const [meals, setMeals] = useState([]);
 	const user = useSelector((state: any) => state.user);
@@ -29,7 +33,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 		const lastTimestampOfDay = firstTimestampOfDay + 1000 * 60 * 60 * 24;
 
 		try {
-			const meals = await axios.get(
+			let mealsData: any = await axios.get(
 				`${MEALS_ENDPOINT}?minTimestamp=${firstTimestampOfDay}`
 				+ `&maxTimestamp=${lastTimestampOfDay}`,
 				{
@@ -39,7 +43,28 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 				}
 			);
 
-			setMeals(meals.data);
+			// console.log(mealsData);
+
+			mealsData = await Promise.all(
+				mealsData.data.map(async (meal: any) => {
+					console.log(meal);
+					const recipeData = await axios.get(
+						`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
+					);
+
+					const recipe: any = recipeData.data;
+
+					return {
+						id: meal.meal_id,
+						name: recipe.title,
+						image: recipe.image,
+						numCalories: util.getNumCalories(recipe)
+					}
+				})
+			);
+
+			// console.log(mealsData);
+			setMeals(mealsData);
 		} catch (err) {
 			setMeals([]);
 			console.error(err);
@@ -52,8 +77,9 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 
 	const renderMeals = meals.map((meal: any) =>
 		<MealCard
-			mealID={meal.meal_id}
-			recipeID={meal.recipe_id}
+			name={meal.name}
+			imageSource={meal.imageSource}
+			numCalories={meal.numCalories}
 			key={meal.meal_id}
 		/>
 	);
