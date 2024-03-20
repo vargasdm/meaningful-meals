@@ -40,6 +40,7 @@ async function updateRecipe(recipe: any) {
     Item: {
       id: recipe.id,
       title: recipe.title,
+      description: recipe.description,
       user: recipe.user,
       name: recipe.name,
       ingredients: recipe.ingredients,
@@ -62,6 +63,7 @@ async function postRecipe(recipe: any) {
     Item: {
       id: recipe.id,
       title: recipe.title,
+      description: recipe.description,
       user: recipe.user,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,

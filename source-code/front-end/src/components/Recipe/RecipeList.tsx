@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
 import RecipeSingle from "./RecipeSingle";
 import axios from "axios";
+import "./RecipeStyles/RecipeList.css";
 
 const PORT = process.env.REACT_APP_PORT;
 const URL = `http://localhost:${PORT}/recipes`;
-
-// type CleanedRootState = Omit<RootState, "_persist">;
-
-// interface RecipeListProps {
-//   getUserRecipes: (user: string) => Promise<any>;
-// }
 
 function RecipeList(prop: any) {
   const [recipeList, setRecipeList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
-  // console.log(selectedRecipe);
 
   const userState = useSelector((state: any) => state.user);
 
@@ -35,7 +28,6 @@ function RecipeList(prop: any) {
 
   const handleRecipeClick = (recipe: any) => {
     setSelectedRecipe(recipe);
-    // console.log(selectedRecipe);
   };
 
   const handleEditClick = () => {
@@ -51,11 +43,8 @@ function RecipeList(prop: any) {
   };
 
   const handleDeleteClick = async (recipeId: any) => {
-    console.log(recipeId);
-
     try {
       const response = await prop.handleRemoveRecipe(recipeId);
-      console.log(response);
 
       if (response) {
         console.log("Deleted Recipe:", recipeId);
@@ -69,14 +58,20 @@ function RecipeList(prop: any) {
   async function handleUpdateRecipe(editedRecipe: any) {
     try {
       // Make the update request and handle the response
-      const response = await axios.put(`${URL}/update`, {
-        id: editedRecipe.id,
-        title: editedRecipe.title,
-        ingredients: editedRecipe.ingredients,
-        instructions: editedRecipe.instructions,
-        user: globalUser,
-      });
-
+      const response = await axios.put(
+        `${URL}/update`,
+        {
+          id: editedRecipe.id,
+          title: editedRecipe.title,
+          description: editedRecipe.description,
+          ingredients: editedRecipe.ingredients,
+          instructions: editedRecipe.instructions,
+          user: globalUser,
+        },
+        {
+          headers: { authorization: `Bearer ${userState.jwt}` },
+        }
+      );
       setSelectedRecipe(null);
       setIsEditing(false);
       fetchRecipes();
@@ -88,7 +83,7 @@ function RecipeList(prop: any) {
 
   return (
     <>
-      <div className="userRecipeList">
+      <div>
         {selectedRecipe ? (
           <RecipeSingle
             selectedRecipe={selectedRecipe}
@@ -98,37 +93,46 @@ function RecipeList(prop: any) {
             handleBackClick={handleBackClick}
           />
         ) : (
-          <div>
-            <Link to="/recipes/new-recipe">
-              <button>Create a New Recipe</button>
-            </Link>
+          <div className="userRecipeListContainer">
+            <div className="createButtonContainer">
+              <Link to="/recipes/new-recipe">
+                <button id="createButton">Create a New Recipe</button>
+              </Link>
+            </div>
             {recipeList && recipeList.length > 0 ? (
               recipeList.map((recipe: any) => (
-                <div key={recipe.id}>
-                  <h1>
+                <div className="recipeCard" key={recipe.id}>
+                  <h3 className="recipeCardTitle">
                     <Link
                       to={`/recipes/user-recipes/${recipe.id}`}
                       onClick={() => handleRecipeClick(recipe)}
+                      className="recipeCardTitle"
                     >
                       {recipe.title}
                     </Link>
-                    <button onClick={() => handleDeleteClick(recipe.id)}>
-                      Remove Recipe
-                    </button>
-                  </h1>
+                  </h3>
+                  <p className="recipeCardDescription">
+                    Description: {recipe.description}
+                  </p>
+                  <button
+                    className="recipeCardRemoveButton"
+                    onClick={() => handleDeleteClick(recipe.id)}
+                  >
+                    Remove Recipe
+                  </button>
                 </div>
               ))
             ) : (
               <>
-                <p>No recipes have been saved for {globalUser}</p>
-                <Link to="/recipes/new-recipe">
-                  <button>Create a New Recipe</button>
-                </Link>
+                <p id="noRecipes">
+                  No recipes have been saved for {globalUser}
+                </p>
               </>
             )}
           </div>
         )}
       </div>
+      <div></div>
     </>
   );
 }

@@ -57,6 +57,7 @@ async function putRecipe(receivedData: any) {
 	let data = await recipeDAO.updateRecipe({
 		id: receivedData.id,
 		title: receivedData.title,
+		description: receivedData.description,
 		ingredients: receivedData.ingredients,
 		instructions: receivedData.instructions,
 		user: receivedData.user,
@@ -69,6 +70,7 @@ async function createRecipe(receivedData: any) {
 	let data = await recipeDAO.postRecipe({
 		id: uuid(),
 		title: receivedData.title,
+		description: receivedData.description,
 		ingredients: receivedData.ingredients,
 		instructions: receivedData.instructions,
 		user: receivedData.user,

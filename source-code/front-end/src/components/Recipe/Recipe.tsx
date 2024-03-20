@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import './Recipe.css';
+import './RecipeStyles/Recipe.css';
 import endpoints from '../../endpoints';
 
 const BACKEND_PORT = process.env.REACT_APP_PORT;

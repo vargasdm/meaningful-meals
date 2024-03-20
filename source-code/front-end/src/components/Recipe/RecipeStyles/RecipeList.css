@@ -1,0 +1,71 @@
+.userRecipeListContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    justify-content: space-between;
+    
+}
+
+.userRecipeListContainer .createButtonContainer {
+    align-self: flex-end;
+    flex-grow: 1;
+  }
+
+  .userRecipeListContainer .createButtonContainer #createButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .userRecipeListContainer .createButtonContainer #createButton:hover {
+    background-color: #45a049;
+  }
+
+  .userRecipeListContainer .recipeCard {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    justify-content: space-between;
+  }
+
+  .userRecipeListContainer .recipeCard .recipeCardTitle {
+    align-self: flex-start;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .userRecipeListContainer .recipeCard .recipeCardTitle:hover {
+    text-decoration: underline;
+  }
+
+  
+  .userRecipeListContainer .recipeCard .recipeCardDescription {
+    margin-bottom: 10px;
+    align-self: flex-start;
+  }
+  
+  .userRecipeListContainer .recipeCard .recipeCardRemoveButton {
+    align-self: flex-end;
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
