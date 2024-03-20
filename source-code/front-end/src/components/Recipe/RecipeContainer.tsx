@@ -38,8 +38,8 @@ function RecipeContainer() {
         getUserRecipes={getUserRecipes}
         handleRemoveRecipe={handleRemoveRecipe}
       />
-      <FavoriteContainer content_id="test"/>
-      <CommentButton />
+      <FavoriteContainer contentId="test"/>
+      <CommentButton contentId="test"/>
     </div>
   );
 }

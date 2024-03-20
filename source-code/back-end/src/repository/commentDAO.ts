@@ -20,7 +20,11 @@ type comment = {
   content_id: string;
   user_comment: string;
 };
-type commentNoId = { user_id: string; content_id: string; user_comment: string };
+type commentNoId = {
+  user_id: string;
+  content_id: string;
+  user_comment: string;
+};
 
 async function getCommentByUserAndContent(input: commentNoId) {
   const command = new QueryCommand({
@@ -118,10 +122,10 @@ async function updateComment(input: comment) {
 }
 
 export default {
-  getCommentByUserAndContent: getCommentByUserAndContent,
-  createComment: createComment,
-  deleteComment: deleteComment,
-  getCommentsByUserId: getCommentsByUserId,
-  getComments: getComments,
-  updateComment: updateComment,
+  getCommentByUserAndContent,
+  createComment,
+  deleteComment,
+  getCommentsByUserId,
+  getComments,
+  updateComment,
 };

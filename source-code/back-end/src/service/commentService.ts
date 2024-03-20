@@ -4,11 +4,19 @@ import { Validation } from "../util/validation.type";
 type comment = {
   comment_id: string;
   user_id: string;
+  username: string;
   content_id: string;
   user_comment: string;
 };
 
 type commentInput = {
+  user_id: string;
+  content_id: string;
+  user_comment: string;
+  username: string;
+};
+
+type commentUpdate = {
   user_id: string;
   content_id: string;
   user_comment: string;
@@ -25,7 +33,7 @@ export default function (commentDb: any) {
   ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
-    if (!input || !input.user_id || !input.content_id || !input.user_comment) {
+    if (!input || !input.user_id || !input.content_id || !input.user_comment || !input.username) {
       errors.push("INPUTS ARE NULL");
       return { isValid: false, errors };
     }
@@ -49,7 +57,7 @@ export default function (commentDb: any) {
   }
 
   async function validateUpdateComment(
-    input: commentInput
+    input: commentUpdate
   ): Promise<Validation> {
     const errors: string[] = [];
     // validate input
@@ -162,6 +170,7 @@ export default function (commentDb: any) {
       await commentDb.createComment({
         comment_id: uuid(),
         user_id: input.user_id,
+        username: input.username,
         content_id: input.content_id,
         user_comment: input.user_comment,
       });
@@ -190,16 +199,15 @@ export default function (commentDb: any) {
     }
   }
 
-  async function updateComment(input: commentInput) {
+  async function updateComment(input: commentUpdate) {
     try {
       const data = await commentDb.getCommentByUserAndContent({
         user_id: input.user_id,
         content_id: input.content_id,
       });
       if (data) {
-        data.comment = input.user_comment;
-        const result = await commentDb.updateComment(data);
-        return result;
+        data.user_comment = input.user_comment;
+        await commentDb.updateComment(data);
       }
     } catch (err) {
       throw err;

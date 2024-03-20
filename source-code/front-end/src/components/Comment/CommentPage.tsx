@@ -3,24 +3,25 @@ import CommentList from "./CommentList";
 import CommentCreateContainer from "./CommentCreateContainer";
 import { useSelector } from "react-redux";
 import CommentUpdateContainer from "./CommentUpdateContainer";
+import { useParams } from 'react-router-dom';
 
-type cpProps = { contentId: string };
-function CommentPage(prop: cpProps) {
-  const [content, setContent] = useState(<></>);
+function CommentPage() {
+  const { contentId } = useParams();
+  const [content, setContent] = useState(<CommentList contentId={contentId as string} />);
 
   async function readContent() {
-    setContent(<CommentList contentId={prop.contentId} />);
+    setContent(<CommentList contentId={contentId as string} />);
   }
   async function makeContent() {
-    setContent(<CommentCreateContainer contentId={prop.contentId} />);
+    setContent(<CommentCreateContainer contentId={contentId as string} />);
   }
   async function updateContent() {
-    setContent(<CommentUpdateContainer contentId={prop.contentId} />);
+    setContent(<CommentUpdateContainer contentId={contentId as string} />);
   }
 
   return (
     <>
-      <h2>Comments Page</h2>
+      <h2 className="comments-page-header">Comments Page</h2>
       <div className="comment-buttons">
         <button onClick={readContent}>Read Comments</button>
         <button onClick={makeContent}>Make a Comment</button>

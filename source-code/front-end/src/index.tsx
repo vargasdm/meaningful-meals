@@ -69,8 +69,8 @@ const router = createBrowserRouter([
 				element: <SearchContainer />
 			},
 			{
-				path: '/comments',
-				element: <CommentPage contentId="0"/>
+				path: '/comments/:contentId',
+				element: <CommentPage />
 			}
 		],
 	},

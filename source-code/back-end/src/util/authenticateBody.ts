@@ -15,9 +15,7 @@ const validateLoginBody = (req: any, res: any, next: any) => {
 };
 
 const validateRegisterBody = (req: any, res: any, next: any) => {
-	console.log("authenticateBody.validateRegisterBody");
 	if (!req.body || !req.body.username || !req.body.password) {
-		console.log("Registration request body/body field missing.");
 		logger.error(`Registration request body/body field missing. ${req.body}`);
 		return res
 			.status(400)
@@ -25,17 +23,14 @@ const validateRegisterBody = (req: any, res: any, next: any) => {
 	}
 
 	if (!validUsername(req.body.username) || !validPassword(req.body.password)) {
-		console.log("Invalid request body field.");
 		logger.error(`Invalid request body field. ${req.body}`);
 		return res.status(400).json({ message: `Invalid request body.` });
 	}
 
-	console.log("Registration body valid.");
 	next();
 };
 
 const validateRecipeBody = (req: any, res: any, next: any) => {
-	console.log("validateRecipeBody");
 	if (
 		!req.body ||
 		!req.body.title ||
@@ -43,20 +38,16 @@ const validateRecipeBody = (req: any, res: any, next: any) => {
 		!req.body.instructions ||
 		!req.body.user
 	) {
-		console.log("Recipe request body/body field missing.");
 		logger.error(`Recipe request body/body field missing. ${req.body}`);
 		return res
 			.status(400)
 			.json({ message: `Recipe request body/body field missing.` });
 	}
 
-	console.log("Registration body valid.");
 	next();
 };
 const validateRecipeID = (req: any, res: any, next: any) => {
-	console.log("validateRecipeID");
 	if (!req.params || !req.params.id) {
-		console.log("Recipe request params/params field missing.");
 		logger.error(
 			`Recipe request params/params field missing. ${req.params.id}`
 		);
@@ -65,7 +56,6 @@ const validateRecipeID = (req: any, res: any, next: any) => {
 			.json({ message: `Recipe request params/params field missing.` });
 	}
 
-	console.log("Recipe ID param valid.");
 	next();
 };
 

@@ -1,5 +1,4 @@
 // endpoint: /user
-// require("dotenv").config();
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
@@ -11,6 +10,7 @@ const router = express.Router();
 
 import createUserService from "../service/userService";
 import userDAO from "../repository/userDAO";
+import { authenticateToken } from "../util/authenticateToken";
 const userService = createUserService(userDAO);
 
 router.post("/login", async (req: any, res: any) => {
@@ -63,6 +63,29 @@ router.post("/register", async (req: any, res: any) => {
     res.sendStatus(201);
   } catch (err) {
     logger.error(err);
+    res.sendStatus(500);
+  }
+});
+
+router.put("/update", authenticateToken, async (req: any, res: any) => {
+  try {
+    const validation: Validation = userService.validateUpdate(req.body);
+    const newUsername = req.query.newUsername;
+
+    if (!validation.isValid) {
+      res.status(400).json({ errors: validation.errors });
+      return;
+    }
+
+    if (!newUsername) {
+      await userService.updateUser(req.body);
+      res.sendStatus(201);
+    } else {
+      await userService.updateUser({username:req.body.username, pasword: req.body.password , newUsername: newUsername });
+      res.sendStatus(201);
+    }
+  } catch (error) {
+    logger.error(error);
     res.sendStatus(500);
   }
 });
