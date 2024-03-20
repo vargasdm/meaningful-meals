@@ -56,7 +56,8 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 						id: meal.meal_id,
 						name: recipe.title,
 						imageSource: recipe.image,
-						numCalories: util.getNumCalories(recipe)
+						numCalories: util.getNumCalories(recipe),
+						// date: new Date(meal.timestamp)
 					}
 				})
 			);
@@ -80,6 +81,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 			numCalories={meal.numCalories}
 			key={meal.id}
 			getMeals={getMeals}
+			// date={meal.date}
 		/>
 	);
 
@@ -93,8 +95,10 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 	return (
 		<div className='meal-plan-day'>
 			<h1>{DAY_NAMES[props.date.getDay()]} {props.date.getDate()}</h1 >
-			<h2>{totalNumCalories} kcal</h2>
-			{renderMeals}
+			<h2>{Math.trunc(totalNumCalories)} kcal</h2>
+			<div className='meal-cards-div'>
+				{renderMeals}
+			</div>
 		</div>
 	);
 }

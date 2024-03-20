@@ -38,11 +38,12 @@
 	flex-shrink: 1;
 	flex-basis: 0;
 
-	padding: 8px;
-	overflow-y: scroll;
 	height: 0;
 	min-height: 100%;
 
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
 }
 
 .meal-plan-day>h1 {
@@ -53,15 +54,18 @@
 	font-size: 16px;
 }
 
-.meal-card-div {
-	background-color: #bfbfbf;
-	padding: 8px;
-	margin-bottom: 8px;
+.meal-cards-div {
+	flex-grow: 1;
+	flex-shrink: 1;
+	overflow-y: scroll;
 }
 
-/* .meal-card-div>h1 {
-	font-size: 16px;
-} */
+.meal-card-div {
+	background-color: #dfdfdf;
+	padding: 8px;
+	margin-bottom: 8px;
+	border-radius: 8px;
+}
 
 .meal-card-div>img {
 	max-width: 100%;

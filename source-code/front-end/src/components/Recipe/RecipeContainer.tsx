@@ -14,11 +14,7 @@ const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
 function RecipeContainer() {
 	const user = useSelector((state: any) => state.user);
-	console.log(user);
-
 	let userId = user.userID;
-	console.log(userId);
-
 	let jwt = user.jwt;
 
 	async function getUserRecipes(user: string) {

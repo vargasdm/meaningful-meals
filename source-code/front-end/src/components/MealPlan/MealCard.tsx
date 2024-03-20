@@ -1,6 +1,7 @@
 import axios from "axios";
 import endpoints from "../../endpoints";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
@@ -10,10 +11,15 @@ type MealCardProps = {
 	imageSource: string,
 	numCalories: number,
 	key: string,
-	getMeals: Function
+	getMeals: Function,
+	// date: Date
 }
 
 export default function MealCard(props: MealCardProps) {
+	const [isEditingDate, setIsEditingDate] = useState(false);
+	// const [month, setMonth] = useState(props.date.getMonth());
+	// const [day, setDay] = useState(props.date.getDate());
+	// const [year, setYear] = useState(props.date.getFullYear());
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
@@ -33,6 +39,11 @@ export default function MealCard(props: MealCardProps) {
 			console.error(err);
 		}
 	}
+
+	function handleMonthChange() {
+
+	}
+
 	return (
 		<div className='meal-card-div'>
 			<div className='meal-card-header-div'>
@@ -40,7 +51,22 @@ export default function MealCard(props: MealCardProps) {
 				<i className='bi bi-trash' onClick={handleDeleteMealCard} />
 			</div>
 			<img src={props.imageSource} />
-			<h2>{props.numCalories} kcal</h2>
+			<h2>{Math.trunc(props.numCalories)} kcal</h2>
+			<input
+				type='text'
+				name='month'
+				placeholder='MM'
+			/>
+			<input
+				type='text'
+				name='day'
+				placeholder='DD'
+			/>
+			<input
+				type='text'
+				name='year'
+				placeholder='YYYY'
+			/>
 		</div>
 	);
 }
