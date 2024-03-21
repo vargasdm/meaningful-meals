@@ -114,12 +114,17 @@ function RecipeList(prop: any) {
 						recipeList.map((recipe: any) => (
 							<Card key={recipe.id} className="recipeCard">
 								<Card.Body>
-									<Card.Title
+									{/* <Card.Title
 										onClick={() => handleRecipeClick(recipe)}
 										className="recipeCardTitle"
+									> */}
+									<Link
+										to={`/recipes/${recipe.id}`}
+										className='recipeCardTitle'
 									>
 										{recipe.title}
-									</Card.Title>
+									</Link>
+									{/* </Card.Title> */}
 									<Card.Text>Description: {recipe.description}</Card.Text>
 									<div>
 										<Button
@@ -139,8 +144,9 @@ function RecipeList(prop: any) {
 					) : (
 						<p>No recipes have been saved for {globalUser}</p>
 					)}
-				</div>
-			)}
+				</div >
+			)
+			}
 		</>
 	);
 }
