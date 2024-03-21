@@ -25,6 +25,7 @@ router.post("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(
     try {
         const validation = yield commentService.validateInputComment(req.body);
         if (!validation.isValid) {
+            logger_1.logger.log(validation.errors);
             res.status(400).json({ errors: validation.errors });
             return;
         }
@@ -40,6 +41,7 @@ router.delete("/", authenticateToken_1.authenticateToken, (req, res) => __awaite
     try {
         const validation = yield commentService.validateDeleteComment(req.body);
         if (!validation.isValid) {
+            logger_1.logger.log(validation.errors);
             res.status(400).json({ errors: validation.errors });
             return;
         }
@@ -55,6 +57,7 @@ router.put("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(v
     try {
         const validation = yield commentService.validateUpdateComment(req.body);
         if (!validation.isValid) {
+            logger_1.logger.log(validation.errors);
             res.status(400).json({ errors: validation.errors });
             return;
         }
@@ -69,8 +72,9 @@ router.put("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(v
 router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.query.user;
-        const item = req.query.user;
+        const item = req.query.item;
         if (!user && !item) {
+            logger_1.logger.log({ errors: "MISSING QUERIES" });
             res.status(400).json({ errors: "MISSING QUERIES" });
             return;
         }
@@ -91,6 +95,7 @@ router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(v
             validation = yield commentService.validateId(user);
         }
         if (!validation.isValid) {
+            logger_1.logger.log(validation.errors);
             res.status(400).json({ errors: validation.errors });
             return;
         }

@@ -19,14 +19,14 @@ function createUserService(dao) {
     function validateCredentials(credentials) {
         const errors = [];
         if (!credentials) {
-            errors.push('CREDENTIALS ARE NULL');
+            errors.push("CREDENTIALS ARE NULL");
             return { isValid: false, errors };
         }
         if (!credentials.username) {
-            errors.push('USERNAME IS NULL');
+            errors.push("USERNAME IS NULL");
         }
         if (!credentials.password) {
-            errors.push('PASSWORD IS NULL');
+            errors.push("PASSWORD IS NULL");
         }
         if (errors.length > 0) {
             return { isValid: false, errors };
@@ -45,7 +45,7 @@ function createUserService(dao) {
                     return validation;
                 }
                 validation.isValid = false;
-                validation.errors.push('USER DOES NOT EXIST');
+                validation.errors.push("USER DOES NOT EXIST");
                 return validation;
             }
             catch (err) {
@@ -62,14 +62,14 @@ function createUserService(dao) {
             try {
                 if (yield userExistsByUsername(credentials.username)) {
                     validation.isValid = false;
-                    validation.errors.push('USER EXISTS');
+                    validation.errors.push("USER EXISTS");
                     return validation;
                 }
                 if (!validateUsername(credentials.username)) {
-                    validation.errors.push('USERNAME INVALID');
+                    validation.errors.push("USERNAME INVALID");
                 }
-                if (!validatePassword(credentials.username)) {
-                    validation.errors.push('PASSWORD INVALID');
+                if (!validatePassword(credentials.password)) {
+                    validation.errors.push("PASSWORD INVALID");
                 }
                 if (validation.errors.length > 0) {
                     validation.isValid = false;
@@ -81,6 +81,27 @@ function createUserService(dao) {
                 throw err;
             }
         });
+    }
+    function validateUpdate(credentials) {
+        const errors = [];
+        if (!credentials) {
+            errors.push("CREDENTIALS ARE NULL");
+            return { isValid: false, errors };
+        }
+        if (!credentials.username) {
+            errors.push("USERNAME IS NULL");
+        }
+        if (!validateUsername(credentials.username)) {
+            errors.push("USERNAME INVALID");
+        }
+        if (credentials.password.trim() > 0 &&
+            !validatePassword(credentials.password)) {
+            errors.push("PASSWORD INVALID");
+        }
+        if (errors.length > 0) {
+            return { isValid: false, errors };
+        }
+        return { isValid: true, errors };
     }
     // Fails if contains:
     // empty spaces
@@ -98,14 +119,42 @@ function createUserService(dao) {
         if (password.trim().length === 0 || password.length < 8) {
             return false;
         }
-        return true;
+        let hasUpperCase = false;
+        let hasLowerCase = false;
+        let hasNumber = false;
+        let hasSymbol = false;
+        for (let i = 0; i < password.length; i++) {
+            const charCode = password.charCodeAt(i);
+            // Check for uppercase letter
+            if (charCode >= 65 && charCode <= 90) {
+                hasUpperCase = true;
+            }
+            // Check for lowercase letter
+            else if (charCode >= 97 && charCode <= 122) {
+                hasLowerCase = true;
+            }
+            // Check for number
+            else if (charCode >= 48 && charCode <= 57) {
+                hasNumber = true;
+            }
+            // Check for symbol !@#$%^&*(),.
+            else if ((charCode >= 33 && charCode <= 46)) {
+                hasSymbol = true;
+            }
+            // If all checks are met, no need to continue the loop
+            if (hasUpperCase && hasLowerCase && hasNumber && hasSymbol) {
+                break;
+            }
+        }
+        // Return true only if all checks pass
+        return hasUpperCase && hasLowerCase && hasNumber && hasSymbol;
     }
     // This should return whether the given credentials match those of the user
     // specified by the 'username' field of credentials.
     function credentialsMatch(credentials, targetUser) {
         return __awaiter(this, void 0, void 0, function* () {
-            return credentials.username === targetUser.username
-                && (yield bcrypt_1.default.compare(credentials.password, targetUser.password));
+            return (credentials.username === targetUser.username &&
+                (yield bcrypt_1.default.compare(credentials.password, targetUser.password)));
         });
     }
     function getUserByUsername(username) {
@@ -121,10 +170,10 @@ function createUserService(dao) {
             }
             try {
                 const user = yield dao.getUserByUsername(username);
-                return (user
-                    && user.user_id
-                    && user.username
-                    && user.password);
+                return (user &&
+                    user.user_id &&
+                    user.username &&
+                    user.password);
             }
             catch (err) {
                 if (err instanceof errors_1.UserDoesNotExistError) {
@@ -141,10 +190,10 @@ function createUserService(dao) {
             }
             try {
                 const user = yield dao.getUserById(id);
-                return (user
-                    && user.user_id
-                    && user.username
-                    && user.password);
+                return (user &&
+                    user.user_id &&
+                    user.username &&
+                    user.password);
             }
             catch (err) {
                 if (err instanceof errors_1.UserDoesNotExistError) {
@@ -169,6 +218,32 @@ function createUserService(dao) {
             }
         });
     }
+    function updateUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = yield dao.getUserByUsername(user.username);
+                if (!userId) {
+                    throw Error("USER DOES NOT EXIST");
+                }
+                if (user.password && user.password.trim() > 0) {
+                    yield dao.updateUser({
+                        user_id: userId.user_id,
+                        username: user.username,
+                        password: yield bcrypt_1.default.hash(user.password, 10),
+                    });
+                }
+                else {
+                    yield dao.updateUsername({
+                        user_id: userId.user_id,
+                        username: user.newUsername,
+                    });
+                }
+            }
+            catch (err) {
+                throw err;
+            }
+        });
+    }
     return {
         createUser,
         credentialsMatch,
@@ -176,18 +251,9 @@ function createUserService(dao) {
         userExists: userExistsByUsername,
         userExistsByID,
         validateLogin,
-        validateRegistration
+        validateRegistration,
+        updateUser,
+        validateUpdate,
     };
 }
 exports.default = createUserService;
-/*
-
-export default {
-    createUser,
-    credentialsMatch,
-    getUserByUsername,
-    userExists,
-    validateLogin,
-    validateRegistration
-};
-*/ 

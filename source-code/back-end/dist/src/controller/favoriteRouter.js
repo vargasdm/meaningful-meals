@@ -22,12 +22,6 @@ const authenticateBody_1 = require("../util/authenticateBody");
 const favoriteDAO_1 = __importDefault(require("../repository/favoriteDAO"));
 const favoriteService_1 = __importDefault(require("../service/favoriteService"));
 const favoriteService = (0, favoriteService_1.default)(favoriteDAO_1.default);
-/**
- * postlike
- * deletelike
- * getalluserlike
- * getallrecipelike
- */
 router.post("/", authenticateToken_1.authenticateToken, authenticateBody_1.validateFavoriteBody, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validation = yield favoriteService.validateInputFavorite(req.body);
@@ -43,14 +37,20 @@ router.post("/", authenticateToken_1.authenticateToken, authenticateBody_1.valid
         res.sendStatus(500);
     }
 }));
-router.delete("/", authenticateToken_1.authenticateToken, authenticateBody_1.validateFavoriteBody, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const validation = yield favoriteService.validateUpdateFavorite(req.body);
+        const user = req.query.user;
+        const item = req.query.item;
+        if (!user || !item) {
+            res.status(400).json({ errors: "MISSING QUERIES" });
+            return;
+        }
+        const validation = yield favoriteService.validateUpdateFavorite({ user_id: user, content_id: item });
         if (!validation.isValid) {
             res.status(400).json({ errors: validation.errors });
             return;
         }
-        yield favoriteService.deleteFavorite(req.body);
+        yield favoriteService.deleteFavorite({ user_id: user, content_id: item });
         res.sendStatus(202);
     }
     catch (err) {
@@ -61,7 +61,7 @@ router.delete("/", authenticateToken_1.authenticateToken, authenticateBody_1.val
 router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.query.user;
-        const item = req.query.user;
+        const item = req.query.item;
         if (!user && !item) {
             res.status(400).json({ errors: "MISSING QUERIES" });
             return;
@@ -71,7 +71,7 @@ router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(v
             errors: ["MISSING QUERIES"],
         };
         if (user && item) {
-            validation = yield favoriteService.validateInputFavorite({
+            validation = yield favoriteService.validateGetFavorite({
                 user_id: user,
                 content_id: item,
             });

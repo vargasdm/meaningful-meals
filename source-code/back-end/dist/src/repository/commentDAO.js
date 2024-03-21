@@ -119,10 +119,10 @@ function updateComment(input) {
     });
 }
 exports.default = {
-    getCommentByUserAndContent: getCommentByUserAndContent,
-    createComment: createComment,
-    deleteComment: deleteComment,
-    getCommentsByUserId: getCommentsByUserId,
-    getComments: getComments,
-    updateComment: updateComment,
+    getCommentByUserAndContent,
+    createComment,
+    deleteComment,
+    getCommentsByUserId,
+    getComments,
+    updateComment,
 };

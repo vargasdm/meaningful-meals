@@ -68,7 +68,7 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
             type="text"
             name="title"
             value={editedRecipe.title}
-            placeholder="add a title"
+            placeholder="Recipe Title"
             onChange={handleInputChange}
             data-testid="title-input"
           />
@@ -77,14 +77,14 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
             type="text"
             name="description"
             value={editedRecipe.description}
-            placeholder="add a description"
+            placeholder="Recipe Description"
             onChange={handleInputChange}
             data-testid="description-input"
           />
           <textarea
             id="recipeIngredients"
             name="ingredients"
-            placeholder="add ingredients. Put each ingredient on a new line."
+            placeholder="Ingredients (One per line)"
             value={
               Array.isArray(editedRecipe.ingredients)
                 ? editedRecipe.ingredients.join("\n")
@@ -95,7 +95,7 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
           <textarea
             id="recipeInstructions"
             name="instructions"
-            placeholder="add instructions. Put each instruction on a new line."
+            placeholder="Instructions (One per line)"
             value={
               Array.isArray(editedRecipe.instructions)
                 ? editedRecipe.instructions.join("\n")

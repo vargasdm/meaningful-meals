@@ -19,8 +19,12 @@ const authenticateToken_1 = require("../util/authenticateToken");
 const mealService_1 = __importDefault(require("../service/mealService"));
 const router = express_1.default.Router();
 router.post('/', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.user.user_id);
+    console.log(req.body.recipeID);
+    console.log(req.body.timestamp);
     try {
         const validation = yield mealService_1.default.validateAddMeal(req.user.user_id, req.body.recipeID, req.body.timestamp);
+        console.log(`this is ${validation}`);
         if (!validation.isValid) {
             res.status(400).json({ errors: validation.errors });
             return;
@@ -33,9 +37,9 @@ router.post('/', authenticateToken_1.authenticateToken, (req, res) => __awaiter(
         res.sendStatus(500);
     }
 }));
-router.delete('/:recipeID', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete('/:mealID', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mealService_1.default.deleteMeal(req.body.mealID);
+        yield mealService_1.default.deleteMeal(req.params.mealID);
         res.sendStatus(200);
     }
     catch (err) {
