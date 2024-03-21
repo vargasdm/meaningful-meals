@@ -2,6 +2,8 @@ import axios from "axios";
 import endpoints from "../../endpoints";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
@@ -12,6 +14,7 @@ type MealCardProps = {
 	numCalories: number,
 	key: string,
 	getMeals: Function,
+	date: Date
 }
 
 type DateFieldType = null | number;
@@ -23,6 +26,9 @@ export default function MealCard(props: MealCardProps) {
 	const [year, setYear] = useState<DateFieldType>(null);
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
+
+	function handleDateSelect() { }
+	function handleDateChange() { }
 
 	async function handleDeleteMealCard() {
 		try {
@@ -49,7 +55,7 @@ export default function MealCard(props: MealCardProps) {
 			</div>
 			<img src={props.imageSource} />
 			<h2>{Math.trunc(props.numCalories)} kcal</h2>
-			<input
+			{/* <input
 				type='text'
 				name='month'
 				placeholder='MM'
@@ -63,7 +69,11 @@ export default function MealCard(props: MealCardProps) {
 				type='text'
 				name='year'
 				placeholder='YYYY'
-			/>
+			/> */}
+			<DatePicker
+				selected={props.date}
+				onSelect={handleDateSelect}
+				onChange={handleDateChange} />
 		</div>
 	);
 }

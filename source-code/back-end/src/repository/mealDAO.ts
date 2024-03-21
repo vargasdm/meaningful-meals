@@ -63,7 +63,7 @@ async function getMealsOfUserInTimeRange(
 ) {
 	try {
 		const meals = await getMealsByUserID(userID);
-		log(meals);
+		// log(meals);
 		return meals.filter((meal: any) => meal.timestamp >= minTimestamp
 			&& meal.timestamp < maxTimestamp);
 	} catch (err) {

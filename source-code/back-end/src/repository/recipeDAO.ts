@@ -25,7 +25,7 @@ async function getRecipesByUsername(username: any) {
 
   try {
     const data = await documentClient.send(command);
-    console.log(data.Items);
+    // console.log(data.Items);
     return data.Items;
   } catch (err) {
     logger.error(err);
@@ -44,7 +44,7 @@ async function getRecipeById(recipeId: any) {
 
   try {
     const data = await documentClient.send(command);
-    console.log(data.Items);
+    // console.log(data.Items);
     return data.Items;
   } catch (err) {
     logger.error(err);
