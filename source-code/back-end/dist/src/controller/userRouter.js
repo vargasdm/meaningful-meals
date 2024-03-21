@@ -13,6 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // endpoint: /user
+<<<<<<< HEAD
+=======
+// require("dotenv").config();
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
@@ -21,7 +25,10 @@ const logger_1 = require("../util/logger");
 const router = express_1.default.Router();
 const userService_1 = __importDefault(require("../service/userService"));
 const userDAO_1 = __importDefault(require("../repository/userDAO"));
+<<<<<<< HEAD
 const authenticateToken_1 = require("../util/authenticateToken");
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 const userService = (0, userService_1.default)(userDAO_1.default);
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -32,6 +39,7 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         const targetUser = yield userService.getUserByUsername(req.body.username);
         if (yield userService.credentialsMatch(req.body, targetUser)) {
+<<<<<<< HEAD
             const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: "30m" });
             res.status(200).json({
                 token: token,
@@ -43,6 +51,20 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(401).json({ error: "CREDENTIALS DO NOT MATCH" });
     }
     catch (err) {
+=======
+            const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: '1h' });
+            res.status(200).json({
+                token: token,
+                user_id: targetUser.user_id,
+                username: targetUser.username
+            });
+            return;
+        }
+        res.status(401).json({ error: 'CREDENTIALS DO NOT MATCH' });
+    }
+    catch (err) {
+        console.error(err);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         logger_1.logger.error(err);
         res.sendStatus(500);
     }
@@ -59,10 +81,15 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.sendStatus(201);
     }
     catch (err) {
+<<<<<<< HEAD
+=======
+        console.error(err);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         logger_1.logger.error(err);
         res.sendStatus(500);
     }
 }));
+<<<<<<< HEAD
 router.put("/update", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validation = userService.validateUpdate(req.body);
@@ -85,4 +112,6 @@ router.put("/update", authenticateToken_1.authenticateToken, (req, res) => __awa
         res.sendStatus(500);
     }
 }));
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 exports.default = router;

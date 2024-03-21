@@ -41,6 +41,10 @@ function getUserByUsername(username) {
             return users[0];
         }
         catch (err) {
+<<<<<<< HEAD
+=======
+            console.error(err);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             logger_1.logger.error(err);
             throw err;
         }
@@ -59,6 +63,10 @@ function getUserById(userId) {
             return data.Item;
         }
         catch (err) {
+<<<<<<< HEAD
+=======
+            console.error(err);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             logger_1.logger.error(err);
             throw err;
         }
@@ -75,6 +83,7 @@ function createUser(Item) {
         yield documentClient.send(command);
     });
 }
+<<<<<<< HEAD
 // UPDATE
 function updateUser(input) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -127,4 +136,10 @@ exports.default = {
     getUserById,
     updateUser,
     updateUsername
+=======
+exports.default = {
+    createUser: createUser,
+    getUserByUsername: getUserByUsername,
+    getUserById: getUserById,
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 };

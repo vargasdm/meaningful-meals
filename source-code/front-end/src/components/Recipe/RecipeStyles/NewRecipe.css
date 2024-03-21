@@ -9,7 +9,10 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+<<<<<<< HEAD
     background-color: #bfbfbf;
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
   }
 
   #instructionsTitle {

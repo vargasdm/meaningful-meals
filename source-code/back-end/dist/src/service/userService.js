@@ -19,6 +19,7 @@ function createUserService(dao) {
     function validateCredentials(credentials) {
         const errors = [];
         if (!credentials) {
+<<<<<<< HEAD
             errors.push("CREDENTIALS ARE NULL");
             return { isValid: false, errors };
         }
@@ -27,6 +28,16 @@ function createUserService(dao) {
         }
         if (!credentials.password) {
             errors.push("PASSWORD IS NULL");
+=======
+            errors.push('CREDENTIALS ARE NULL');
+            return { isValid: false, errors };
+        }
+        if (!credentials.username) {
+            errors.push('USERNAME IS NULL');
+        }
+        if (!credentials.password) {
+            errors.push('PASSWORD IS NULL');
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         }
         if (errors.length > 0) {
             return { isValid: false, errors };
@@ -45,7 +56,11 @@ function createUserService(dao) {
                     return validation;
                 }
                 validation.isValid = false;
+<<<<<<< HEAD
                 validation.errors.push("USER DOES NOT EXIST");
+=======
+                validation.errors.push('USER DOES NOT EXIST');
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                 return validation;
             }
             catch (err) {
@@ -62,6 +77,7 @@ function createUserService(dao) {
             try {
                 if (yield userExistsByUsername(credentials.username)) {
                     validation.isValid = false;
+<<<<<<< HEAD
                     validation.errors.push("USER EXISTS");
                     return validation;
                 }
@@ -70,6 +86,16 @@ function createUserService(dao) {
                 }
                 if (!validatePassword(credentials.password)) {
                     validation.errors.push("PASSWORD INVALID");
+=======
+                    validation.errors.push('USER EXISTS');
+                    return validation;
+                }
+                if (!validateUsername(credentials.username)) {
+                    validation.errors.push('USERNAME INVALID');
+                }
+                if (!validatePassword(credentials.username)) {
+                    validation.errors.push('PASSWORD INVALID');
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                 }
                 if (validation.errors.length > 0) {
                     validation.isValid = false;
@@ -82,6 +108,7 @@ function createUserService(dao) {
             }
         });
     }
+<<<<<<< HEAD
     function validateUpdate(credentials) {
         const errors = [];
         if (!credentials) {
@@ -103,6 +130,8 @@ function createUserService(dao) {
         }
         return { isValid: true, errors };
     }
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     // Fails if contains:
     // empty spaces
     // less than 6 characters
@@ -119,6 +148,7 @@ function createUserService(dao) {
         if (password.trim().length === 0 || password.length < 8) {
             return false;
         }
+<<<<<<< HEAD
         let hasUpperCase = false;
         let hasLowerCase = false;
         let hasNumber = false;
@@ -148,13 +178,21 @@ function createUserService(dao) {
         }
         // Return true only if all checks pass
         return hasUpperCase && hasLowerCase && hasNumber && hasSymbol;
+=======
+        return true;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     }
     // This should return whether the given credentials match those of the user
     // specified by the 'username' field of credentials.
     function credentialsMatch(credentials, targetUser) {
         return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
             return (credentials.username === targetUser.username &&
                 (yield bcrypt_1.default.compare(credentials.password, targetUser.password)));
+=======
+            return credentials.username === targetUser.username
+                && (yield bcrypt_1.default.compare(credentials.password, targetUser.password));
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         });
     }
     function getUserByUsername(username) {
@@ -170,10 +208,17 @@ function createUserService(dao) {
             }
             try {
                 const user = yield dao.getUserByUsername(username);
+<<<<<<< HEAD
                 return (user &&
                     user.user_id &&
                     user.username &&
                     user.password);
+=======
+                return (user
+                    && user.user_id
+                    && user.username
+                    && user.password);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             }
             catch (err) {
                 if (err instanceof errors_1.UserDoesNotExistError) {
@@ -190,10 +235,17 @@ function createUserService(dao) {
             }
             try {
                 const user = yield dao.getUserById(id);
+<<<<<<< HEAD
                 return (user &&
                     user.user_id &&
                     user.username &&
                     user.password);
+=======
+                return (user
+                    && user.user_id
+                    && user.username
+                    && user.password);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             }
             catch (err) {
                 if (err instanceof errors_1.UserDoesNotExistError) {
@@ -218,6 +270,7 @@ function createUserService(dao) {
             }
         });
     }
+<<<<<<< HEAD
     function updateUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -244,6 +297,8 @@ function createUserService(dao) {
             }
         });
     }
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     return {
         createUser,
         credentialsMatch,
@@ -251,9 +306,27 @@ function createUserService(dao) {
         userExists: userExistsByUsername,
         userExistsByID,
         validateLogin,
+<<<<<<< HEAD
         validateRegistration,
         updateUser,
         validateUpdate,
     };
 }
 exports.default = createUserService;
+=======
+        validateRegistration
+    };
+}
+exports.default = createUserService;
+/*
+
+export default {
+    createUser,
+    credentialsMatch,
+    getUserByUsername,
+    userExists,
+    validateLogin,
+    validateRegistration
+};
+*/ 
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77

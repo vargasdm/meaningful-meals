@@ -25,6 +25,7 @@ const authenticateToken = (req, res, next) => {
 };
 exports.authenticateToken = authenticateToken;
 const authenticateNoToken = (req, res, next) => {
+<<<<<<< HEAD
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
     if (token) {
@@ -33,6 +34,16 @@ const authenticateNoToken = (req, res, next) => {
     }
     else {
         logger_1.logger.error('Confirmed no token.');
+=======
+    console.log('authenticateToken.authenticateNoToken...');
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token) {
+        return res.status(401).json({ message: "Unauthorized Access" });
+    }
+    else {
+        console.log('Confirmed no token.');
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     }
     next();
 };

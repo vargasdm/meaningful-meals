@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-import CommentForm from "./CommentForm";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
 import CommentDisplay from "./CommentDisplay";
+<<<<<<< HEAD
 import "./CommentUpdateContainer";
+=======
+import "./CommentUpdateContainer"
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
 type cucProps = { contentId: string };
 function CommentUpdateContainer(prop: cucProps) {
   const [comment, setComment] = useState("");
   const [display, setDisplay] = useState(<p>loading...</p>);
+<<<<<<< HEAD
   const [errors, setErrors] = useState([] as any);
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
   const user = useSelector((state: any) => state.user);
 
@@ -23,6 +29,7 @@ function CommentUpdateContainer(prop: cucProps) {
           headers: { Authorization: `Bearer ${user.jwt}` },
         }
       );
+<<<<<<< HEAD
       setDisplay(
         <CommentDisplay
           username={user.username}
@@ -41,6 +48,10 @@ function CommentUpdateContainer(prop: cucProps) {
         setErrors([]);
       }, 15000);
     }
+=======
+      setDisplay(<CommentDisplay username={user.username} comment={favorite.data.user_comment}/>)
+    } catch (error) {}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
   }
 
   async function handleSubmit() {
@@ -79,6 +90,7 @@ function CommentUpdateContainer(prop: cucProps) {
   }, [comment]);
 
   return (
+<<<<<<< HEAD
     <div id="comments-page">
       <div id="errors">
         {errors &&
@@ -94,6 +106,12 @@ function CommentUpdateContainer(prop: cucProps) {
         <label htmlFor="commentInput">
           <h3>Your New Comment:</h3>
         </label>
+=======
+    <>
+      <div id="current-comment"><h3>Current Comment:</h3>{display}</div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="commentInput"><h3>Your New Comment:</h3></label>
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         <textarea
           id="commentInput"
           value={comment}

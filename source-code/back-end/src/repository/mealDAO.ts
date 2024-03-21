@@ -10,7 +10,10 @@ import {
 	DeleteCommand
 } from "@aws-sdk/lib-dynamodb";
 import { Meal } from "../util/meal";
+<<<<<<< HEAD
 import { log } from 'console';
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 // import { MealDoesNotExistError } from "../util/errors";
 
 const MEALS_TABLE: string = process.env.MEALS_TABLE as string;
@@ -21,8 +24,11 @@ const documentClient = DynamoDBDocumentClient.from(client);
 // This should create a meal with the given arguments.
 // It should return nothing on success, and throw an error on error.
 async function createMeal(meal: Meal): Promise<void> {
+<<<<<<< HEAD
 	console.log(meal);
 	
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	try {
 		const command = new PutCommand({
 			TableName: MEALS_TABLE,
@@ -63,7 +69,10 @@ async function getMealsOfUserInTimeRange(
 ) {
 	try {
 		const meals = await getMealsByUserID(userID);
+<<<<<<< HEAD
 		log(meals);
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 		return meals.filter((meal: any) => meal.timestamp >= minTimestamp
 			&& meal.timestamp < maxTimestamp);
 	} catch (err) {

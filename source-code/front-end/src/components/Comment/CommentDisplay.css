@@ -1,4 +1,5 @@
 #comment {
+<<<<<<< HEAD
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -18,3 +19,24 @@
 	gap: 10px;
 	width: 100%;
 }
+=======
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 60vw;
+  margin: auto;
+  text-align: left;
+  border-style: inset;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#comment-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start; 
+    gap: 10px; 
+    width: 100%;
+}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77

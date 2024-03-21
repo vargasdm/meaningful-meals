@@ -1,13 +1,20 @@
 import React from "react";
+<<<<<<< HEAD
 import { Container, Row, Col } from "react-bootstrap";
+=======
+import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
 import endpoints from "../../endpoints";
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 function NewRecipeContainer() {
   const userState = useSelector((state: any) => state.user);
 
@@ -18,7 +25,11 @@ function NewRecipeContainer() {
   async function handleCreateRecipe(newRecipe: any) {
     try {
       const response = await axios.post(
+<<<<<<< HEAD
         `${RECIPES_ENDPOINT}/create`,
+=======
+        `${URL}/create`,
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         {
           title: newRecipe.title,
           description: newRecipe.description,

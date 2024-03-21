@@ -19,12 +19,17 @@ const authenticateToken_1 = require("../util/authenticateToken");
 const mealService_1 = __importDefault(require("../service/mealService"));
 const router = express_1.default.Router();
 router.post('/', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
     console.log(req.user.user_id);
     console.log(req.body.recipeID);
     console.log(req.body.timestamp);
     try {
         const validation = yield mealService_1.default.validateAddMeal(req.user.user_id, req.body.recipeID, req.body.timestamp);
         console.log(`this is ${validation}`);
+=======
+    try {
+        const validation = yield mealService_1.default.validateAddMeal(req.user.user_id, req.body.recipeID, req.body.timestamp);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         if (!validation.isValid) {
             res.status(400).json({ errors: validation.errors });
             return;
@@ -37,9 +42,15 @@ router.post('/', authenticateToken_1.authenticateToken, (req, res) => __awaiter(
         res.sendStatus(500);
     }
 }));
+<<<<<<< HEAD
 router.delete('/:mealID', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mealService_1.default.deleteMeal(req.params.mealID);
+=======
+router.delete('/:recipeID', authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield mealService_1.default.deleteMeal(req.body.mealID);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         res.sendStatus(200);
     }
     catch (err) {

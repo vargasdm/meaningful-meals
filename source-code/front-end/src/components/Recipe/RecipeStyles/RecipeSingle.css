@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* .recipeContainer {
+=======
+.recipeContainer {
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -67,7 +71,11 @@
   padding: 10px;
   justify-content: space-between;
   align-items: center;
+<<<<<<< HEAD
   background-color: #bfbfbf;
+=======
+
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
   gap: 10px;
 }
 
@@ -91,6 +99,7 @@
 
 #saveButton:hover {
   background-color: #0056b3;
+<<<<<<< HEAD
 } */
 
 
@@ -123,3 +132,6 @@
   margin-top: 1rem;
 }
 
+=======
+}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77

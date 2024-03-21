@@ -119,10 +119,19 @@ function updateComment(input) {
     });
 }
 exports.default = {
+<<<<<<< HEAD
     getCommentByUserAndContent,
     createComment,
     deleteComment,
     getCommentsByUserId,
     getComments,
     updateComment,
+=======
+    getCommentByUserAndContent: getCommentByUserAndContent,
+    createComment: createComment,
+    deleteComment: deleteComment,
+    getCommentsByUserId: getCommentsByUserId,
+    getComments: getComments,
+    updateComment: updateComment,
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 };

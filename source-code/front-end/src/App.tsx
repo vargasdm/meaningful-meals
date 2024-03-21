@@ -7,7 +7,11 @@ function App() {
 	return (
 		<>
 			<div className="App" >
+<<<<<<< HEAD
 				<CustomNavbar />
+=======
+				<Navbar />
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 				<main>
 					<Outlet />
 				</main>

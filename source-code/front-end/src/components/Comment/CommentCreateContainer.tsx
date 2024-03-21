@@ -43,6 +43,7 @@ function CommentCreateContainer(prop: cccProps) {
   }
 
   return (
+<<<<<<< HEAD
     <>
       <div id="errors">
         {errors &&
@@ -64,6 +65,21 @@ function CommentCreateContainer(prop: cccProps) {
         <button type="submit">Submit</button>
       </form>
     </>
+=======
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="commentInput">
+        <h3>Your Comment:</h3>
+      </label>
+      <textarea
+        id="commentInput"
+        value={comment}
+        onChange={handleInputChange}
+        rows={5}
+        cols={50}
+      />
+      <button type="submit">Submit</button>
+    </form>
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
   );
 }
 

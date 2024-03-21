@@ -8,7 +8,10 @@ import recipeService from './recipeService';
 import createUserService from './userService';
 import type { Validation } from '../util/validation.type';
 import { Meal } from '../util/meal';
+<<<<<<< HEAD
 import { log } from 'winston';
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
 const userService = createUserService(userDAO);
 
@@ -21,6 +24,7 @@ async function validateAddMeal(
 
 	try {
 		if (!(await userService.userExistsByID(userID))) {
+<<<<<<< HEAD
 			console.log('USER DOES NOT EXIST');
 			
 			validation.errors.push('USER DOES NOT EXIST');
@@ -34,6 +38,14 @@ async function validateAddMeal(
 		}
 		console.log(validation.errors);
 
+=======
+			validation.errors.push('USER DOES NOT EXIST');
+		}
+
+		if (!(await recipeService.recipeExists(recipeID))) {
+			validation.errors.push('RECIPE DOES NOT EXIST');
+		}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	} catch (err) {
 		throw err;
 	}
@@ -57,10 +69,13 @@ async function createMeal(
 	recipeID: string,
 	timestamp: number
 ): Promise<void> {
+<<<<<<< HEAD
 	console.log(userID);
 	console.log(recipeID);
 	console.log(timestamp);
 	
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	try {
 		await mealDAO.createMeal(
 			new Meal(

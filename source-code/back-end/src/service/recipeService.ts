@@ -40,6 +40,7 @@ async function getRecipe(id: string) {
   return result.data;
 }
 
+<<<<<<< HEAD
 async function getRecipeById(recipeId: string) {
   console.log(recipeId);
 
@@ -77,6 +78,16 @@ async function userRecipeExists(id: string): Promise<boolean> {
   console.log(`recipeService.userRecipeExists(${id})...`);
 
   return recipe;
+=======
+async function recipeExists(id: string): Promise<boolean> {
+	console.log(`recipeService.recipeExists(${id})...`);
+	if (!id) {
+		return false;
+	}
+
+	const recipe = await getRecipe(id);
+	return recipe;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 }
 
 async function getUserRecipes(username: string) {
@@ -92,6 +103,7 @@ async function getUserRecipes(username: string) {
 async function putRecipe(receivedData: any) {
   console.log(`recipeService.postRecipe(${JSON.stringify(receivedData)})...`);
 
+<<<<<<< HEAD
   let data = await recipeDAO.updateRecipe({
     id: receivedData.id,
     title: receivedData.title,
@@ -115,6 +127,31 @@ async function createRecipe(receivedData: any) {
   });
   console.log(data);
   return data ? data : null;
+=======
+	let data = await recipeDAO.updateRecipe({
+		id: receivedData.id,
+		title: receivedData.title,
+		description: receivedData.description,
+		ingredients: receivedData.ingredients,
+		instructions: receivedData.instructions,
+		user: receivedData.user,
+	});
+	console.log(data);
+	return data ? data : null;
+}
+
+async function createRecipe(receivedData: any) {
+	let data = await recipeDAO.postRecipe({
+		id: uuid(),
+		title: receivedData.title,
+		description: receivedData.description,
+		ingredients: receivedData.ingredients,
+		instructions: receivedData.instructions,
+		user: receivedData.user,
+	});
+	console.log(data);
+	return data ? data : null;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 }
 
 async function deleteRecipe(receivedData: any) {

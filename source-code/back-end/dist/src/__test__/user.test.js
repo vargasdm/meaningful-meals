@@ -99,7 +99,11 @@ describe("Register Tests", () => {
     test("Successfully register a user.", () => __awaiter(void 0, void 0, void 0, function* () {
         // Arrange
         const username = "NewUser25";
+<<<<<<< HEAD
         const password = "TestPass01!";
+=======
+        const password = "TestPass1";
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         // ACT
         const result = yield userService.validateRegistration({
             username,

@@ -22,6 +22,15 @@ const authenticateBody_1 = require("../util/authenticateBody");
 const favoriteDAO_1 = __importDefault(require("../repository/favoriteDAO"));
 const favoriteService_1 = __importDefault(require("../service/favoriteService"));
 const favoriteService = (0, favoriteService_1.default)(favoriteDAO_1.default);
+<<<<<<< HEAD
+=======
+/**
+ * postlike
+ * deletelike
+ * getalluserlike
+ * getallrecipelike
+ */
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 router.post("/", authenticateToken_1.authenticateToken, authenticateBody_1.validateFavoriteBody, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validation = yield favoriteService.validateInputFavorite(req.body);
@@ -37,6 +46,7 @@ router.post("/", authenticateToken_1.authenticateToken, authenticateBody_1.valid
         res.sendStatus(500);
     }
 }));
+<<<<<<< HEAD
 router.delete("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.query.user;
@@ -46,11 +56,20 @@ router.delete("/", authenticateToken_1.authenticateToken, (req, res) => __awaite
             return;
         }
         const validation = yield favoriteService.validateUpdateFavorite({ user_id: user, content_id: item });
+=======
+router.delete("/", authenticateToken_1.authenticateToken, authenticateBody_1.validateFavoriteBody, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const validation = yield favoriteService.validateUpdateFavorite(req.body);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         if (!validation.isValid) {
             res.status(400).json({ errors: validation.errors });
             return;
         }
+<<<<<<< HEAD
         yield favoriteService.deleteFavorite({ user_id: user, content_id: item });
+=======
+        yield favoriteService.deleteFavorite(req.body);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         res.sendStatus(202);
     }
     catch (err) {
@@ -61,7 +80,11 @@ router.delete("/", authenticateToken_1.authenticateToken, (req, res) => __awaite
 router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.query.user;
+<<<<<<< HEAD
         const item = req.query.item;
+=======
+        const item = req.query.user;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         if (!user && !item) {
             res.status(400).json({ errors: "MISSING QUERIES" });
             return;
@@ -71,7 +94,11 @@ router.get("/", authenticateToken_1.authenticateToken, (req, res) => __awaiter(v
             errors: ["MISSING QUERIES"],
         };
         if (user && item) {
+<<<<<<< HEAD
             validation = yield favoriteService.validateGetFavorite({
+=======
+            validation = yield favoriteService.validateInputFavorite({
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                 user_id: user,
                 content_id: item,
             });

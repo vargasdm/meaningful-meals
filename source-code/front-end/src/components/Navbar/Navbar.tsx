@@ -21,6 +21,7 @@ function CustomNavbar() {
         navigate("/");
     };
 
+<<<<<<< HEAD
     return (
         <Navbar bg="light" expand="lg">
             <Navbar.Brand className="navbar-brand" as={Link} to="/">MeaningFul Meals</Navbar.Brand>
@@ -45,6 +46,51 @@ function CustomNavbar() {
             </Navbar.Collapse>
         </Navbar>
     );
+=======
+	let userPathParam = userState.username;
+	//   console.log(userPathParam);
+
+	const handleLogout = () => {
+		// Dispatch the action to update the user state when the "Logout" link is clicked
+		dispatch(userActions.logoutUser());
+		navigate("/")
+	};
+
+	return (
+		<nav>
+			<Link to="/">MeaningFul Meals</Link>
+			{userState.isLoggedIn === true ? (
+				<ul>
+					<li>
+						<Link to="/profile">Profile</Link>
+					</li>
+					<li>
+						<Link to={`/recipes/user-recipes/${userPathParam}`}>Recipes</Link>
+					</li>
+					<li>
+						<Link to="/plan">Meal Plan</Link>
+					</li>
+					<li>
+						<Link to='/search'>Search Recipes</Link>
+					</li>
+
+					<li>
+						<button onClick={handleLogout}>Logout</button>
+					</li>
+				</ul>
+			) : (
+				<ul>
+					<li>
+						<Link to="/login">Login</Link>
+					</li>
+					<li>
+						<Link to="/register">Register</Link>
+					</li>
+				</ul>
+			)}
+		</nav>
+	);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 }
 
 export default CustomNavbar;

@@ -12,6 +12,8 @@ const RECIPES_ENDPOINT =
   endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
+// console.log(MEALS_ENDPOINT);
+
 export async function loader({ params }: any) {
   try {
     const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
@@ -58,10 +60,13 @@ export default function Recipe() {
     <div className="recipe-div">
       <div className="recipe-main-header">
         <h1>{recipeData.title}</h1>
+<<<<<<< HEAD
         <div id="social-buttons">
           <FavoriteContainer contentId={recipeData.id.toString()} />
           <CommentButton contentId={recipeData.id.toString()} />
         </div>
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         <input
           type="button"
           value="Add to Meal Plan"
@@ -69,6 +74,11 @@ export default function Recipe() {
         />
       </div>
       <img src={recipeData.image} alt={recipeData.title} />
+<<<<<<< HEAD
+=======
+      <FavoriteContainer contentId={recipeData.id} />
+      <CommentButton contentId={recipeData.id} />
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
       <h2>Ingredients</h2>
       <ul>{ingredients}</ul>
       <h2>Instructions</h2>

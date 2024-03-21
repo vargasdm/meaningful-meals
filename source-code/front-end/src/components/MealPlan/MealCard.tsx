@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import axios from "axios";
 import endpoints from "../../endpoints";
 import { useSelector } from "react-redux";
@@ -5,12 +6,15 @@ import { useState } from "react";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 type MealCardProps = {
 	id: string
 	name: string,
 	imageSource: string,
 	numCalories: number,
 	key: string,
+<<<<<<< HEAD
 	getMeals: Function,
 }
 
@@ -41,10 +45,19 @@ export default function MealCard(props: MealCardProps) {
 		}
 	}
 
+=======
+}
+
+export default function MealCard(props: MealCardProps) {
+	async function handleDeleteMealCard(){
+
+	}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	return (
 		<div className='meal-card-div'>
 			<div className='meal-card-header-div'>
 				<h1>{props.name}</h1>
+<<<<<<< HEAD
 				<i className='bi bi-trash' onClick={handleDeleteMealCard} />
 			</div>
 			<img src={props.imageSource} />
@@ -64,6 +77,12 @@ export default function MealCard(props: MealCardProps) {
 				name='year'
 				placeholder='YYYY'
 			/>
+=======
+				<i className='bi bi-trash' />
+			</div>
+			<img src={props.imageSource} />
+			<h2>{props.numCalories} kcal</h2>
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 		</div>
 	);
 }

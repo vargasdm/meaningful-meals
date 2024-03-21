@@ -9,17 +9,23 @@ import type { Validation } from '../util/validation.type';
 const router = express.Router();
 
 router.post('/', authenticateToken, async (req: any, res: any) => {
+<<<<<<< HEAD
 	console.log(req.user.user_id);
 	console.log(req.body.recipeID);
 	console.log(req.body.timestamp);
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	try {
 		const validation: Validation = await mealService.validateAddMeal(
 			req.user.user_id,
 			req.body.recipeID,
 			req.body.timestamp
 		);
+<<<<<<< HEAD
 		console.log(`this is ${validation}`);
 		
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
 		if (!validation.isValid) {
 			res.status(400).json({ errors: validation.errors });
@@ -39,9 +45,15 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
+<<<<<<< HEAD
 router.delete('/:mealID', authenticateToken, async (req: any, res: any) => {
 	try {
 		await mealService.deleteMeal(req.params.mealID);
+=======
+router.delete('/:recipeID', authenticateToken, async (req: any, res: any) => {
+	try {
+		await mealService.deleteMeal(req.body.mealID);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 		res.sendStatus(200);
 	} catch (err) {
 		console.error(err);

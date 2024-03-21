@@ -26,7 +26,6 @@ const authenticateNoToken = (req: any, res: any, next: any) => {
 	const token = authHeader && authHeader.split(" ")[1];
 
 	if (token) {
-		logger.error({ message: "Unauthorized Access" });
 		return res.status(401).json({ message: "Unauthorized Access" });
 	} else {
 		logger.error('Confirmed no token.');

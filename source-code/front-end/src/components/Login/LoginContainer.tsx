@@ -26,6 +26,7 @@ function LoginContainer() {
         password: user.password,
       });
 
+<<<<<<< HEAD
       if (res) {
         dispatch(
           userActions.loginUser({
@@ -52,6 +53,25 @@ function LoginContainer() {
       }, 15000);
     }
   }
+=======
+			if (res) {
+				dispatch(
+					userActions.loginUser({
+						// This should set the user slice state in the Redux store
+						// to those received in the res. The JWT is essential for
+						// making authorized requests!
+						userID: res.data.user_id,
+						username: res.data.username,
+						jwt: res.data.token,
+					})
+				);
+				return navigate("/");
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
   return (
     <>
