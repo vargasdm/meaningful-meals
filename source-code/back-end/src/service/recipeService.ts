@@ -47,7 +47,10 @@ async function getRecipe(id: string) {
 					body: instruction.step
 				})
 			),
-			image: result.data.image
+			image: result.data.image,
+			numCalories: result.data.nutrition.nutrients.find(
+				(nutrient: any) => nutrient.name === 'Calories'
+			).amount
 		}
 
 		// console.log(formattedRecipe);

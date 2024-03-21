@@ -24,13 +24,13 @@ type MealPlanDayProps = {
 	key: string
 }
 
-function getNumCalories(recipe: any) {
-	const calories = recipe.nutrition.nutrients.find(
-		(nutrient: any) => nutrient.name === 'Calories'
-	);
+// function getNumCalories(recipe: any) {
+// 	const calories = recipe.nutrition.nutrients.find(
+// 		(nutrient: any) => nutrient.name === 'Calories'
+// 	);
 
-	return calories.amount;
-}
+// 	return calories.amount;
+// }
 
 
 export default function MealPlanDay(props: MealPlanDayProps) {
@@ -52,7 +52,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 					id: meal.meal_id,
 					name: recipe.title,
 					imageSource: recipe.image,
-					numCalories: recipe.nutrition ? getNumCalories(recipe) : 0,
+					numCalories: recipe.numCalories ? recipe.numCalories : 0,
 				}
 			})
 		);

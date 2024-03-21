@@ -15,8 +15,6 @@ const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
 export async function loader({ params }: any) {
 	try {
-		// const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
-		// return recipeData.data;
 		const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
 		return recipeData.data;
 	} catch (err) {
@@ -49,16 +47,6 @@ export default function Recipe() {
 			console.error(err);
 		}
 	}
-
-	// console.log(recipe);
-	// const instructions: any = recipe.analyzedInstructions[0].steps.map(
-	// 	(step: any) => <li key={step.number}>{step.step}</li>
-	// );
-	// const ingredients: any = recipe.nutrition.ingredients.map(
-	// 	(ingredient: any) => <li key={ingredient.id}>
-	// 		{`${ingredient.amount} ${ingredient.unit} ${ingredient.name}`}
-	// 	</li>
-	// );
 
 	console.log(recipe);
 	const instructions: any = recipe.instructions.map(
