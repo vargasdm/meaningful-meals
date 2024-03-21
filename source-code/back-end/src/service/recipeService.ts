@@ -1,42 +1,27 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { v4 as uuid } from "uuid";
-// const recipeDAO = require("../repository/recipeDAO.ts");
 import recipeDAO from "../repository/recipeDAO";
 import userDAO from "../repository/userDAO";
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 
-// TODO: collate API search results with those from our own database
 // TODO: use Levenshtein distance for a simple search?
 async function searchRecipes(query: string) {
-	// let results = [];
-
 	try {
 		const apiResults: any = (await axios.get(
 			`https://api.spoonacular.com/recipes/` +
 			`complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
-			`&instructionsRequired=true`
+			`&instructionsRequired=true&number=100`
 		)).data.results;
 
-		console.log(apiResults);
-		// results = [...apiResults];
-
 		const dbResults: any = await recipeDAO.getAllRecipes();
-		console.log(dbResults);
-		const results = [...apiResults, ...dbResults]
-		return results;
+		return [...apiResults, ...dbResults]
 	} catch (err) {
 		console.error(err);
 		throw err;
 	}
-
-	// // console.log(result);
-	// if (!result.data.results) {
-	// 	return false;
-	// }
-	// return result.data;
 }
 
 // TODO: union Spoonacular and local search spaces
@@ -49,16 +34,24 @@ async function getRecipe(id: string) {
 			`&includeNutrition=true`
 		);
 
-		// const formattedRecipe = {
-		// 	title: result.data.title,
-		// 	description: result.data.summary,
-		// 	ingredients: result.data.extendedIngredients.map(ingredient => {
+		const formattedRecipe = {
+			title: result.data.title,
+			description: result.data.summary,
+			ingredients: result.data.extendedIngredients.map((ingredient: any) => ({
+				amount: ingredient.amount,
+				unit: ingredient.unit,
+				name: ingredient.name
+			})),
+			instructions: result.data.analyzedInstructions[0].steps.map(
+				(instruction: any) => instruction.step
+			)
+		}
 
-		// 	})
-		// }
+		console.log(formattedRecipe);
 
-		return result.data;
+		return formattedRecipe;
 	} catch (err) {
+		console.error(err);
 		try {
 			const result = await recipeDAO.getRecipeById(id);
 			return result;

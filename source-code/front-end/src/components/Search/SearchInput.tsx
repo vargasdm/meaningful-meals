@@ -31,7 +31,7 @@ function SearchInput() {
 				`${RECIPES_ENDPOINT}?query=${searchInput}`
 			);
 
-			console.log(response);
+			// console.log(response);
 			setSearchResponse(response.data);
 
 			return response;

@@ -15,8 +15,10 @@ const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
 export async function loader({ params }: any) {
 	try {
-		const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
-		return recipeData.data;
+		// const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
+		// return recipeData.data;
+		const recipe = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
+		return recipe;
 	} catch (err) {
 		console.error(err);
 		return null;
@@ -25,7 +27,7 @@ export async function loader({ params }: any) {
 
 export default function Recipe() {
 	const id = useParams().id;
-	const recipeData: any = useLoaderData();
+	const recipe: any = useLoaderData();
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
@@ -48,11 +50,21 @@ export default function Recipe() {
 		}
 	}
 
-	console.log(recipeData);
-	const instructions: any = recipeData.analyzedInstructions[0].steps.map(
+	// console.log(recipe);
+	// const instructions: any = recipe.analyzedInstructions[0].steps.map(
+	// 	(step: any) => <li key={step.number}>{step.step}</li>
+	// );
+	// const ingredients: any = recipe.nutrition.ingredients.map(
+	// 	(ingredient: any) => <li key={ingredient.id}>
+	// 		{`${ingredient.amount} ${ingredient.unit} ${ingredient.name}`}
+	// 	</li>
+	// );
+
+	console.log(recipe);
+	const instructions: any = recipe.instructions.map(
 		(step: any) => <li key={step.number}>{step.step}</li>
 	);
-	const ingredients: any = recipeData.nutrition.ingredients.map(
+	const ingredients: any = recipe.ingredients.map(
 		(ingredient: any) => <li key={ingredient.id}>
 			{`${ingredient.amount} ${ingredient.unit} ${ingredient.name}`}
 		</li>
@@ -61,16 +73,16 @@ export default function Recipe() {
 	return (
 		<div className="recipe-div">
 			<div className="recipe-main-header">
-				<h1>{recipeData.title}</h1>
+				<h1>{recipe.title}</h1>
 				<input
 					type="button"
 					value="Add to Meal Plan"
 					onClick={handleAddToMealPlan}
 				/>
 			</div>
-			<img src={recipeData.image} alt={recipeData.title} />
-			<FavoriteContainer contentId={recipeData.id} />
-			<CommentButton contentId={recipeData.id} />
+			<img src={recipe.image} alt={recipe.title} />
+			<FavoriteContainer contentId={recipe.id} />
+			<CommentButton contentId={recipe.id} />
 			<h2>Ingredients</h2>
 			<ul>{ingredients}</ul>
 			<h2>Instructions</h2>
