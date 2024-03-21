@@ -40,7 +40,7 @@ router.post("/login", async (req: any, res: any) => {
       return;
     }
 
-    res.status(401).json({ error: "CREDENTIALS DO NOT MATCH" });
+    res.status(401).json({ errors: "CREDENTIALS DO NOT MATCH" });
   } catch (err) {
     logger.error(err);
     res.sendStatus(500);

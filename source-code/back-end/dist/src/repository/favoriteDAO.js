@@ -18,11 +18,17 @@ const documentClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
 const TableName = process.env.FAVORITES_TABLE;
 function createFavorite(Item) {
     return __awaiter(this, void 0, void 0, function* () {
-        const command = new lib_dynamodb_1.PutCommand({
-            TableName,
-            Item,
-        });
-        yield documentClient.send(command);
+        try {
+            const command = new lib_dynamodb_1.PutCommand({
+                TableName,
+                Item,
+            });
+            yield documentClient.send(command);
+        }
+        catch (error) {
+            logger_1.logger.error(error);
+            throw error;
+        }
     });
 }
 function getFavoritesByUserId(userId) {
@@ -73,7 +79,6 @@ function deleteFavorite(favoriteId) {
         });
         try {
             const data = yield documentClient.send(command);
-            return;
         }
         catch (err) {
             logger_1.logger.error(err);

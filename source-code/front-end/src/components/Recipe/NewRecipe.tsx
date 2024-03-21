@@ -3,6 +3,8 @@ import IngredientForm from "./IngredientForm";
 import "./RecipeStyles/NewRecipe.css";
 import { v4 } from 'uuid';
 import InstructionForm from "./InstructionForm";
+import { Form, Button } from "react-bootstrap";
+// import "./RecipeStyles/NewRecipe.css";
 
 interface NewRecipeProps {
 	handleCreateRecipe: (newRecipe: any) => Promise<any>;

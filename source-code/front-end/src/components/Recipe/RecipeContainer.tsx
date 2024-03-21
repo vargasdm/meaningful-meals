@@ -1,7 +1,5 @@
 import React from "react";
-import "./RecipeStyles/RecipeContainer.css";
-import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
-
+import { Container, Row, Col } from "react-bootstrap";
 import RecipeList from "./RecipeList";
 import axios from "axios";
 import { useSelector } from "react-redux";

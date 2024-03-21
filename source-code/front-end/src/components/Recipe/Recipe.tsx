@@ -35,12 +35,12 @@ export default function Recipe() {
 				MEALS_ENDPOINT,
 				{
 					recipeID: id,
-					timestamp: Date.now()
+					timestamp: Date.now(),
 				},
 				{
 					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
+						Authorization: `Bearer ${jwt}`,
+					},
 				}
 			);
 		} catch (err) {
@@ -62,6 +62,10 @@ export default function Recipe() {
 		<div className="recipe-div">
 			<div className="recipe-main-header">
 				<h1>{recipe.title}</h1>
+				<div id="social-buttons">
+					<FavoriteContainer contentId={recipe.id} />
+					<CommentButton contentId={recipe.id} />
+				</div>
 				<input
 					type="button"
 					value="Add to Meal Plan"
@@ -69,8 +73,6 @@ export default function Recipe() {
 				/>
 			</div>
 			{recipe.image && <img src={recipe.image} alt={recipe.title} />}
-			<FavoriteContainer contentId={recipe.id} />
-			<CommentButton contentId={recipe.id} />
 			<h2>Ingredients</h2>
 			<ul>{ingredients}</ul>
 			<h2>Instructions</h2>

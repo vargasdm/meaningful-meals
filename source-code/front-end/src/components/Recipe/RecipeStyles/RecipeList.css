@@ -1,4 +1,4 @@
-.userRecipeListContainer {
+/* .userRecipeListContainer {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -67,5 +67,17 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+  } */
+  
+
+  .recipeCardTitle {
+    cursor: pointer;
   }
   
+  .recipeCardTitle:hover {
+    text-decoration: underline;
+  }
+
+  #createButton {
+    align-self: flex-end;
+  }

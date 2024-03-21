@@ -6,6 +6,7 @@ import endpoints from "../../endpoints";
 type cccProps = { contentId: string };
 function CommentCreateContainer(prop: cccProps) {
   const [comment, setComment] = useState("");
+  const [errors, setErrors] = useState([] as any);
 
   const user = useSelector((state: any) => state.user);
 
@@ -27,25 +28,42 @@ function CommentCreateContainer(prop: cccProps) {
           headers: { Authorization: `Bearer ${user.jwt}` },
         }
       );
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response.data.errors !== typeof []) {
+        const newError = [error.response.data.errors];
+        setErrors(newError);
+      } else {
+        setErrors(error);
+      }
+
+      setTimeout(() => {
+        setErrors([]);
+      }, 15000);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="commentInput">
-        <h3>Your Comment:</h3>
-      </label>
-      <textarea
-        id="commentInput"
-        value={comment}
-        onChange={handleInputChange}
-        rows={5}
-        cols={50}
-      />
-      <button type="submit">Submit</button>
-    </form>
+    <>
+      <div id="errors">
+        {errors &&
+          errors.map((item: any, index: any) => {
+            return <p>{`${item}\n `}</p>;
+          })}
+      </div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="commentInput">
+          <h3>Your Comment:</h3>
+        </label>
+        <textarea
+          id="commentInput"
+          value={comment}
+          onChange={handleInputChange}
+          rows={5}
+          cols={50}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    </>
   );
 }
 

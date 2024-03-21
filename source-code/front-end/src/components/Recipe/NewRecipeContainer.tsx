@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
+import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NewRecipe from "./NewRecipe";
