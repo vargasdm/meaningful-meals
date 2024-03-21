@@ -134,8 +134,7 @@ function RecipeList(prop: any) {
                   >
                     Add to Meal Plan
                   </button>
-                  <FavoriteContainer contentId={recipe.id} />
-                  <CommentButton contentId={recipe.id} />
+
                   <button
                     className="recipeCardRemoveButton"
                     onClick={() => handleDeleteClick(recipe.id)}

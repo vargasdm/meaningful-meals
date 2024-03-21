@@ -16,7 +16,6 @@ const favoriteService = FavoriteService(favoriteDAO);
 router.post(
   "/",
   authenticateToken,
-  validateFavoriteBody,
   async (req: any, res: any) => {
     try {
       const validation: Validation =

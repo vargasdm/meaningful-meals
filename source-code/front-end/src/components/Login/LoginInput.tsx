@@ -5,7 +5,6 @@ import { Navigate } from 'react-router-dom';
 // props is referencing any state variabels and functions in Register Container
 function LoginInput(props: any) {
 	const user = useSelector((state: any) => state.user);
-	// console.log(user);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 

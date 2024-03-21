@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import "./RecipeStyles/RecipeSingle.css";
+import FavoriteContainer from "../Favorite/FavoriteContainer";
+import CommentButton from "../Comment/CommentButton";
 
 interface RecipeSingleProps {
   selectedRecipe: any;
@@ -110,6 +112,12 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
       ) : (
         <div className="recipeContainer">
           <h2 id="recipeTitle">{recipe.title}</h2>
+
+          <div id="social-buttons">
+            <FavoriteContainer contentId={recipe.id.toString()} />
+            <CommentButton contentId={recipe.id.toString()} />
+          </div>
+          
           <p id="recipeDescription">{recipe.description}</p>
           <ul id="recipeIngredientsList">
             {recipe.ingredients.map((ingredient: string, index: number) => (
