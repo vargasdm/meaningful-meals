@@ -66,8 +66,6 @@ export default function Recipe() {
         />
       </div>
       <img src={recipeData.image} alt={recipeData.title} />
-      <FavoriteContainer contentId={recipeData.id} />
-      <CommentButton contentId={recipeData.id} />
       <h2>Ingredients</h2>
       <ul>{ingredients}</ul>
       <h2>Instructions</h2>

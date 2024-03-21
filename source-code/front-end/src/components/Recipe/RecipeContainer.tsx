@@ -93,8 +93,6 @@ function RecipeContainer() {
 						handleRemoveRecipe={handleRemoveRecipe}
 						handleAddToMealPlan={handleAddToMealPlan}
 					/>
-					<FavoriteContainer contentId="test" />
-					<CommentButton contentId="test" />
 				</Col>
 			</Row>
 		</Container>

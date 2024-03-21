@@ -5,6 +5,8 @@ import RecipeSingle from "./RecipeSingle";
 import axios from "axios";
 import "./RecipeStyles/RecipeList.css";
 import endpoints from "../../endpoints";
+import FavoriteContainer from "../Favorite/FavoriteContainer";
+import CommentButton from "../Comment/CommentButton";
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
 
 function RecipeList(prop: any) {
@@ -132,6 +134,8 @@ function RecipeList(prop: any) {
                   >
                     Add to Meal Plan
                   </button>
+                  <FavoriteContainer contentId={recipe.id} />
+                  <CommentButton contentId={recipe.id} />
                   <button
                     className="recipeCardRemoveButton"
                     onClick={() => handleDeleteClick(recipe.id)}
