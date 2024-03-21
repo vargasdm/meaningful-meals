@@ -11,16 +11,32 @@ const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 // TODO: collate API search results with those from our own database
 // TODO: use Levenshtein distance for a simple search?
 async function searchRecipes(query: string) {
-	const result = await axios.get(
-		`https://api.spoonacular.com/recipes/` +
-		`complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
-		`&instructionsRequired=true`
-	);
-	// console.log(result);
-	if (!result.data.results) {
-		return false;
+	// let results = [];
+
+	try {
+		const apiResults: any = (await axios.get(
+			`https://api.spoonacular.com/recipes/` +
+			`complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
+			`&instructionsRequired=true`
+		)).data.results;
+
+		console.log(apiResults);
+		// results = [...apiResults];
+
+		const dbResults: any = await recipeDAO.getAllRecipes();
+		console.log(dbResults);
+		const results = [...apiResults, ...dbResults]
+		return results;
+	} catch (err) {
+		console.error(err);
+		throw err;
 	}
-	return result.data;
+
+	// // console.log(result);
+	// if (!result.data.results) {
+	// 	return false;
+	// }
+	// return result.data;
 }
 
 // TODO: union Spoonacular and local search spaces
@@ -33,11 +49,19 @@ async function getRecipe(id: string) {
 			`&includeNutrition=true`
 		);
 
+		// const formattedRecipe = {
+		// 	title: result.data.title,
+		// 	description: result.data.summary,
+		// 	ingredients: result.data.extendedIngredients.map(ingredient => {
+
+		// 	})
+		// }
+
 		return result.data;
 	} catch (err) {
 		try {
 			const result = await recipeDAO.getRecipeById(id);
-			return result.data;
+			return result;
 		} catch (err) {
 			throw err;
 		}

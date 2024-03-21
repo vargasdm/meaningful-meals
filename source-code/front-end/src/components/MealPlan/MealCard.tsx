@@ -68,7 +68,7 @@ export default function MealCard(props: MealCardProps) {
 				<i className='bi bi-trash' onClick={handleDeleteMealCard} />
 			</div>
 			<img src={props.imageSource} />
-			<h2>{Math.trunc(props.numCalories)} kcal</h2>
+			{props.numCalories > 0 && <h2>{Math.trunc(props.numCalories)} kcal</h2>}
 			<DatePicker
 				selected={date}
 				onChange={handleDateChange} />
