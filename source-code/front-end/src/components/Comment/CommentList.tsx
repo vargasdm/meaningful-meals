@@ -30,9 +30,10 @@ function CommentList(prop: clProps) {
     <>
       <h3 id="comment-list-header">Comments: </h3>
       <div id="comment-list">
-        {comments.map((item: any) => {
+        {comments.map((item: any, index: number) => {
           return (
             <CommentDisplay
+              key={index}
               username={item.username}
               comment={item.user_comment}
             />
