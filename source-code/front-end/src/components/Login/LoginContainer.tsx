@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import FavoriteButton from "../Favorite/FavoriteButton";
 import CommentButton from "../Comment/CommentButton";
-const PORT = process.env.REACT_APP_PORT;
-const URL = `http://localhost:${PORT}/user`;
+import endpoints from "../../endpoints";
+const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
+console.log(USERS_ENDPOINT);
 
 function LoginContainer() {
 	const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function LoginContainer() {
 
 	async function handleLogin(user: any) {
 		try {
-			let res = await axios.post(`${URL}/login`, {
+			let res = await axios.post(`${USERS_ENDPOINT}/login`, {
 				username: user.username,
 				password: user.password,
 			});

@@ -1,9 +1,9 @@
 import React from "react";
+import endpoints from "../../endpoints";
 import RegisterInput from "./RegisterInput";
 import axios from "axios";
-const PORT: string = process.env.REACT_APP_PORT as string;
-// console.log(PORT);
-const URL: string = `http://localhost:${PORT}/user`;
+const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
+console.log(USERS_ENDPOINT);
 
 function RegisterContainer() {
   async function addUser(user: any) {
@@ -20,11 +20,14 @@ function RegisterContainer() {
 
   async function postUser(user: any) {
     try {
-      let response = await axios.post(`${URL}/register`, {
+      console.log(`${USERS_ENDPOINT}/register`);
+
+      let response = await axios.post(`${USERS_ENDPOINT}/register`, {
         username: user.username,
         password: user.password,
       });
 
+      console.log(response);
       return response;
     } catch (error) {
       console.error(error);
