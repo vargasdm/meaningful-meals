@@ -1,4 +1,5 @@
 import MealPlanDay from "./MealPlanDay";
+import { useState, useEffect } from 'react';
 
 const NUM_DAYS_PER_WEEK: number = 7;
 
@@ -22,7 +23,7 @@ export default function MealPlanWeek(props: MealPlanWeekProp) {
 				date={date}
 				key={date.toString()}
 			/>
-		)
+		);
 	}
 
 	function changeFirstDateOfWeek(change: number) {

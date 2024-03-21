@@ -17,18 +17,27 @@ type MealCardProps = {
 	date: Date
 }
 
-type DateFieldType = null | number;
-
 export default function MealCard(props: MealCardProps) {
 	const [isEditingDate, setIsEditingDate] = useState(false);
-	const [month, setMonth] = useState<DateFieldType>(null);
-	const [day, setDay] = useState<DateFieldType>(null);
-	const [year, setYear] = useState<DateFieldType>(null);
+	const [date, setDate] = useState(props.date);
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
 
-	function handleDateSelect() { }
-	function handleDateChange() { }
+	async function handleDateChange(newDate: Date) {
+		try {
+			await axios.post(
+				`${MEALS_ENDPOINT}/${props.id}`,
+				{
+					mealID: props.id,
+					timestamp: newDate.getTime()
+				}
+			);
+
+			props.getMeals();
+		} catch (err) {
+			console.error(err);
+		}
+	}
 
 	async function handleDeleteMealCard() {
 		try {
@@ -55,24 +64,8 @@ export default function MealCard(props: MealCardProps) {
 			</div>
 			<img src={props.imageSource} />
 			<h2>{Math.trunc(props.numCalories)} kcal</h2>
-			{/* <input
-				type='text'
-				name='month'
-				placeholder='MM'
-			/>
-			<input
-				type='text'
-				name='day'
-				placeholder='DD'
-			/>
-			<input
-				type='text'
-				name='year'
-				placeholder='YYYY'
-			/> */}
 			<DatePicker
-				selected={props.date}
-				onSelect={handleDateSelect}
+				selected={date}
 				onChange={handleDateChange} />
 		</div>
 	);

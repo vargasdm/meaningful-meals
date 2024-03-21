@@ -1,10 +1,3 @@
-// export type Meal = {
-// 	mealID: string,
-// 	userID: string,
-// 	recipeID: string,
-// 	timestamp: number
-// }
-
 export class Meal {
 	mealID: string;
 	userID: string;

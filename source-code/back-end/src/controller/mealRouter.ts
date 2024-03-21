@@ -18,8 +18,7 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 			req.body.recipeID,
 			req.body.timestamp
 		);
-		console.log(`this is ${validation}`);
-		
+		// console.log(`this is ${validation}`);
 
 		if (!validation.isValid) {
 			res.status(400).json({ errors: validation.errors });
@@ -39,6 +38,33 @@ router.post('/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
+// Update the date of a meal
+router.post('/:mealID', authenticateToken, async (req: any, res: any) => {
+	if (!req.body.timestamp
+		|| !mealService.isValidTimestamp(req.body.timestamp)) {
+		res.status(400).json({ error: 'TIMESTAMP IS INVALID' });
+		return;
+	}
+
+	if (!req.body.mealID) {
+		res.status(400).json({ error: 'MEAL ID IS INVALID' });
+	}
+
+	if (!(await mealService.mealBelongsToUser(req.body.mealID, req.user.user_id))) {
+		res.status(400).json({ error: 'MEAL DOES NOT BELONG TO USER' })
+	}
+
+	try {
+		await mealService.updateMealTimestampByID(
+			req.body.mealID,
+			req.body.timestamp
+		)
+	} catch (err) {
+		console.error(err);
+		res.sendStatus(500);
+	}
+});
+
 router.delete('/:mealID', authenticateToken, async (req: any, res: any) => {
 	try {
 		await mealService.deleteMeal(req.params.mealID);
@@ -47,7 +73,7 @@ router.delete('/:mealID', authenticateToken, async (req: any, res: any) => {
 		console.error(err);
 		res.sendStatus(500);
 	}
-})
+});
 
 // This should return the meals of the user indicated by the JWT sent with the request.
 // If there is no JWT, then a 403 will be returned instead.
