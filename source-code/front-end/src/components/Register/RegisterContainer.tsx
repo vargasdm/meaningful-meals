@@ -1,3 +1,4 @@
+
 import React from "react";
 import endpoints from "../../endpoints";
 import RegisterInput from "./RegisterInput";
@@ -6,8 +7,8 @@ const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
 console.log(USERS_ENDPOINT);
 
 function RegisterContainer() {
+  const [erros, setErrors] = useState([] as any);
   async function addUser(user: any) {
-    console.log(user);
     try {
       // sends post request to backend
       if (await postUser(user)) {
@@ -29,12 +30,27 @@ function RegisterContainer() {
 
       console.log(response);
       return response;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response.data.errors !== typeof []) {
+        const newError = [error.response.data.errors];
+        setErrors(newError);
+      } else {
+        setErrors(error);
+      }
+
+      setTimeout(() => {
+        setErrors([]);
+      }, 15000);
     }
   }
   return (
     <>
+      <div id="errors">
+        {erros &&
+          erros.map((item: any, index: any) => {
+            return <p>{`${item}\n `}</p>;
+          })}
+      </div>
       <RegisterInput addUser={addUser} />
     </>
   );

@@ -5,9 +5,9 @@ import { Form, Button, Col } from "react-bootstrap";
 import "./LoginInput.css";
 
 function LoginInput(props: any) {
-  const user = useSelector((state: any) => state.user);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+	const user = useSelector((state: any) => state.user);
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 
   function handleLoginSubmit(event: any) {
     event.preventDefault();

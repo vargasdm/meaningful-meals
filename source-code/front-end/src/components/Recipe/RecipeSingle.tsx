@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
 import { Form, Button, ListGroup } from "react-bootstrap";
 import "./RecipeStyles/RecipeSingle.css";
+import FavoriteContainer from "../Favorite/FavoriteContainer";
+import CommentButton from "../Comment/CommentButton";
 
 interface RecipeSingleProps {
   selectedRecipe: any;
@@ -105,6 +107,12 @@ const RecipeSingle: React.FC<RecipeSingleProps> = ({
       ) : (
         <div className="recipeContainer">
           <h2 id="recipeTitle">{recipe.title}</h2>
+
+          <div id="social-buttons">
+            <FavoriteContainer contentId={recipe.id.toString()} />
+            <CommentButton contentId={recipe.id.toString()} />
+          </div>
+          
           <p id="recipeDescription">{recipe.description}</p>
           <h3>Ingredients</h3>
           <ul id="recipeIngredientsList">

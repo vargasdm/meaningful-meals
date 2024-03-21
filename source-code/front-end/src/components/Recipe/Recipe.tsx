@@ -12,7 +12,6 @@ const RECIPES_ENDPOINT =
   endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-
 export async function loader({ params }: any) {
   try {
     const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
@@ -29,24 +28,24 @@ export default function Recipe() {
   const user = useSelector((state: any) => state.user);
   const jwt = user.jwt;
 
-	async function handleAddToMealPlan() {
-		try {
-			await axios.post(
-				MEALS_ENDPOINT,
-				{
-					recipeID: id,
-					timestamp: Date.now()
-				},
-				{
-					headers: {
-						'Authorization': `Bearer ${jwt}`
-					}
-				}
-			);
-		} catch (err) {
-			console.error(err);
-		}
-	}
+  async function handleAddToMealPlan() {
+    try {
+      await axios.post(
+        MEALS_ENDPOINT,
+        {
+          recipeID: id,
+          timestamp: Date.now(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const instructions: any = recipeData.analyzedInstructions[0].steps.map(
     (step: any) => <li key={step.number}>{step.step}</li>
@@ -59,6 +58,10 @@ export default function Recipe() {
     <div className="recipe-div">
       <div className="recipe-main-header">
         <h1>{recipeData.title}</h1>
+        <div id="social-buttons">
+          <FavoriteContainer contentId={recipeData.id.toString()} />
+          <CommentButton contentId={recipeData.id.toString()} />
+        </div>
         <input
           type="button"
           value="Add to Meal Plan"
@@ -66,8 +69,6 @@ export default function Recipe() {
         />
       </div>
       <img src={recipeData.image} alt={recipeData.title} />
-      <FavoriteContainer contentId={recipeData.id} />
-      <CommentButton contentId={recipeData.id} />
       <h2>Ingredients</h2>
       <ul>{ingredients}</ul>
       <h2>Instructions</h2>
