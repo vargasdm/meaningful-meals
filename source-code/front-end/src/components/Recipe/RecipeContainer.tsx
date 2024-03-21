@@ -49,14 +49,8 @@ function RecipeContainer() {
 	}
 
 	async function handleAddToMealPlan(recipeId: string) {
+		console.log(recipeId);
 		try {
-			console.log(recipeId,
-				userId,
-				Date.now(),);
-			console.log(jwt);
-
-
-
 			const response = await axios.post(
 				MEALS_ENDPOINT,
 				{

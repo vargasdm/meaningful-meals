@@ -1,11 +1,12 @@
-function getNumCalories(recipe: any) {
-	const calories = recipe.nutrition.nutrients.find(
-		(nutrient: any) => nutrient.name === 'Calories'
-	);
+// function getNumCalories(recipe: any) {
+// 	const calories = recipe.nutrition.nutrients.find(
+// 		(nutrient: any) => nutrient.name === 'Calories'
+// 	);
 
-	return calories.amount;
-}
+// 	return calories.amount;
+// }
 
-export default {
-	getNumCalories
-};
+// export default {
+// 	getNumCalories
+// };
+export { };

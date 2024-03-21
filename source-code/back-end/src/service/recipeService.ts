@@ -3,6 +3,7 @@ dotenv.config();
 import { v4 as uuid } from "uuid";
 // const recipeDAO = require("../repository/recipeDAO.ts");
 import recipeDAO from "../repository/recipeDAO";
+import userDAO from "../repository/userDAO";
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
@@ -25,18 +26,28 @@ async function searchRecipes(query: string) {
 // TODO: union Spoonacular and local search spaces
 // i.e., if we don't find the ID with Spoonacular, then search local
 async function getRecipe(id: string) {
-	console.log(id);
-	const result = await axios.get(
-		`https://api.spoonacular.com/recipes/` +
-		`${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
-		`&includeNutrition=true`
-	);
+	try {
+		const result = await axios.get(
+			`https://api.spoonacular.com/recipes/` +
+			`${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
+			`&includeNutrition=true`
+		);
 
-	if (!result.data.id) {
-		return false;
+		return result.data;
+	} catch (err) {
+		try {
+			const result = await recipeDAO.getRecipeById(id);
+			return result.data;
+		} catch (err) {
+			throw err;
+		}
 	}
-	//   console.log(result);
-	return result.data;
+
+	// if (!result.data.id) {
+	// 	return false;
+	// }
+	// //   console.log(result);
+	// return result.data;
 }
 
 async function getRecipeById(recipeId: string) {
@@ -53,14 +64,19 @@ async function searchedRecipeExists(id: string): Promise<boolean> {
 	// console.log(`recipeService.searchedRecipeExists(${id})...`);
 	if (!id) {
 		console.log("recipe doesnt exist");
-
 		return false;
 	}
-	//   console.log(id);
-	const recipe = await getRecipe(id);
-	console.log(`recipeService.searchedRecipeExists(${id})...`);
 
-	return recipe;
+	try {
+		const recipe = await getRecipe(id);
+		console.log(`recipeService.searchedRecipeExists(${id})...`);
+		return recipe ? true : false;
+	} catch (err) {
+		console.log(err);
+		return false;
+	}
+
+	// return recipe;
 }
 
 async function userRecipeExists(id: string): Promise<boolean> {

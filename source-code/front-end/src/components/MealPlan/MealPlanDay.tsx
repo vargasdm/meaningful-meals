@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
 import MealCard from "./MealCard";
-import util from "../../util";
+// import util from "../../util";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
@@ -25,10 +25,19 @@ type MealPlanDayProps = {
 	key: string
 }
 
+function getNumCalories(recipe: any) {
+	const calories = recipe.nutrition.nutrients.find(
+		(nutrient: any) => nutrient.name === 'Calories'
+	);
+
+	return calories.amount;
+}
+
+
 export default function MealPlanDay(props: MealPlanDayProps) {
 	const [meals, setMeals] = useState([]);
 
-	async function populateCard() {
+	async function populateCards() {
 		const populatedMeals: any = await Promise.all(
 			props.meals.map(async (meal: any) => {
 				const recipeData = await axios.get(
@@ -41,7 +50,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 					id: meal.meal_id,
 					name: recipe.title,
 					imageSource: recipe.image,
-					numCalories: util.getNumCalories(recipe),
+					numCalories: recipe.nutrition ? getNumCalories(recipe) : 0,
 				}
 			})
 		);
@@ -50,7 +59,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 	}
 
 	useEffect(() => {
-		populateCard();
+		populateCards();
 	}, [props.meals])
 
 	const renderMeals = meals.map((meal: any) =>
