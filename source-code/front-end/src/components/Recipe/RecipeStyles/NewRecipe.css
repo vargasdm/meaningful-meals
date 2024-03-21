@@ -34,7 +34,8 @@
 }
 
 #createRecipeButton,
-#add-ingredient-button {
+#add-ingredient-button,
+#add-instruction-button {
 	padding: 10px 20px;
 	background-color: #007bff;
 	color: white;
@@ -60,7 +61,15 @@
 	padding: 8px;
 }
 
-.ingredient-form>i:hover {
+i:hover {
 	cursor: pointer;
 	background-color: #dfdfdf;
+}
+
+.instruction-form-li {
+	width: 600px;
+}
+
+.instruction-form-li>i {
+	display: block;
 }

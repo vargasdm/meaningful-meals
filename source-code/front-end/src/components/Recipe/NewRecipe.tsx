@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import IngredientForm from "./IngredientForm";
 import "./RecipeStyles/NewRecipe.css";
 import { v4 } from 'uuid';
+import InstructionForm from "./InstructionForm";
 
 interface NewRecipeProps {
 	handleCreateRecipe: (newRecipe: any) => Promise<any>;
@@ -11,7 +12,7 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [ingredients, setIngredients] = useState<any>([]);
-	const [instructions, setInstructions] = useState([]);
+	const [instructions, setInstructions] = useState<any>([]);
 
 	const handleSubmit = async () => {
 		try {
@@ -37,6 +38,15 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 		setIngredients([...ingredients, newIngredient]);
 	}
 
+	function handleAddInstruction() {
+		const newInstruction: any = {
+			body: 0,
+			id: v4()
+		}
+
+		setInstructions([...instructions, newInstruction])
+	}
+
 	const renderIngredients = [];
 
 	for (let i = 0; i < ingredients.length; i++) {
@@ -55,6 +65,30 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 		)
 	}
 
+	const renderInstructions = [];
+
+	for (let i = 0; i < instructions.length; i++) {
+		renderInstructions.push(
+			<li className='instruction-form-li' key={instructions[i].id}>
+				<InstructionForm
+					index={i}
+					setInstructions={setInstructions}
+					instructions={instructions}
+					body={instructions[i].body}
+					id={instructions[i].id}
+				/>
+			</li>
+		)
+	}
+
+	function handleTitleChange(event: any) {
+		setTitle(event.target.value);
+	}
+
+	function handleDescriptionChange(event: any) {
+		setDescription(event.target.value);
+	}
+
 	return (
 		<div id="newRecipeContainer">
 			<p id="instructionsTitle">Instructions:</p>
@@ -64,28 +98,22 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 				type="text"
 				name="title"
 				placeholder="Recipe Title"
-			// onChange={handleInputChange}
+				onChange={handleTitleChange}
 			/>
 			<input
 				type="text"
 				name="description"
 				placeholder="Recipe Description"
-			// onChange={handleInputChange}
+				onChange={handleDescriptionChange}
 			/>
-			{/* <textarea
-				name="ingredients"
-				placeholder="Ingredients (One per line)"
-				onChange={handleInputChange}
-			/> */}
 			{renderIngredients}
 			<button id='add-ingredient-button' onClick={handleAddIngredient}>
 				Add Ingredient
 			</button>
-			<textarea
-				name="instructions"
-				placeholder="Instructions (One per line)"
-			// onChange={handleInputChange}
-			/>
+			{renderInstructions}
+			<button id='add-instruction-button' onClick={handleAddInstruction}>
+				Add Instruction
+			</button>
 			<button id="createRecipeButton" onClick={handleSubmit}>
 				Create Recipe
 			</button>

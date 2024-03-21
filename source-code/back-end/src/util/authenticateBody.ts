@@ -31,13 +31,16 @@ const validateRegisterBody = (req: any, res: any, next: any) => {
 };
 
 const validateRecipeBody = (req: any, res: any, next: any) => {
+	console.log(req.body);
 	if (
 		!req.body ||
 		!req.body.title ||
 		!req.body.description ||
 		!req.body.ingredients ||
 		!req.body.instructions ||
-		!req.body.user
+		!req.body.user ||
+		req.body.ingredients.length === 0 ||
+		req.body.instructions.length === 0
 	) {
 		logger.error(`Recipe request body/body field missing. ${req.body}`);
 		return res
