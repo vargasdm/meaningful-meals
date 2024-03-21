@@ -9,9 +9,6 @@ import type { Validation } from '../util/validation.type';
 const router = express.Router();
 
 router.post('/', authenticateToken, async (req: any, res: any) => {
-	console.log(req.user.user_id);
-	console.log(req.body.recipeID);
-	console.log(req.body.timestamp);
 	try {
 		const validation: Validation = await mealService.validateAddMeal(
 			req.user.user_id,
@@ -48,17 +45,21 @@ router.post('/:mealID', authenticateToken, async (req: any, res: any) => {
 
 	if (!req.body.mealID) {
 		res.status(400).json({ error: 'MEAL ID IS INVALID' });
+		return;
 	}
 
 	if (!(await mealService.mealBelongsToUser(req.body.mealID, req.user.user_id))) {
-		res.status(400).json({ error: 'MEAL DOES NOT BELONG TO USER' })
+		res.status(400).json({ error: 'MEAL DOES NOT BELONG TO USER' });
+		return;
 	}
 
 	try {
 		await mealService.updateMealTimestampByID(
 			req.body.mealID,
 			req.body.timestamp
-		)
+		);
+
+		res.sendStatus(200);
 	} catch (err) {
 		console.error(err);
 		res.sendStatus(500);
@@ -96,7 +97,6 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 			parseInt(req.query.maxTimestamp)
 		);
 
-		// console.log(meals);
 		res.status(200).json(meals);
 		return;
 	}

@@ -25,15 +25,22 @@ export default function MealCard(props: MealCardProps) {
 
 	async function handleDateChange(newDate: Date) {
 		try {
+			console.log('handling');
 			await axios.post(
 				`${MEALS_ENDPOINT}/${props.id}`,
 				{
 					mealID: props.id,
 					timestamp: newDate.getTime()
+				},
+				{
+					headers: {
+						'Authorization': `Bearer ${jwt}`
+					}
 				}
 			);
 
 			props.getMeals();
+			console.log('got meals');
 		} catch (err) {
 			console.error(err);
 		}

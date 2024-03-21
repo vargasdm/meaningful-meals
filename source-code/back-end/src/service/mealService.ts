@@ -20,15 +20,12 @@ async function validateAddMeal(
 
 	try {
 		if (!(await userService.userExistsByID(userID))) {
-			console.log('USER DOES NOT EXIST');
-
 			validation.errors.push('USER DOES NOT EXIST');
 		}
 
 		if (!(await recipeService.searchedRecipeExists(recipeID)) &&
 			!(await recipeService.userRecipeExists(recipeID))) {
 			validation.errors.push('RECIPE DOES NOT EXIST');
-			console.log('RECIPE DOES NOT EXIST');
 
 		}
 		console.log(validation.errors);
@@ -42,8 +39,6 @@ async function validateAddMeal(
 	}
 
 	if (validation.errors.length > 0) {
-		console.log(validation.errors);
-
 		return validation;
 	}
 
@@ -56,10 +51,6 @@ async function createMeal(
 	recipeID: string,
 	timestamp: number
 ): Promise<void> {
-	console.log(userID);
-	console.log(recipeID);
-	console.log(timestamp);
-
 	try {
 		await mealDAO.createMeal(
 			new Meal(
@@ -150,9 +141,10 @@ async function getMealsOfUserInTimeRange(
 }
 
 async function mealBelongsToUser(mealID: string, userID: string): Promise<boolean> {
+	console.log()
 	try {
 		const meal: any = await mealDAO.getMealByID(mealID);
-		return meal.user_id === userID;
+		return meal.user_id == userID;
 	} catch (err) {
 		throw err;
 	}

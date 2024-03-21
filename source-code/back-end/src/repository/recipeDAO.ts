@@ -25,7 +25,6 @@ async function getRecipesByUsername(username: any) {
 
   try {
     const data = await documentClient.send(command);
-    // console.log(data.Items);
     return data.Items;
   } catch (err) {
     logger.error(err);
@@ -44,7 +43,6 @@ async function getRecipeById(recipeId: any) {
 
   try {
     const data = await documentClient.send(command);
-    // console.log(data.Items);
     return data.Items;
   } catch (err) {
     logger.error(err);
@@ -99,7 +97,6 @@ async function postRecipe(recipe: any) {
 }
 
 async function deleteRecipe(recipe: any) {
-  console.log(recipe);
 
   const command = new DeleteCommand({
     TableName: RECIPES_TABLE,

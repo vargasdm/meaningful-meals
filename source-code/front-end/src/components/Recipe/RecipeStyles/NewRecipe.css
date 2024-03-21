@@ -1,48 +1,62 @@
 #newRecipeContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+}
 
-  #instructionsTitle {
-    color: #333;
-    font-size: 35px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  #instructions {
-    color: #333;
-    font-weight: medium;
-    margin-bottom: 10px;
-  }
+#instructionsTitle {
+	color: #333;
+	font-size: 35px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
 
-  
-  #newRecipeContainer input,
-  #newRecipeContainer textarea {
-    width: 100%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  #createRecipeButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  #createRecipeButton:hover {
-    background-color: #0056b3;
-  }
+#instructions {
+	color: #333;
+	font-weight: medium;
+	margin-bottom: 10px;
+}
+
+#newRecipeContainer>input,
+#newRecipeContainer textarea {
+	width: 100%;
+	padding: 8px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+#createRecipeButton,
+#add-ingredient-button {
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#createRecipeButton:hover {
+	background-color: #0056b3;
+}
+
+.ingredient-form>input {
+	/* width: 50%; */
+	display: inline;
+}
+
+.ingredient-form>i {
+	padding: 8px;
+}
+
+.ingredient-form>i:hover{
+	cursor: pointer;
+	background-color: #dfdfdf;
+}

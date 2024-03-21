@@ -50,8 +50,7 @@ async function getMealByID(mealID: string) {
 
 	try {
 		const meal = await documentClient.send(command);
-		console.log(meal);
-		return meal;
+		return meal.Item;
 	} catch (err) {
 		throw err;
 	}

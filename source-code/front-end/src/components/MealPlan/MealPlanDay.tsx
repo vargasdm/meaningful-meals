@@ -27,12 +27,10 @@ type MealPlanDayProps = {
 
 export default function MealPlanDay(props: MealPlanDayProps) {
 	const [meals, setMeals] = useState([]);
-	console.log(props.date + ' ' + JSON.stringify(props.meals));
 
 	async function populateCard() {
 		const populatedMeals: any = await Promise.all(
 			props.meals.map(async (meal: any) => {
-				console.log(meal);
 				const recipeData = await axios.get(
 					`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
 				);
