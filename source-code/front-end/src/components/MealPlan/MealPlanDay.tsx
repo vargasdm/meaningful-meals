@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import endpoints from "../../endpoints";
 import MealCard from "./MealCard";
-// import util from "../../util";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
