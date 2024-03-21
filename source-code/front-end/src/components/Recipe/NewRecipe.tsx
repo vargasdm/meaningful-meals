@@ -1,40 +1,26 @@
 import React, { useState } from "react";
 import IngredientForm from "./IngredientForm";
 import "./RecipeStyles/NewRecipe.css";
+import { v4 } from 'uuid';
 
 interface NewRecipeProps {
 	handleCreateRecipe: (newRecipe: any) => Promise<any>;
 }
 
 const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
-	// const [recipe, setRecipe] = useState({
-	// 	title: "",
-	// 	description: "",
-	// 	ingredients: [],
-	// 	instructions: [],
-	// });
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [ingredients, setIngredients] = useState<any>([]);
 	const [instructions, setInstructions] = useState([]);
 
-	// const handleInputChange = (
-	// 	event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	// ) => {
-	// 	const { name, value } = event.target;
-	// 	const updatedValue =
-	// 		name === "ingredients" || name === "instructions"
-	// 			? value.split("\n")
-	// 			: value;
-	// 	// setRecipe((prevRecipe) => ({
-	// 		...prevRecipe,
-	// 		[name]: updatedValue,
-	// 	}));
-	// };
-
 	const handleSubmit = async () => {
 		try {
-			// await handleCreateRecipe(recipe);
+			await handleCreateRecipe({
+				title: title,
+				description: description,
+				ingredients: ingredients,
+				instructions: instructions
+			});
 		} catch (error) {
 			console.error(error);
 		}
@@ -44,32 +30,30 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 		const newIngredient: any = {
 			amount: 0,
 			unit: '',
-			name: ''
+			name: '',
+			id: v4()
 		}
 
 		setIngredients([...ingredients, newIngredient]);
 	}
 
 	const renderIngredients = [];
-	// const ingredients: any = recipe.ingredients;
+
 	for (let i = 0; i < ingredients.length; i++) {
 		renderIngredients.push(
-			<IngredientForm
-				amount={ingredients[i].amount}
-				unit={ingredients[i].unit}
-				name={ingredients[i].name}
-				key={i}
-			/>
+			<li key={ingredients[i].id}>
+				<IngredientForm
+					index={i}
+					setIngredients={setIngredients}
+					ingredients={ingredients}
+					amount={ingredients[i].amount}
+					unit={ingredients[i].unit}
+					name={ingredients[i].name}
+					id={ingredients[i].id}
+				/>
+			</li>
 		)
 	}
-
-	// const renderIngredients = recipe.ingredients.map((ingredient: any) => {
-	// 	return <IngredientForm
-	// 		amount={ingredient.amount}
-	// 		unit={ingredient.unit}
-	// 		name={ingredient.name}
-	// 	/>;
-	// })
 
 	return (
 		<div id="newRecipeContainer">
