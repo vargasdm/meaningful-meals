@@ -81,8 +81,8 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 	if (req.query.minTimestamp && req.query.maxTimestamp) {
 		const validations = await mealService.validateGetMealsOfUserInTimeRange(
 			req.user.user_id,
-			req.query.minTimestamp,
-			req.query.maxTimestamp
+			parseInt(req.query.minTimestamp),
+			parseInt(req.query.maxTimestamp)
 		);
 
 		if (!validations.isValid) {
@@ -92,10 +92,11 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 
 		const meals = await mealService.getMealsOfUserInTimeRange(
 			req.user.user_id,
-			req.query.minTimestamp,
-			req.query.maxTimestamp
+			parseInt(req.query.minTimestamp),
+			parseInt(req.query.maxTimestamp)
 		);
 
+		// console.log(meals);
 		res.status(200).json(meals);
 		return;
 	}

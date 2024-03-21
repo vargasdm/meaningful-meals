@@ -7,6 +7,7 @@ import util from "../../util";
 
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 const RECIPES_ENDPOINT = endpoints.RECIPES_ENDPOINT;
+
 const DAY_NAMES: string[] = [
 	'Sunday',
 	'Monday',
@@ -16,6 +17,7 @@ const DAY_NAMES: string[] = [
 	'Friday',
 	'Saturday'
 ];
+
 type MealPlanDayProps = {
 	date: Date,
 	meals: any[],
@@ -23,57 +25,35 @@ type MealPlanDayProps = {
 	key: string
 }
 
-
-
 export default function MealPlanDay(props: MealPlanDayProps) {
-	const [meals, setMeals] = useState(props.meals);
-	const user = useSelector((state: any) => state.user);
-	const jwt = user.jwt;
+	const [meals, setMeals] = useState([]);
+	console.log(props.date + ' ' + JSON.stringify(props.meals));
 
-	// async function getMeals() {
-	// 	const firstTimestampOfDay = props.date.getTime();
-	// 	const lastTimestampOfDay = firstTimestampOfDay + 1000 * 60 * 60 * 24;
+	async function populateCard() {
+		const populatedMeals: any = await Promise.all(
+			props.meals.map(async (meal: any) => {
+				console.log(meal);
+				const recipeData = await axios.get(
+					`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
+				);
 
-	// 	try {
-	// 		let mealsData: any = await axios.get(
-	// 			`${MEALS_ENDPOINT}?minTimestamp=${firstTimestampOfDay}`
-	// 			+ `&maxTimestamp=${lastTimestampOfDay}`,
-	// 			{
-	// 				headers: {
-	// 					'Authorization': `Bearer ${jwt}`
-	// 				}
-	// 			}
-	// 		);
+				const recipe: any = recipeData.data;
 
-	// 		mealsData = await Promise.all(
-	// 			mealsData.data.map(async (meal: any) => {
-	// 				console.log(meal);
-	// 				const recipeData = await axios.get(
-	// 					`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
-	// 				);
+				return {
+					id: meal.meal_id,
+					name: recipe.title,
+					imageSource: recipe.image,
+					numCalories: util.getNumCalories(recipe),
+				}
+			})
+		);
 
-	// 				const recipe: any = recipeData.data;
+		setMeals(populatedMeals);
+	}
 
-	// 				return {
-	// 					id: meal.meal_id,
-	// 					name: recipe.title,
-	// 					imageSource: recipe.image,
-	// 					numCalories: util.getNumCalories(recipe),
-	// 					date: new Date(meal.timestamp)
-	// 				}
-	// 			})
-	// 		);
-
-	// 		setMeals(mealsData);
-	// 	} catch (err) {
-	// 		setMeals([]);
-	// 		console.error(err);
-	// 	}
-	// }
-
-	// useEffect(() => {
-	// 	getMeals();
-	// }, [])
+	useEffect(() => {
+		populateCard();
+	}, [props.meals])
 
 	const renderMeals = meals.map((meal: any) =>
 		<MealCard
@@ -83,7 +63,7 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 			numCalories={meal.numCalories}
 			key={meal.id}
 			getMeals={props.getMeals}
-			date={meal.date}
+			date={props.date}
 		/>
 	);
 

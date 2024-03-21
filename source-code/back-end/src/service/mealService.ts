@@ -123,7 +123,7 @@ async function validateGetMealsOfUserInTimeRange(
 	return validation;
 }
 
-function isValidTimestamp(timestamp: number | string): boolean {
+function isValidTimestamp(timestamp: number): boolean {
 	return new Date(timestamp).getTime() > 0;
 }
 
