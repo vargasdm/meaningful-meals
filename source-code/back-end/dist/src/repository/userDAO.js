@@ -41,7 +41,6 @@ function getUserByUsername(username) {
             return users[0];
         }
         catch (err) {
-            console.error(err);
             logger_1.logger.error(err);
             throw err;
         }
@@ -60,7 +59,6 @@ function getUserById(userId) {
             return data.Item;
         }
         catch (err) {
-            console.error(err);
             logger_1.logger.error(err);
             throw err;
         }
@@ -77,8 +75,56 @@ function createUser(Item) {
         yield documentClient.send(command);
     });
 }
+// UPDATE
+function updateUser(input) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const command = new lib_dynamodb_1.UpdateCommand({
+            TableName,
+            Key: {
+                user_id: input.user_id,
+            },
+            UpdateExpression: "set username = :username, password = :password",
+            ExpressionAttributeValues: {
+                ":username": input.username,
+                ":password": input.password,
+            },
+            ReturnValues: "ALL_NEW",
+        });
+        try {
+            const data = yield documentClient.send(command);
+        }
+        catch (err) {
+            logger_1.logger.error("Update Comment: " + err);
+            throw err;
+        }
+    });
+}
+function updateUsername(input) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const command = new lib_dynamodb_1.UpdateCommand({
+            TableName,
+            Key: {
+                user_id: input.user_id,
+            },
+            UpdateExpression: "set username = :username",
+            ExpressionAttributeValues: {
+                ":username": input.username,
+            },
+            ReturnValues: "ALL_NEW",
+        });
+        try {
+            const data = yield documentClient.send(command);
+        }
+        catch (err) {
+            logger_1.logger.error("Update Comment: " + err);
+            throw err;
+        }
+    });
+}
 exports.default = {
-    createUser: createUser,
-    getUserByUsername: getUserByUsername,
-    getUserById: getUserById,
+    createUser,
+    getUserByUsername,
+    getUserById,
+    updateUser,
+    updateUsername
 };

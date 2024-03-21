@@ -30,6 +30,20 @@ function default_1(favoriteDb) {
             return { isValid: true, errors };
         });
     }
+    function validateGetFavorite(input) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const errors = [];
+            // validate input
+            if (!input || !input.content_id || !input.user_id) {
+                errors.push("INPUTS ARE NULL");
+                return { isValid: false, errors };
+            }
+            if (errors.length > 0) {
+                return { isValid: false, errors };
+            }
+            return { isValid: true, errors };
+        });
+    }
     function validateUpdateFavorite(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const errors = [];
@@ -151,6 +165,7 @@ function default_1(favoriteDb) {
         getUserFavorites,
         getContentFavorites,
         getUserContentFavorite,
+        validateGetFavorite
     };
 }
 exports.default = default_1;

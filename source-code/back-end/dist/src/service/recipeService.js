@@ -27,6 +27,9 @@ function searchRecipes(query) {
             `complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
             `&instructionsRequired=true`);
         // console.log(result);
+        if (!result.data.results) {
+            return false;
+        }
         return result.data;
     });
 }
@@ -34,19 +37,48 @@ function searchRecipes(query) {
 // i.e., if we don't find the ID with Spoonacular, then search local
 function getRecipe(id) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(id);
         const result = yield axios_1.default.get(`https://api.spoonacular.com/recipes/` +
             `${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
             `&includeNutrition=true`);
+        if (!result.data.id) {
+            return false;
+        }
+        console.log(result);
         return result.data;
     });
 }
-function recipeExists(id) {
+function getRecipeById(recipeId) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(`recipeService.recipeExists(${id})...`);
+        console.log(recipeId);
+        const data = yield recipeDAO_1.default.getRecipeById(recipeId);
+        console.log(data);
+        return data ? data : null;
+    });
+}
+function searchedRecipeExists(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // console.log(`recipeService.searchedRecipeExists(${id})...`);
         if (!id) {
+            console.log("recipe doesnt exist");
             return false;
         }
+        //   console.log(id);
         const recipe = yield getRecipe(id);
+        console.log(`recipeService.searchedRecipeExists(${id})...`);
+        return recipe;
+    });
+}
+function userRecipeExists(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // console.log(`recipeService.userRecipeExists(${id})...`);
+        if (!id) {
+            console.log("recipe doesnt exist");
+            return false;
+        }
+        // console.log(id);
+        const recipe = yield getRecipeById(id);
+        console.log(`recipeService.userRecipeExists(${id})...`);
         return recipe;
     });
 }
@@ -102,5 +134,7 @@ exports.default = {
     putRecipe,
     createRecipe,
     deleteRecipe,
-    recipeExists
+    searchedRecipeExists,
+    getRecipeById,
+    userRecipeExists,
 };

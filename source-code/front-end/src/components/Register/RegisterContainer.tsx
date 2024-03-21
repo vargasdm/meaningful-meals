@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+
+import React from "react";
+import endpoints from "../../endpoints";
 import RegisterInput from "./RegisterInput";
 import axios from "axios";
-import endpoints from "../../endpoints";
+const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
+console.log(USERS_ENDPOINT);
 
 function RegisterContainer() {
   const [erros, setErrors] = useState([] as any);
@@ -18,11 +21,14 @@ function RegisterContainer() {
 
   async function postUser(user: any) {
     try {
-      let response = await axios.post(`${endpoints.USER_ENDPOINT}/register`, {
+      console.log(`${USERS_ENDPOINT}/register`);
+
+      let response = await axios.post(`${USERS_ENDPOINT}/register`, {
         username: user.username,
         password: user.password,
       });
 
+      console.log(response);
       return response;
     } catch (error: any) {
       if (error.response.data.errors !== typeof []) {

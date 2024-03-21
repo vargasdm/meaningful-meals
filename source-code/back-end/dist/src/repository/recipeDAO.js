@@ -38,6 +38,25 @@ function getRecipesByUsername(username) {
         return null;
     });
 }
+function getRecipeById(recipeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const command = new QueryCommand({
+            TableName: RECIPES_TABLE,
+            KeyConditionExpression: "#id = :id",
+            ExpressionAttributeNames: { "#id": "id" },
+            ExpressionAttributeValues: { ":id": recipeId },
+        });
+        try {
+            const data = yield documentClient.send(command);
+            console.log(data.Items);
+            return data.Items;
+        }
+        catch (err) {
+            logger_1.logger.error(err);
+        }
+        return null;
+    });
+}
 function updateRecipe(recipe) {
     return __awaiter(this, void 0, void 0, function* () {
         const command = new PutCommand({
@@ -109,4 +128,5 @@ exports.default = {
     updateRecipe,
     postRecipe,
     deleteRecipe,
+    getRecipeById,
 };

@@ -10,7 +10,8 @@ import { redirect } from "react-router-dom";
 import FavoriteButton from "../Favorite/FavoriteButton";
 import CommentButton from "../Comment/CommentButton";
 import endpoints from "../../endpoints";
-const PORT = process.env.REACT_APP_PORT;
+const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
+console.log(USERS_ENDPOINT);
 
 function LoginContainer() {
   const [errors, setErrors] = useState([] as any);

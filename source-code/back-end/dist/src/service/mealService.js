@@ -26,11 +26,15 @@ function validateAddMeal(userID, recipeID, timestamp) {
         const validation = { isValid: false, errors: [] };
         try {
             if (!(yield userService.userExistsByID(userID))) {
+                console.log('USER DOES NOT EXIST');
                 validation.errors.push('USER DOES NOT EXIST');
             }
-            if (!(yield recipeService_1.default.recipeExists(recipeID))) {
+            if (!(yield recipeService_1.default.searchedRecipeExists(recipeID)) &&
+                !(yield recipeService_1.default.userRecipeExists(recipeID))) {
                 validation.errors.push('RECIPE DOES NOT EXIST');
+                console.log('RECIPE DOES NOT EXIST');
             }
+            console.log(validation.errors);
         }
         catch (err) {
             throw err;
@@ -39,6 +43,7 @@ function validateAddMeal(userID, recipeID, timestamp) {
             validation.errors.push('TIMESTAMP IS INVALID');
         }
         if (validation.errors.length > 0) {
+            console.log(validation.errors);
             return validation;
         }
         validation.isValid = true;
@@ -47,6 +52,9 @@ function validateAddMeal(userID, recipeID, timestamp) {
 }
 function createMeal(userID, recipeID, timestamp) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(userID);
+        console.log(recipeID);
+        console.log(timestamp);
         try {
             yield mealDAO_1.default.createMeal(new meal_1.Meal((0, uuid_1.v4)(), userID, recipeID, timestamp));
         }

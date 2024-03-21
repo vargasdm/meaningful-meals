@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // endpoint: /user
-// require("dotenv").config();
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
@@ -22,6 +21,7 @@ const logger_1 = require("../util/logger");
 const router = express_1.default.Router();
 const userService_1 = __importDefault(require("../service/userService"));
 const userDAO_1 = __importDefault(require("../repository/userDAO"));
+const authenticateToken_1 = require("../util/authenticateToken");
 const userService = (0, userService_1.default)(userDAO_1.default);
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -32,18 +32,17 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         const targetUser = yield userService.getUserByUsername(req.body.username);
         if (yield userService.credentialsMatch(req.body, targetUser)) {
-            const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: '30m' });
+            const token = jsonwebtoken_1.default.sign({ user_id: targetUser.user_id }, process.env.JWT_KEY, { expiresIn: "30m" });
             res.status(200).json({
                 token: token,
                 user_id: targetUser.user_id,
-                username: targetUser.username
+                username: targetUser.username,
             });
             return;
         }
-        res.status(401).json({ error: 'CREDENTIALS DO NOT MATCH' });
+        res.status(401).json({ error: "CREDENTIALS DO NOT MATCH" });
     }
     catch (err) {
-        console.error(err);
         logger_1.logger.error(err);
         res.sendStatus(500);
     }
@@ -60,8 +59,29 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.sendStatus(201);
     }
     catch (err) {
-        console.error(err);
         logger_1.logger.error(err);
+        res.sendStatus(500);
+    }
+}));
+router.put("/update", authenticateToken_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const validation = userService.validateUpdate(req.body);
+        const newUsername = req.query.newUsername;
+        if (!validation.isValid) {
+            res.status(400).json({ errors: validation.errors });
+            return;
+        }
+        if (!newUsername) {
+            yield userService.updateUser(req.body);
+            res.sendStatus(201);
+        }
+        else {
+            yield userService.updateUser({ username: req.body.username, pasword: req.body.password, newUsername: newUsername });
+            res.sendStatus(201);
+        }
+    }
+    catch (error) {
+        logger_1.logger.error(error);
         res.sendStatus(500);
     }
 }));

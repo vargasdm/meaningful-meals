@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import "./RecipeStyles/NewRecipe.css";
+import { Form, Button } from "react-bootstrap";
+// import "./RecipeStyles/NewRecipe.css";
+
 interface NewRecipeProps {
   handleCreateRecipe: (newRecipe: any) => Promise<any>;
 }
@@ -39,31 +41,43 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
       <p id="instructionsTitle">Instructions:</p>
       <p id="instructions">Fill out the form below to create a recipe.</p>
 
-      <input
-        type="text"
-        name="title"
-        placeholder="Recipe Title"
-        onChange={handleInputChange}
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="Recipe Description"
-        onChange={handleInputChange}
-      />
-      <textarea
-        name="ingredients"
-        placeholder="Ingredients (One per line)"
-        onChange={handleInputChange}
-      />
-      <textarea
-        name="instructions"
-        placeholder="Instructions (One per line)"
-        onChange={handleInputChange}
-      />
-      <button id="createRecipeButton" onClick={handleSubmit}>
-        Create Recipe
-      </button>
+      <Form>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            name="title"
+            placeholder="Recipe Title"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            name="description"
+            placeholder="Recipe Description"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            as="textarea"
+            name="ingredients"
+            placeholder="Ingredients (One per line)"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            as="textarea"
+            name="instructions"
+            placeholder="Instructions (One per line)"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Button id="createRecipeButton" onClick={handleSubmit}>
+          Create Recipe
+        </Button>
+      </Form>
     </div>
   );
 };
