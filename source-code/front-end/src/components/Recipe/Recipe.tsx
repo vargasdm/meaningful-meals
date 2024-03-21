@@ -6,19 +6,19 @@ import "./RecipeStyles/Recipe.css";
 import endpoints from "../../endpoints";
 import FavoriteContainer from "../Favorite/FavoriteContainer";
 import CommentButton from "../Comment/CommentButton";
+import { v4 } from 'uuid';
 
 const BACKEND_PORT = process.env.REACT_APP_PORT;
 const RECIPES_ENDPOINT =
 	endpoints.RECIPES_ENDPOINT || `http://localhost:${BACKEND_PORT}/recipes`;
 const MEALS_ENDPOINT = endpoints.MEALS_ENDPOINT;
 
-
 export async function loader({ params }: any) {
 	try {
 		// const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
 		// return recipeData.data;
-		const recipe = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
-		return recipe;
+		const recipeData = await axios.get(`${RECIPES_ENDPOINT}?id=${params.id}`);
+		return recipeData.data;
 	} catch (err) {
 		console.error(err);
 		return null;
@@ -62,7 +62,7 @@ export default function Recipe() {
 
 	console.log(recipe);
 	const instructions: any = recipe.instructions.map(
-		(step: any) => <li key={step.number}>{step.step}</li>
+		(instruction: any) => <li key={v4()}>{instruction.body}</li>
 	);
 	const ingredients: any = recipe.ingredients.map(
 		(ingredient: any) => <li key={ingredient.id}>
@@ -80,7 +80,7 @@ export default function Recipe() {
 					onClick={handleAddToMealPlan}
 				/>
 			</div>
-			<img src={recipe.image} alt={recipe.title} />
+			{recipe.image && <img src={recipe.image} alt={recipe.title} />}
 			<FavoriteContainer contentId={recipe.id} />
 			<CommentButton contentId={recipe.id} />
 			<h2>Ingredients</h2>

@@ -43,12 +43,14 @@ async function getRecipe(id: string) {
 				name: ingredient.name
 			})),
 			instructions: result.data.analyzedInstructions[0].steps.map(
-				(instruction: any) => instruction.step
-			)
+				(instruction: any) => ({
+					body: instruction.step
+				})
+			),
+			image: result.data.image
 		}
 
-		console.log(formattedRecipe);
-
+		// console.log(formattedRecipe);
 		return formattedRecipe;
 	} catch (err) {
 		console.error(err);
@@ -59,21 +61,10 @@ async function getRecipe(id: string) {
 			throw err;
 		}
 	}
-
-	// if (!result.data.id) {
-	// 	return false;
-	// }
-	// //   console.log(result);
-	// return result.data;
 }
 
 async function getRecipeById(recipeId: string) {
-	// console.log(recipeId);
-
 	const data: any = await recipeDAO.getRecipeById(recipeId);
-
-	// console.log(data);
-
 	return data ? data : null;
 }
 
