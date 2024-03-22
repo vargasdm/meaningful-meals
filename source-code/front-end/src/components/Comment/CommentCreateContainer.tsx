@@ -3,18 +3,18 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import endpoints from "../../endpoints";
 
-type cccProps = { contentId: string };
+type cccProps = { contentId: string, getMeals: Function };
 function CommentCreateContainer(prop: cccProps) {
 	const [comment, setComment] = useState("");
 	const [errors, setErrors] = useState([] as any);
-
 	const user = useSelector((state: any) => state.user);
 
 	const handleInputChange = (event: any) => {
 		setComment(event.target.value);
 	};
 
-	async function handleSubmit() {
+	async function handleSubmit(event: any) {
+		event.preventDefault();
 		try {
 			await axios.post(
 				endpoints.COMMENTS_ENDPOINT,
@@ -28,7 +28,9 @@ function CommentCreateContainer(prop: cccProps) {
 					headers: { Authorization: `Bearer ${user.jwt}` },
 				}
 			);
+			setComment('');
 		} catch (error: any) {
+			console.error(error);
 			if (error.response.data.errors !== typeof []) {
 				const newError = [error.response.data.errors];
 				setErrors(newError);
