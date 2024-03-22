@@ -32,6 +32,7 @@ function RegisterContainer() {
 			console.log(response);
 			return response;
 		} catch (error: any) {
+			console.error(error);
 			if (error.response.data.errors !== typeof []) {
 				const newError = [error.response.data.errors];
 				setErrors(newError);

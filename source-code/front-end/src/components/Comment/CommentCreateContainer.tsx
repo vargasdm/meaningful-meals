@@ -23,6 +23,7 @@ function CommentCreateContainer(props: cccProps) {
 					content_id: props.contentId,
 					username: user.username,
 					user_comment: comment,
+					timestamp: Date.now()
 				},
 				{
 					headers: { Authorization: `Bearer ${user.jwt}` },
