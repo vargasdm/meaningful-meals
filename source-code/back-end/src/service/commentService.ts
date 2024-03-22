@@ -158,7 +158,7 @@ export default function (commentDb: any) {
 		return { isValid: true, errors };
 	}
 
-	async function createComment(input: commentInput) {
+	async function createComment(input: any) {
 		try {
 			await commentDb.createComment({
 				comment_id: uuid(),
@@ -166,6 +166,7 @@ export default function (commentDb: any) {
 				username: input.username,
 				content_id: input.content_id,
 				user_comment: input.user_comment,
+				timestamp: input.timestamp
 			});
 		} catch (err) {
 			throw err;

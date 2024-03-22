@@ -12,7 +12,7 @@ import CommentService from "../service/commentService";
 const commentService = CommentService(commentDAO);
 
 router.post("/", authenticateToken, async (req: any, res: any) => {
-	console.log(req.body);
+	// console.log(req.body);
 	try {
 		const validation: Validation = await commentService.validateInputComment(
 			req.body
@@ -104,7 +104,7 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
 			return;
 		}
 
-		let data;
+		let data: any;
 
 		if (user && item) {
 			data = await commentService.getUserContentComment({
@@ -116,6 +116,10 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
 		} else if (user && !item) {
 			data = await commentService.getUserComments(user);
 		}
+
+		data.sort((a: any, b: any) => {
+			return b.timestamp - a.timestamp;
+		});
 
 		res.status(200).json(data);
 	} catch (err) {
