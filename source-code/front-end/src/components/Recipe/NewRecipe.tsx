@@ -52,18 +52,26 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 
 	const renderIngredients = [];
 
-	// function getAmountSetter(index: number){
-	// 	return (event: any) => {
-	// 		ingredients[index].amount = event.target.value;
-	// 		setIngredients(ingredients);
-	// 	}
-	// }
+	function getAmountSetter(index: number) {
+		return (event: any) => {
+			ingredients[index].amount = event.target.value;
+			setIngredients(ingredients);
+		}
+	}
 
-	// function getUnitSetter(index: number){
-	// 	return (event: any) => {
-	// 		ingredients[index]
-	// 	}
-	// }
+	function getUnitSetter(index: number) {
+		return (event: any) => {
+			ingredients[index].unit = event.target.value;
+			setIngredients(ingredients);
+		}
+	}
+
+	function getNameSetter(index: number) {
+		return (event: any) => {
+			ingredients[index].name = event.target.value;
+			setIngredients(ingredients);
+		}
+	}
 
 	for (let i = 0; i < ingredients.length; i++) {
 		renderIngredients.push(
@@ -71,6 +79,9 @@ const NewRecipe: React.FC<NewRecipeProps> = ({ handleCreateRecipe }) => {
 				<IngredientForm
 					index={i}
 					setIngredients={setIngredients}
+					setAmount={getAmountSetter(i)}
+					setUnit={getUnitSetter(i)}
+					setName={getNameSetter(i)}
 					ingredients={ingredients}
 					amount={ingredients[i].amount}
 					unit={ingredients[i].unit}

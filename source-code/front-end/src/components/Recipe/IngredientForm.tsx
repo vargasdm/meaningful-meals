@@ -10,46 +10,46 @@ type IngredientFormProps = {
 	id: any
 }
 
-export default function IngredientForm(props: IngredientFormProps) {
+export default function IngredientForm(props: any) {
 	const [amount, setAmount] = useState(props.amount);
 	const [unit, setUnit] = useState(props.unit);
 	const [name, setName] = useState(props.name);
 
-	function handleEdit() {
-		const newIngredients = [];
+	// function handleEdit() {
+	// 	const newIngredients = [];
 
-		for (let i = 0; i < props.index; i++) {
-			newIngredients.push(props.ingredients[i]);
-		}
+	// 	for (let i = 0; i < props.index; i++) {
+	// 		newIngredients.push(props.ingredients[i]);
+	// 	}
 
-		newIngredients.push({
-			amount: amount,
-			unit: unit,
-			name: name,
-			id: props.id
-		})
+	// 	newIngredients.push({
+	// 		amount: amount,
+	// 		unit: unit,
+	// 		name: name,
+	// 		id: props.id
+	// 	})
 
-		for (let i = props.index + 1; i < props.ingredients.length; i++) {
-			newIngredients.push(props.ingredients[i]);
-		}
+	// 	for (let i = props.index + 1; i < props.ingredients.length; i++) {
+	// 		newIngredients.push(props.ingredients[i]);
+	// 	}
 
-		props.setIngredients(newIngredients);
-	}
+	// 	props.setIngredients(newIngredients);
+	// }
 
-	function handleChangeAmount(event: any) {
-		setAmount(event.target.value);
-		handleEdit();
-	}
+	// function handleChangeAmount(event: any) {
+	// 	setAmount(event.target.value);
+	// 	handleEdit();
+	// }
 
-	function handleChangeUnit(event: any) {
-		setUnit(event.target.value);
-		handleEdit();
-	}
+	// function handleChangeUnit(event: any) {
+	// 	setUnit(event.target.value);
+	// 	handleEdit();
+	// }
 
-	function handleChangeName(event: any) {
-		setName(event.target.value);
-		handleEdit();
-	}
+	// function handleChangeName(event: any) {
+	// 	setName(event.target.value);
+	// 	handleEdit();
+	// }
 
 	function handleDelete() {
 		const newIngredients: any = [];
@@ -72,21 +72,21 @@ export default function IngredientForm(props: IngredientFormProps) {
 				name='amount'
 				placeholder='Amount'
 				size={16}
-				onChange={handleChangeAmount}
+				onChange={props.setAmount}
 			/>
 			<input
 				type='text'
 				name='unit'
 				placeholder='Unit'
 				size={16}
-				onChange={handleChangeUnit}
+				onChange={props.setUnit}
 			/>
 			<input
 				type='text'
 				name='name'
 				placeholder='Name'
 				size={32}
-				onChange={handleChangeName}
+				onChange={props.setName}
 			/>
 			<i className='bi bi-x' onClick={handleDelete} />
 		</div>
