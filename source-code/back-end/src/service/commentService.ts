@@ -37,14 +37,7 @@ export default function (commentDb: any) {
 			errors.push("INPUTS ARE NULL");
 			return { isValid: false, errors };
 		}
-		// check if comment exists
-		// const comment = await commentDb.getCommentByUserAndContent(input);
 
-		// if (comment && comment.content_id === input.content_id) {
-		//   errors.push("COMMENT ALREADY EXISTS");
-		// }
-
-		// apply comment restrictions
 		if (input.user_comment.length > 750) {
 			errors.push("COMMENT IS TOO LARGE");
 		}

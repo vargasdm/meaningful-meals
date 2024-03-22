@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import endpoints from "../../endpoints";
 
 type cccProps = { contentId: string, getMeals: Function };
-function CommentCreateContainer(prop: cccProps) {
+function CommentCreateContainer(props: cccProps) {
 	const [comment, setComment] = useState("");
 	const [errors, setErrors] = useState([] as any);
 	const user = useSelector((state: any) => state.user);
@@ -20,7 +20,7 @@ function CommentCreateContainer(prop: cccProps) {
 				endpoints.COMMENTS_ENDPOINT,
 				{
 					user_id: user.userID,
-					content_id: prop.contentId,
+					content_id: props.contentId,
 					username: user.username,
 					user_comment: comment,
 				},
@@ -29,6 +29,7 @@ function CommentCreateContainer(prop: cccProps) {
 				}
 			);
 			setComment('');
+			props.getMeals();
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.errors !== typeof []) {
