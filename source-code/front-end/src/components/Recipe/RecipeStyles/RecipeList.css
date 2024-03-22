@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* .userRecipeListContainer {
-=======
-.userRecipeListContainer {
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -71,22 +67,17 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-<<<<<<< HEAD
   } */
-  
 
-  .recipeCardTitle {
-    cursor: pointer;
-  }
-  
-  .recipeCardTitle:hover {
-    text-decoration: underline;
-  }
 
-  #createButton {
-    align-self: flex-end;
-  }
-=======
-  }
-  
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
+.recipeCardTitle {
+	cursor: pointer;
+}
+
+.recipeCardTitle:hover {
+	text-decoration: underline;
+}
+
+#createButton {
+	align-self: flex-end;
+}

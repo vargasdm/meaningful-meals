@@ -1,35 +1,25 @@
 #comments-page {
-<<<<<<< HEAD
-  margin: 5px;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  vertical-align: middle;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
+	margin: 5px;
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
 }
 
 #comment-content {
-  margin: 10px;
+	margin: 10px;
 }
 
 #comment-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  gap: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	gap: 20px;
 }
-=======
-    margin: 5px;
-    padding: 5px;
-}
-
-#comment-content {
-    margin: 10px;
-}
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77

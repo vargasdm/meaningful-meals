@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* nav {
-=======
-nav {
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 	flex-grow: 0;
 	flex-shrink: 0;
 
@@ -31,7 +27,6 @@ nav ul li {
 
 nav ul li a {
 	text-decoration: none;
-<<<<<<< HEAD
 } */
 
 .custom-navbar {
@@ -41,6 +36,4 @@ nav ul li a {
 
 .navbar-brand {
 	margin-left: 3%;
-=======
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 }

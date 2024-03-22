@@ -10,50 +10,22 @@ import { redirect } from "react-router-dom";
 import FavoriteButton from "../Favorite/FavoriteButton";
 import CommentButton from "../Comment/CommentButton";
 import endpoints from "../../endpoints";
-const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
-console.log(USERS_ENDPOINT);
+// const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
+// console.log(USERS_ENDPOINT);
 
 function LoginContainer() {
-  const [errors, setErrors] = useState([] as any);
-  const dispatch = useDispatch();
+	const [errors, setErrors] = useState([] as any);
+	const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  async function handleLogin(user: any) {
-    try {
-      let res = await axios.post(`${endpoints.USER_ENDPOINT}/login`, {
-        username: user.username,
-        password: user.password,
-      });
+	async function handleLogin(user: any) {
+		try {
+			let res = await axios.post(`${endpoints.USER_ENDPOINT}/login`, {
+				username: user.username,
+				password: user.password,
+			});
 
-<<<<<<< HEAD
-      if (res) {
-        dispatch(
-          userActions.loginUser({
-            // This should set the user slice state in the Redux store
-            // to those received in the res. The JWT is essential for
-            // making authorized requests!
-            userID: res.data.user_id,
-            username: res.data.username,
-            jwt: res.data.token,
-          })
-        );
-        return navigate("/");
-      }
-    } catch (error: any) { 
-      if (error.response.data.errors !== typeof []) {
-        const newError = [error.response.data.errors];
-        setErrors(newError);
-      } else {
-        setErrors(error);
-      }
-
-      setTimeout(() => {
-        setErrors([]);
-      }, 15000);
-    }
-  }
-=======
 			if (res) {
 				dispatch(
 					userActions.loginUser({
@@ -67,23 +39,31 @@ function LoginContainer() {
 				);
 				return navigate("/");
 			}
-		} catch (error) {
-			console.error(error);
+		} catch (error: any) {
+			if (error.response.data.errors !== typeof []) {
+				const newError = [error.response.data.errors];
+				setErrors(newError);
+			} else {
+				setErrors(error);
+			}
+
+			setTimeout(() => {
+				setErrors([]);
+			}, 15000);
 		}
 	}
->>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 
-  return (
-    <>
-      <div id="errors">
-        {errors &&
-          errors.map((item: any, index: any) => {
-            return <p>{`${item}\n `}</p>;
-          })}
-      </div>
-      <LoginInput handleLogin={handleLogin} />
-    </>
-  );
+	return (
+		<>
+			<div id="errors">
+				{errors &&
+					errors.map((item: any, index: any) => {
+						return <p>{`${item}\n `}</p>;
+					})}
+			</div>
+			<LoginInput handleLogin={handleLogin} />
+		</>
+	);
 }
 
 export default LoginContainer;
