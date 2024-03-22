@@ -29,7 +29,7 @@ function CustomNavbar() {
 				<Nav className="custom-navbar">
 					{userState.isLoggedIn ? (
 						<>
-							<Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+							{/* <Nav.Link as={Link} to="/profile">Profile</Nav.Link> */}
 							<Nav.Link as={Link} to={`/recipes/user-recipes/${userState.username}`}>Recipes</Nav.Link>
 							<Nav.Link as={Link} to="/plan">Meal Plan</Nav.Link>
 							<Nav.Link as={Link} to="/search">Search Recipes</Nav.Link>

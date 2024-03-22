@@ -59,11 +59,11 @@ const router = createBrowserRouter([
 				element: <Recipe />,
 				loader: recipeLoader,
 			},
-			{
-				path: '/profile',
-				element: <Profile />,
-				loader: profileLoader
-			},
+			// {
+			// 	path: '/profile',
+			// 	element: <Profile />,
+			// 	loader: profileLoader
+			// },
 			{
 				path: '/search',
 				element: <SearchContainer />
