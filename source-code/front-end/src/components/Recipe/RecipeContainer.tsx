@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import "./RecipeStyles/RecipeContainer.css";
+import { Container, Row, Col } from "react-bootstrap"; // Import the React Bootstrap components you need
+
 import RecipeList from "./RecipeList";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -85,8 +87,8 @@ function RecipeContainer() {
 						handleRemoveRecipe={handleRemoveRecipe}
 						handleAddToMealPlan={handleAddToMealPlan}
 					/>
-					<FavoriteContainer contentId="test" />
-					<CommentButton contentId="test" />
+					{/* <FavoriteContainer contentId="test" />
+					<CommentButton contentId="test" /> */}
 				</Col>
 			</Row>
 		</Container>

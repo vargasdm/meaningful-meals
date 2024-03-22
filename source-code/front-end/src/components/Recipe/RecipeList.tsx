@@ -145,8 +145,7 @@ function RecipeList(prop: any) {
 						<p>No recipes have been saved for {globalUser}</p>
 					)}
 				</div >
-			)
-			}
+			)}
 		</>
 	);
 }

@@ -30,6 +30,7 @@ function default_1(favoriteDb) {
             return { isValid: true, errors };
         });
     }
+<<<<<<< HEAD
     function validateGetFavorite(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const errors = [];
@@ -44,6 +45,8 @@ function default_1(favoriteDb) {
             return { isValid: true, errors };
         });
     }
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     function validateUpdateFavorite(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const errors = [];
@@ -165,7 +168,10 @@ function default_1(favoriteDb) {
         getUserFavorites,
         getContentFavorites,
         getUserContentFavorite,
+<<<<<<< HEAD
         validateGetFavorite
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
     };
 }
 exports.default = default_1;

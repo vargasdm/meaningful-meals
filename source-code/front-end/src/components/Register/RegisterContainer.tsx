@@ -1,9 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import endpoints from "../../endpoints";
 import RegisterInput from "./RegisterInput";
 import axios from "axios";
-import { useState } from "react";
+// import { useState } from "react";
 const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
 console.log(USERS_ENDPOINT);
 

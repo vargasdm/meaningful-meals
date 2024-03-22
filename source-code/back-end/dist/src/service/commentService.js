@@ -15,7 +15,11 @@ function default_1(commentDb) {
         return __awaiter(this, void 0, void 0, function* () {
             const errors = [];
             // validate input
+<<<<<<< HEAD
             if (!input || !input.user_id || !input.content_id || !input.user_comment || !input.username) {
+=======
+            if (!input || !input.user_id || !input.content_id || !input.user_comment) {
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                 errors.push("INPUTS ARE NULL");
                 return { isValid: false, errors };
             }
@@ -130,7 +134,10 @@ function default_1(commentDb) {
                 yield commentDb.createComment({
                     comment_id: (0, uuid_1.v4)(),
                     user_id: input.user_id,
+<<<<<<< HEAD
                     username: input.username,
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                     content_id: input.content_id,
                     user_comment: input.user_comment,
                 });
@@ -165,8 +172,14 @@ function default_1(commentDb) {
                     content_id: input.content_id,
                 });
                 if (data) {
+<<<<<<< HEAD
                     data.user_comment = input.user_comment;
                     yield commentDb.updateComment(data);
+=======
+                    data.comment = input.user_comment;
+                    const result = yield commentDb.updateComment(data);
+                    return result;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
                 }
             }
             catch (err) {

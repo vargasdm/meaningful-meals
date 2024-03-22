@@ -19,6 +19,7 @@ const app = (0, express_1.default)();
 const PORT = process.env.PORT;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+<<<<<<< HEAD
 app.use((req, res, next) => {
     logger_1.logger.info(`Incoming ${req.method} : ${req.url}`);
     next();
@@ -28,6 +29,13 @@ app.use("/user", userRouter_1.default);
 app.use("/meals", mealRouter_1.default);
 app.use("/favorites", favoriteRouter_1.default);
 app.use("/comments", commentRouter_1.default);
+=======
+app.use("/recipes", recipeRouter_1.default);
+app.use("/user", userRouter_1.default);
+app.use('/meals', mealRouter_1.default);
+app.use("/favorite", favoriteRouter_1.default);
+app.use("/comment", commentRouter_1.default);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 app.use((req, res, next) => {
     logger_1.logger.info(`Incoming ${req.method} : ${req.url}`);
     next();

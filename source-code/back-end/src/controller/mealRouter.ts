@@ -9,14 +9,12 @@ import type { Validation } from '../util/validation.type';
 const router = express.Router();
 
 router.post('/', authenticateToken, async (req: any, res: any) => {
-	console.log(req.body);
 	try {
 		const validation: Validation = await mealService.validateAddMeal(
 			req.user.user_id,
 			req.body.recipeID,
 			req.body.timestamp
 		);
-		// console.log(`this is ${validation}`);
 
 		if (!validation.isValid) {
 			res.status(400).json({ errors: validation.errors });

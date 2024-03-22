@@ -72,7 +72,6 @@ async function getRecipeById(recipeId: string) {
 }
 
 async function searchedRecipeExists(id: string): Promise<boolean> {
-	// console.log(`recipeService.searchedRecipeExists(${id})...`);
 	if (!id) {
 		console.log("recipe doesnt exist");
 		return false;
@@ -86,32 +85,21 @@ async function searchedRecipeExists(id: string): Promise<boolean> {
 		console.log(err);
 		return false;
 	}
-
-	// return recipe;
 }
 
 async function userRecipeExists(id: string): Promise<boolean> {
-	// console.log(`recipeService.userRecipeExists(${id})...`);
 	if (!id) {
 		console.log("recipe doesnt exist");
-
 		return false;
 	}
-	// console.log(id);
 
 	const recipe = await getRecipeById(id);
 	console.log(`recipeService.userRecipeExists(${id})...`);
-
 	return recipe;
 }
 
 async function getUserRecipes(username: string) {
-	console.log(username);
-
 	const data: any = await recipeDAO.getRecipesByUsername(username);
-
-	// console.log(data);
-
 	return data ? data : null;
 }
 

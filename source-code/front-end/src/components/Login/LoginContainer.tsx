@@ -10,7 +10,6 @@ import { redirect } from "react-router-dom";
 import FavoriteButton from "../Favorite/FavoriteButton";
 import CommentButton from "../Comment/CommentButton";
 import endpoints from "../../endpoints";
-console.log(endpoints);
 const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
 console.log(USERS_ENDPOINT);
 

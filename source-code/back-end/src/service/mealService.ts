@@ -20,6 +20,8 @@ async function validateAddMeal(
 
 	try {
 		if (!(await userService.userExistsByID(userID))) {
+			console.log('USER DOES NOT EXIST');
+
 			validation.errors.push('USER DOES NOT EXIST');
 		}
 

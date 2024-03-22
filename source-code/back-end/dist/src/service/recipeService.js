@@ -27,9 +27,12 @@ function searchRecipes(query) {
             `complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${query}` +
             `&instructionsRequired=true`);
         // console.log(result);
+<<<<<<< HEAD
         if (!result.data.results) {
             return false;
         }
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         return result.data;
     });
 }
@@ -37,6 +40,7 @@ function searchRecipes(query) {
 // i.e., if we don't find the ID with Spoonacular, then search local
 function getRecipe(id) {
     return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
         console.log(id);
         const result = yield axios_1.default.get(`https://api.spoonacular.com/recipes/` +
             `${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
@@ -79,6 +83,21 @@ function userRecipeExists(id) {
         // console.log(id);
         const recipe = yield getRecipeById(id);
         console.log(`recipeService.userRecipeExists(${id})...`);
+=======
+        const result = yield axios_1.default.get(`https://api.spoonacular.com/recipes/` +
+            `${id}/information?apiKey=${SPOONACULAR_API_KEY}` +
+            `&includeNutrition=true`);
+        return result.data;
+    });
+}
+function recipeExists(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(`recipeService.recipeExists(${id})...`);
+        if (!id) {
+            return false;
+        }
+        const recipe = yield getRecipe(id);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         return recipe;
     });
 }
@@ -134,7 +153,11 @@ exports.default = {
     putRecipe,
     createRecipe,
     deleteRecipe,
+<<<<<<< HEAD
     searchedRecipeExists,
     getRecipeById,
     userRecipeExists,
+=======
+    recipeExists
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 };

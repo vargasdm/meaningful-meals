@@ -17,7 +17,10 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
 const lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
+<<<<<<< HEAD
 const console_1 = require("console");
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 // import { MealDoesNotExistError } from "../util/errors";
 const MEALS_TABLE = process.env.MEALS_TABLE;
 const AWS_REGION = process.env.AWS_REGION;
@@ -27,7 +30,10 @@ const documentClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
 // It should return nothing on success, and throw an error on error.
 function createMeal(meal) {
     return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
         console.log(meal);
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         try {
             const command = new lib_dynamodb_1.PutCommand({
                 TableName: MEALS_TABLE,
@@ -66,7 +72,10 @@ function getMealsOfUserInTimeRange(userID, minTimestamp, maxTimestamp) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const meals = yield getMealsByUserID(userID);
+<<<<<<< HEAD
             (0, console_1.log)(meals);
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             return meals.filter((meal) => meal.timestamp >= minTimestamp
                 && meal.timestamp < maxTimestamp);
         }

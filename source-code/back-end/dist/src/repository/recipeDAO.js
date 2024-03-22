@@ -38,6 +38,7 @@ function getRecipesByUsername(username) {
         return null;
     });
 }
+<<<<<<< HEAD
 function getRecipeById(recipeId) {
     return __awaiter(this, void 0, void 0, function* () {
         const command = new QueryCommand({
@@ -57,6 +58,8 @@ function getRecipeById(recipeId) {
         return null;
     });
 }
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 function updateRecipe(recipe) {
     return __awaiter(this, void 0, void 0, function* () {
         const command = new PutCommand({
@@ -128,5 +131,8 @@ exports.default = {
     updateRecipe,
     postRecipe,
     deleteRecipe,
+<<<<<<< HEAD
     getRecipeById,
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 };

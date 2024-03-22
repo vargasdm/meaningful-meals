@@ -95,31 +95,30 @@
 
 
 .recipeContainer {
-  /* Your existing styles for recipe container */
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+	/* Your existing styles for recipe container */
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
 }
 
 .recipeContainer h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-top: 1rem;
-  align-self: flex-start;
+	font-size: 1.5rem;
+	color: #333;
+	margin-top: 1rem;
+	align-self: flex-start;
 
 }
 
 .recipeContainer #recipeIngredientsList,
 .recipeContainer #recipeInstructionsList {
-  align-self: flex-start;
-  flex: 1;
-  margin-top: 1rem;
+	align-self: flex-start;
+	flex: 1;
+	margin-top: 1rem;
 }
-

@@ -21,8 +21,6 @@ const documentClient = DynamoDBDocumentClient.from(client);
 // This should create a meal with the given arguments.
 // It should return nothing on success, and throw an error on error.
 async function createMeal(meal: Meal): Promise<void> {
-	console.log(meal);
-
 	try {
 		const command = new PutCommand({
 			TableName: MEALS_TABLE,

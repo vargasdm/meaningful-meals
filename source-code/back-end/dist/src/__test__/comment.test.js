@@ -13,25 +13,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commentService_1 = __importDefault(require("../service/commentService"));
+<<<<<<< HEAD
+=======
+let contentTable = [
+    {
+        content_id: "1",
+        content: "Random Content 1",
+    },
+    {
+        content_id: "2",
+        content: "Random Content 2",
+    },
+    {
+        content_id: "3",
+        content: "Random Content 3",
+    },
+];
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
 let commentsTable = [
     {
         comment_id: "1",
         content_id: "1",
+<<<<<<< HEAD
         username: "testuser",
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         user_id: "1",
         user_comment: "Test Comment 1",
     },
     {
         comment_id: "2",
         content_id: "2",
+<<<<<<< HEAD
         username: "testuser",
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         user_id: "2",
         user_comment: "Test Comment 2",
     },
     {
         comment_id: "3",
         content_id: "3",
+<<<<<<< HEAD
         username: "testuser",
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         user_id: "3",
         user_comment: "Test Comment 3",
     },
@@ -65,7 +91,11 @@ const mockUpdateComment = jest.fn((item) => __awaiter(void 0, void 0, void 0, fu
         commentsTable.forEach((comment) => {
             if (comment.user_id === item.user_id &&
                 comment.content_id === item.content_id) {
+<<<<<<< HEAD
                 comment.user_comment = item.user_comment;
+=======
+                comment.user_comment = item.comment;
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             }
         });
     }
@@ -147,7 +177,10 @@ describe("Comments Test", () => {
         const input = {
             content_id: "1",
             user_id: "3",
+<<<<<<< HEAD
             username: "testuser",
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             user_comment: "New Test Comment 1",
         };
         // Act
@@ -158,6 +191,10 @@ describe("Comments Test", () => {
         }
         const process = yield commentService.createComment(input);
         const result = yield commentService.getUserComments(input.user_id);
+<<<<<<< HEAD
+=======
+        console.log(result);
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         let userId = "";
         let contentId = "";
         let userComment = "";
@@ -192,7 +229,10 @@ describe("Comments Test", () => {
         const input = {
             content_id: "1",
             user_id: "1",
+<<<<<<< HEAD
             username: "testuser",
+=======
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
             user_comment: "New Test Comment 1",
         };
         const expected = "COMMENT ALREADY EXISTS";
@@ -308,6 +348,7 @@ describe("Comments Test", () => {
             return;
         }
         const process = yield commentService.updateComment(input);
+<<<<<<< HEAD
         const result = yield commentService.getUserContentComment({
             user_id: input.user_id,
             content_id: input.content_id,
@@ -322,6 +363,22 @@ describe("Comments Test", () => {
             userId = result.user_id;
             contentId = result.content_id;
             userComment = result.user_comment;
+=======
+        const result = yield commentService.getUserComments(input.user_id);
+        let userId = "";
+        let contentId = "";
+        let userComment = "";
+        if (result) {
+            result.forEach((comment) => {
+                if (comment.user_id === input.user_id &&
+                    comment.content_id === input.content_id &&
+                    comment.user_comment === input.user_comment) {
+                    userId = comment.user_id;
+                    contentId = comment.content_id;
+                    userComment = comment.user_comment;
+                }
+            });
+>>>>>>> ef5e4a0ec591fc053043cac237b53fedca36fa77
         }
         // Assert
         expect(userId).toBe(input.user_id);
