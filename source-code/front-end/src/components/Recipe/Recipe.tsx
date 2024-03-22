@@ -66,7 +66,7 @@ export default function Recipe() {
 			<div className="recipe-main-header">
 				<h1>{recipe.title}</h1>
 				<div id="social-buttons">
-					<FavoriteContainer contentId={recipe.id} />
+					{/* <FavoriteContainer contentId={recipe.id} /> */}
 					<CommentButton contentId={recipe.id} />
 				</div>
 				<input

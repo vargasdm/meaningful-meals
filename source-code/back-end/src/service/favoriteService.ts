@@ -25,14 +25,17 @@ export default function (favoriteDb: any) {
 			if (err instanceof FavoriteDoesNotExistError) {
 				return false;
 			}
+
+			throw err;
 		}
 	}
+
 	async function validateInputFavorite(
 		input: favoriteInput
 	): Promise<Validation> {
 		const errors: string[] = [];
+
 		// validate input
-		// console.log(input);
 		if (!input || !input.content_id || !input.user_id) {
 			errors.push("INPUTS ARE NULL");
 			return { isValid: false, errors };
@@ -40,23 +43,17 @@ export default function (favoriteDb: any) {
 
 		// check if favorite exists
 		try {
-			// const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
-			// console.log(favorite);
-
 			if (await favoriteExists(input)) {
 				errors.push("FAVORITE ALREADY EXISTS");
 				return { isValid: false, errors };
 			}
-
-			// if (errors.length > 0) {
-			// 	return { isValid: false, errors };
-			// }
 
 			return { isValid: true, errors };
 		} catch (err) {
 			throw err;
 		}
 	}
+
 	async function validateGetFavorite(
 		input: favoriteInput
 	): Promise<Validation> {
@@ -64,10 +61,6 @@ export default function (favoriteDb: any) {
 		// validate input
 		if (!input || !input.content_id || !input.user_id) {
 			errors.push("INPUTS ARE NULL");
-			return { isValid: false, errors };
-		}
-
-		if (errors.length > 0) {
 			return { isValid: false, errors };
 		}
 
@@ -129,9 +122,10 @@ export default function (favoriteDb: any) {
 			await favoriteDb.createFavorite({
 				favorite_id: uuid(),
 				user_id: input.user_id,
-				content_id: input.content_id,
+				content_id: input.content_id.toString(),
 			});
 		} catch (err) {
+			console.log('hello');
 			throw err;
 		}
 	}

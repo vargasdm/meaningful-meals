@@ -43,8 +43,8 @@ export default function MealPlanDay(props: MealPlanDayProps) {
 					`${RECIPES_ENDPOINT}?id=${meal.recipe_id}`
 				);
 
-				console.log(`recipe_id: ${meal.recipe_id}`);
-				console.log(recipeData);
+				// console.log(`recipe_id: ${meal.recipe_id}`);
+				// console.log(recipeData);
 
 				const recipe: any = recipeData.data;
 

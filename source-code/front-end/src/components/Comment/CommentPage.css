@@ -3,15 +3,19 @@
 	padding: 5px;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	vertical-align: middle;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;
+	/* flex-grow: 1;
+	flex-shrink: 1; */
+	height: 100%
 }
 
 #comment-content {
 	margin: 10px;
+
 }
 
 #comment-buttons {
@@ -22,4 +26,10 @@
 	margin-right: auto;
 	position: relative;
 	gap: 20px;
+}
+
+.comment-list {
+	display: block;
+	flex-grow: 1;
+	flex-shrink: 1;
 }

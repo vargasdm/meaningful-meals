@@ -19,13 +19,16 @@ function FavoriteContainer(prop: fcProps) {
 			const favorite = await axios.get(url, {
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
+
 			if (!favorite.data) {
 				setFavorited(false);
 			} else {
 				setFavorited(true);
 			}
 		} catch (error: any) {
+			console.error(error);
 			setFavorited(false);
+
 			if (error.response.data.errors !== typeof []) {
 				const newError = [error.response.data.errors];
 				setErrors(newError);

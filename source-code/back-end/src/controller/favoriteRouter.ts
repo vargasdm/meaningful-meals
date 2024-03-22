@@ -26,11 +26,11 @@ router.post(
 				res.status(400).json({ errors: validation.errors });
 				return;
 			}
-			console.log('here');
 
 			await favoriteService.createFavorite(req.body);
 			res.sendStatus(201);
 		} catch (err) {
+			console.error(err);
 			logger.error(err);
 			res.sendStatus(500);
 		}
@@ -63,17 +63,16 @@ router.delete("/", authenticateToken, async (req: any, res: any) => {
 });
 
 router.get("/", authenticateToken, async (req: any, res: any) => {
+	const user: string = req.query.user;
+	const item: string = req.query.item;
+
 	try {
-		const user: string = req.query.user;
-		const item: string = req.query.item;
 		if (!user && !item) {
 			res.status(400).json({ errors: "MISSING QUERIES" });
 			return;
 		}
-		let validation: Validation = {
-			isValid: false,
-			errors: ["MISSING QUERIES"],
-		};
+
+		let validation: Validation = { isValid: false, errors: [] };
 
 		if (user && item) {
 			validation = await favoriteService.validateGetFavorite({
@@ -106,6 +105,7 @@ router.get("/", authenticateToken, async (req: any, res: any) => {
 
 		res.status(200).json(data);
 	} catch (err) {
+		console.error(err);
 		logger.error(err);
 		res.sendStatus(500);
 	}

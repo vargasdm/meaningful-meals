@@ -5,7 +5,7 @@ import RegisterInput from "./RegisterInput";
 import axios from "axios";
 // import { useState } from "react";
 const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
-console.log(USERS_ENDPOINT);
+// console.log(USERS_ENDPOINT);
 
 function RegisterContainer() {
 	const [errors, setErrors] = useState([] as any);

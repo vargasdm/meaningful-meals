@@ -11,7 +11,7 @@ import FavoriteButton from "../Favorite/FavoriteButton";
 import CommentButton from "../Comment/CommentButton";
 import endpoints from "../../endpoints";
 const USERS_ENDPOINT = endpoints.USERS_ENDPOINT;
-console.log(USERS_ENDPOINT);
+// console.log(USERS_ENDPOINT);
 
 function LoginContainer() {
 	const [errors, setErrors] = useState([] as any);

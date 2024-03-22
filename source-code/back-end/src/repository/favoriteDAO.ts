@@ -64,12 +64,11 @@ async function getFavoriteByUserAndContent(
 
 	try {
 		const data: any = await documentClient.send(command);
-		// console.log(data);
-		if (data.Items && data.Items.length === 1) {
+
+		if (data.Items && data.Items.length > 0) {
 			return data.Items[0];
 		}
 
-		// return data.Items[0];
 		throw new FavoriteDoesNotExistError();
 	} catch (err) {
 		logger.error(err);
