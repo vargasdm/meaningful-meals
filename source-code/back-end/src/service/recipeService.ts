@@ -50,7 +50,8 @@ async function getRecipe(id: string) {
 			image: result.data.image,
 			numCalories: result.data.nutrition.nutrients.find(
 				(nutrient: any) => nutrient.name === 'Calories'
-			).amount
+			).amount,
+			id: result.data.id
 		}
 
 		// console.log(formattedRecipe);

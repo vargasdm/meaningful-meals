@@ -1,185 +1,207 @@
 import { UserDoesNotExistError } from "../util/errors";
 import type { Validation } from "../util/validation.type";
 import { v4 as uuid } from "uuid";
+import { FavoriteDoesNotExistError } from "../util/errors";
 
 type favoriteInput = {
-  user_id: string;
-  content_id: string;
+	user_id: string;
+	content_id: string;
 };
 
 type favorite = {
-  favorite_id: string;
-  user_id: string;
-  content_id: string;
+	favorite_id: string;
+	user_id: string;
+	content_id: string;
 };
 
 export default function (favoriteDb: any) {
-  async function validateInputFavorite(
-    input: favoriteInput
-  ): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input || !input.content_id || !input.user_id) {
-      errors.push("INPUTS ARE NULL");
-      return { isValid: false, errors };
-    }
-    // check if favorite exists
-    const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
-    if (favorite) {
-      errors.push("FAVORITE ALREADY EXISTS");
-    }
+	async function favoriteExists(input: favoriteInput) {
+		try {
+			const favorite =
+				await favoriteDb.getFavoriteByUserAndContent(input);
 
-    if (errors.length > 0) {
-      return { isValid: false, errors };
-    }
+			return favorite ? true : false;
+		} catch (err) {
+			if (err instanceof FavoriteDoesNotExistError) {
+				return false;
+			}
+		}
+	}
+	async function validateInputFavorite(
+		input: favoriteInput
+	): Promise<Validation> {
+		const errors: string[] = [];
+		// validate input
+		// console.log(input);
+		if (!input || !input.content_id || !input.user_id) {
+			errors.push("INPUTS ARE NULL");
+			return { isValid: false, errors };
+		}
 
-    return { isValid: true, errors };
-  }
-  async function validateGetFavorite(
-    input: favoriteInput
-  ): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input || !input.content_id || !input.user_id) {
-      errors.push("INPUTS ARE NULL");
-      return { isValid: false, errors };
-    }
+		// check if favorite exists
+		try {
+			// const favorite = await favoriteDb.getFavoriteByUserAndContent(input);
+			// console.log(favorite);
 
-    if (errors.length > 0) {
-      return { isValid: false, errors };
-    }
+			if (await favoriteExists(input)) {
+				errors.push("FAVORITE ALREADY EXISTS");
+				return { isValid: false, errors };
+			}
 
-    return { isValid: true, errors };
-  }
+			// if (errors.length > 0) {
+			// 	return { isValid: false, errors };
+			// }
 
-  async function validateUpdateFavorite(
-    input: favoriteInput
-  ): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input || !input.content_id || !input.user_id) {
-      errors.push("INPUTS ARE NULL");
-      return { isValid: false, errors };
-    }
-    // check if content is real
-    const favorite: favorite[] = await favoriteDb.getFavoritesByUserId(
-      input.user_id
-    );
+			return { isValid: true, errors };
+		} catch (err) {
+			throw err;
+		}
+	}
+	async function validateGetFavorite(
+		input: favoriteInput
+	): Promise<Validation> {
+		const errors: string[] = [];
+		// validate input
+		if (!input || !input.content_id || !input.user_id) {
+			errors.push("INPUTS ARE NULL");
+			return { isValid: false, errors };
+		}
 
-    if (!favorite.length) {
-      errors.push("FAVORITE DOES NOT EXISTS");
-    }
+		if (errors.length > 0) {
+			return { isValid: false, errors };
+		}
 
-    let isUsers = true;
-    favorite.forEach((item) => {
-      // check if user owns the favorite
-      if (item.content_id == input.content_id) {
-        isUsers = false;
-      }
-    });
-    if (isUsers) {
-      errors.push("FAVORITE DOES NOT EXISTS");
-    }
+		return { isValid: true, errors };
+	}
 
-    if (errors.length > 0) {
-      return { isValid: false, errors };
-    }
+	async function validateUpdateFavorite(
+		input: favoriteInput
+	): Promise<Validation> {
+		const errors: string[] = [];
+		// validate input
+		if (!input || !input.content_id || !input.user_id) {
+			errors.push("INPUTS ARE NULL");
+			return { isValid: false, errors };
+		}
+		// check if content is real
+		const favorite: favorite[] = await favoriteDb.getFavoritesByUserId(
+			input.user_id
+		);
 
-    return { isValid: true, errors };
-  }
+		if (!favorite.length) {
+			errors.push("FAVORITE DOES NOT EXISTS");
+		}
 
-  async function validateId(input: string): Promise<Validation> {
-    const errors: string[] = [];
-    // validate input
-    if (!input) {
-      errors.push("INPUT IS NULL");
-    }
+		let isUsers = true;
+		favorite.forEach((item) => {
+			// check if user owns the favorite
+			if (item.content_id == input.content_id) {
+				isUsers = false;
+			}
+		});
+		if (isUsers) {
+			errors.push("FAVORITE DOES NOT EXISTS");
+		}
 
-    if (errors.length > 0) {
-      return { isValid: false, errors };
-    }
+		if (errors.length > 0) {
+			return { isValid: false, errors };
+		}
 
-    return { isValid: true, errors };
-  }
+		return { isValid: true, errors };
+	}
 
-  async function createFavorite(input: favoriteInput) {
-    try {
-      await favoriteDb.createFavorite({
-        favorite_id: uuid(),
-        user_id: input.user_id,
-        content_id: input.content_id,
-      });
-    } catch (err) {
-      throw err;
-    }
-  }
+	async function validateId(input: string): Promise<Validation> {
+		const errors: string[] = [];
+		// validate input
+		if (!input) {
+			errors.push("INPUT IS NULL");
+		}
 
-  async function deleteFavorite(input: favoriteInput) {
-    try {
-      const data: favorite[] = await favoriteDb.getFavoritesByUserId(
-        input.user_id
-      );
+		if (errors.length > 0) {
+			return { isValid: false, errors };
+		}
 
-      let favoriteId;
+		return { isValid: true, errors };
+	}
 
-      data.forEach((item) => {
-        if (item.content_id === input.content_id) {
-          favoriteId = item.favorite_id;
-        }
-      });
+	async function createFavorite(input: favoriteInput) {
+		try {
+			await favoriteDb.createFavorite({
+				favorite_id: uuid(),
+				user_id: input.user_id,
+				content_id: input.content_id,
+			});
+		} catch (err) {
+			throw err;
+		}
+	}
 
-      await favoriteDb.deleteFavorite(favoriteId);
-    } catch (err) {
-      throw err;
-    }
-  }
+	async function deleteFavorite(input: favoriteInput) {
+		try {
+			const data: favorite[] = await favoriteDb.getFavoritesByUserId(
+				input.user_id
+			);
 
-  async function getUserFavorites(input: string): Promise<favorite[]> {
-    try {
-      const result = await favoriteDb.getFavoritesByUserId(input);
-      return result;
-    } catch (err) {
-      throw err;
-    }
-  }
+			let favoriteId;
 
-  async function getContentFavorites(input: string): Promise<favorite[]> {
-    try {
-      const result = await favoriteDb.getFavorites();
+			data.forEach((item) => {
+				if (item.content_id === input.content_id) {
+					favoriteId = item.favorite_id;
+				}
+			});
 
-      let data: favorite[] = [];
+			await favoriteDb.deleteFavorite(favoriteId);
+		} catch (err) {
+			throw err;
+		}
+	}
 
-      result.forEach((item: favorite) => {
-        if (item.content_id === input) {
-          data.push(item);
-        }
-      });
+	async function getUserFavorites(input: string): Promise<favorite[]> {
+		try {
+			const result = await favoriteDb.getFavoritesByUserId(input);
+			return result;
+		} catch (err) {
+			throw err;
+		}
+	}
 
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  }
-  async function getUserContentFavorite(
-    input: favoriteInput
-  ): Promise<favorite> {
-    try {
-      const result = await favoriteDb.getFavoriteByUserAndContent(input);
-      return result;
-    } catch (err) {
-      throw err;
-    }
-  }
+	async function getContentFavorites(input: string): Promise<favorite[]> {
+		try {
+			const result = await favoriteDb.getFavorites();
 
-  return {
-    validateInputFavorite,
-    validateUpdateFavorite,
-    validateId,
-    createFavorite,
-    deleteFavorite,
-    getUserFavorites,
-    getContentFavorites,
-    getUserContentFavorite,
-    validateGetFavorite
-  };
+			let data: favorite[] = [];
+
+			result.forEach((item: favorite) => {
+				if (item.content_id === input) {
+					data.push(item);
+				}
+			});
+
+			return data;
+		} catch (err) {
+			throw err;
+		}
+	}
+	async function getUserContentFavorite(
+		input: favoriteInput
+	): Promise<favorite> {
+		try {
+			const result = await favoriteDb.getFavoriteByUserAndContent(input);
+			return result;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	return {
+		validateInputFavorite,
+		validateUpdateFavorite,
+		validateId,
+		createFavorite,
+		deleteFavorite,
+		getUserFavorites,
+		getContentFavorites,
+		getUserContentFavorite,
+		validateGetFavorite
+	};
 }

@@ -42,12 +42,12 @@ function SearchInput() {
 
 	return (
 		<>
-			<h1>SearchInput</h1>
+			<h1>Search for a recipe...</h1>
 			<form onSubmit={handleSearchSubmit}>
 				<input
 					type="search"
 					name="search"
-					placeholder="search something here"
+					placeholder="Recipe"
 					onChange={(e) => setSearchInput(e.target.value)}
 				></input>
 

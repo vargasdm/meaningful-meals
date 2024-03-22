@@ -30,6 +30,7 @@ export default function Recipe() {
 	const recipe: any = useLoaderData();
 	const user = useSelector((state: any) => state.user);
 	const jwt = user.jwt;
+	// console.log(recipe);
 
 	async function handleAddToMealPlan() {
 		try {
@@ -50,7 +51,7 @@ export default function Recipe() {
 		}
 	}
 
-	console.log(recipe);
+	// console.log(recipe);
 	const instructions: any = recipe.instructions.map(
 		(instruction: any) => <li key={v4()}>{instruction.body}</li>
 	);

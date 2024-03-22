@@ -14,99 +14,101 @@ import FavoriteService from "../service/favoriteService";
 const favoriteService = FavoriteService(favoriteDAO);
 
 router.post(
-  "/",
-  authenticateToken,
-  async (req: any, res: any) => {
-    try {
-      const validation: Validation =
-        await favoriteService.validateInputFavorite(req.body);
+	"/",
+	authenticateToken,
+	async (req: any, res: any) => {
+		// console.log(req.body);
+		try {
+			const validation: Validation =
+				await favoriteService.validateInputFavorite(req.body);
 
-      if (!validation.isValid) {
-        res.status(400).json({ errors: validation.errors });
-        return;
-      }
+			if (!validation.isValid) {
+				res.status(400).json({ errors: validation.errors });
+				return;
+			}
+			console.log('here');
 
-      await favoriteService.createFavorite(req.body);
-      res.sendStatus(201);
-    } catch (err) {
-      logger.error(err);
-      res.sendStatus(500);
-    }
-  }
+			await favoriteService.createFavorite(req.body);
+			res.sendStatus(201);
+		} catch (err) {
+			logger.error(err);
+			res.sendStatus(500);
+		}
+	}
 );
 
 router.delete("/", authenticateToken, async (req: any, res: any) => {
-  try {
-    const user: string = req.query.user;
-    const item: string = req.query.item;
-    if (!user || !item) {
-      res.status(400).json({ errors: "MISSING QUERIES" });
-      return;
-    }
-    const validation: Validation = await favoriteService.validateUpdateFavorite(
-      { user_id: user, content_id: item }
-    );
+	try {
+		const user: string = req.query.user;
+		const item: string = req.query.item;
+		if (!user || !item) {
+			res.status(400).json({ errors: "MISSING QUERIES" });
+			return;
+		}
+		const validation: Validation = await favoriteService.validateUpdateFavorite(
+			{ user_id: user, content_id: item }
+		);
 
-    if (!validation.isValid) {
-      res.status(400).json({ errors: validation.errors });
-      return;
-    }
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
 
-    await favoriteService.deleteFavorite({ user_id: user, content_id: item });
-    res.sendStatus(202);
-  } catch (err) {
-    logger.error(err);
-    res.sendStatus(500);
-  }
+		await favoriteService.deleteFavorite({ user_id: user, content_id: item });
+		res.sendStatus(202);
+	} catch (err) {
+		logger.error(err);
+		res.sendStatus(500);
+	}
 });
 
 router.get("/", authenticateToken, async (req: any, res: any) => {
-  try {
-    const user: string = req.query.user;
-    const item: string = req.query.item;
-    if (!user && !item) {
-      res.status(400).json({ errors: "MISSING QUERIES" });
-      return;
-    }
-    let validation: Validation = {
-      isValid: false,
-      errors: ["MISSING QUERIES"],
-    };
+	try {
+		const user: string = req.query.user;
+		const item: string = req.query.item;
+		if (!user && !item) {
+			res.status(400).json({ errors: "MISSING QUERIES" });
+			return;
+		}
+		let validation: Validation = {
+			isValid: false,
+			errors: ["MISSING QUERIES"],
+		};
 
-    if (user && item) {
-      validation = await favoriteService.validateGetFavorite({
-        user_id: user,
-        content_id: item,
-      });
-    } else if (!user && item) {
-      validation = await favoriteService.validateId(item);
-    } else if (user && !item) {
-      validation = await favoriteService.validateId(user);
-    }
+		if (user && item) {
+			validation = await favoriteService.validateGetFavorite({
+				user_id: user,
+				content_id: item,
+			});
+		} else if (!user && item) {
+			validation = await favoriteService.validateId(item);
+		} else if (user && !item) {
+			validation = await favoriteService.validateId(user);
+		}
 
-    if (!validation.isValid) {
-      res.status(400).json({ errors: validation.errors });
-      return;
-    }
+		if (!validation.isValid) {
+			res.status(400).json({ errors: validation.errors });
+			return;
+		}
 
-    let data;
+		let data;
 
-    if (user && item) {
-      data = await favoriteService.getUserContentFavorite({
-        user_id: user,
-        content_id: item,
-      });
-    } else if (!user && item) {
-      data = await favoriteService.getContentFavorites(item);
-    } else if (user && !item) {
-      data = await favoriteService.getUserFavorites(user);
-    }
+		if (user && item) {
+			data = await favoriteService.getUserContentFavorite({
+				user_id: user,
+				content_id: item,
+			});
+		} else if (!user && item) {
+			data = await favoriteService.getContentFavorites(item);
+		} else if (user && !item) {
+			data = await favoriteService.getUserFavorites(user);
+		}
 
-    res.status(200).json(data);
-  } catch (err) {
-    logger.error(err);
-    res.sendStatus(500);
-  }
+		res.status(200).json(data);
+	} catch (err) {
+		logger.error(err);
+		res.sendStatus(500);
+	}
 });
 
 export default router;

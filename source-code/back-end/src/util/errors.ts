@@ -9,3 +9,9 @@ export class MealDoesNotExistError extends Error {
 		super('MEAL DOES NOT EXIST');
 	}
 }
+
+export class FavoriteDoesNotExistError extends Error {
+	constructor() {
+		super('FAVORITE DOES NOT EXIST');
+	}
+}
