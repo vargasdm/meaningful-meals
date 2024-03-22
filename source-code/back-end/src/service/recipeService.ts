@@ -3,6 +3,7 @@ dotenv.config();
 import { v4 as uuid } from "uuid";
 import recipeDAO from "../repository/recipeDAO";
 import userDAO from "../repository/userDAO";
+const levenshtein = require('fast-levenshtein');
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
@@ -17,7 +18,12 @@ async function searchRecipes(query: string) {
 		)).data.results;
 
 		const dbResults: any = await recipeDAO.getAllRecipes();
-		return [...apiResults, ...dbResults]
+		const results = [...apiResults, ...dbResults];
+		results.sort((a, b) => {
+			return levenshtein(query, a) - levenshtein(query, b);
+		});
+		return results;
+		// return [...apiResults, ...dbResults]
 	} catch (err) {
 		console.error(err);
 		throw err;
