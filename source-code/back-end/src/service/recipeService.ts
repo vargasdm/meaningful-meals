@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import recipeDAO from "../repository/recipeDAO";
 // import userDAO from "../repository/userDAO";
 import levenshtein from 'fast-levenshtein';
+// console.log(levenshtein);
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
@@ -20,7 +21,7 @@ async function searchRecipes(query: string) {
 		const dbResults: any = await recipeDAO.getAllRecipes();
 		const results = [...apiResults, ...dbResults];
 		results.sort((a, b) => {
-			return levenshtein(query, a) - levenshtein(query, b);
+			return levenshtein.get(query, a) - levenshtein.get(query, b);
 		});
 		return results;
 		// return [...apiResults, ...dbResults]
