@@ -3,7 +3,7 @@ dotenv.config();
 import { v4 as uuid } from "uuid";
 import recipeDAO from "../repository/recipeDAO";
 // import userDAO from "../repository/userDAO";
-const levenshtein = require('fast-levenshtein');
+import levenshtein from 'fast-levenshtein';
 
 import axios from "axios";
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
